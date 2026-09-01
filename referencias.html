@@ -18,11 +18,22 @@
 
     <nav class="topnav">
         <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
-        <ul class="nav-links">
-            <li><a href="index.html">Impulsión · Manual</a></li>
-            <li><a href="auto.html">Impulsión · Auto</a></li>
-            <li><a href="potabilizadora.html">Potabilizadora · Manual</a></li>
-            <li><a href="potabilizadora-auto.html">Potabilizadora · Auto</a></li>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="nav-links">
+            <li class="nav-dd">
+                <a href="index.html">Impulsión</a>
+                <ul class="dd-menu">
+                    <li><a href="index.html">Manual</a></li>
+                    <li><a href="auto.html">Automático</a></li>
+                </ul>
+            </li>
+            <li class="nav-dd">
+                <a href="potabilizadora.html">Potabilizadora</a>
+                <ul class="dd-menu">
+                    <li><a href="potabilizadora.html">Manual</a></li>
+                    <li><a href="potabilizadora-auto.html">Automático</a></li>
+                </ul>
+            </li>
             <li><a href="referencias.html" class="active">Norma 68</a></li>
             <li><a href="formulas.html">Fórmulas</a></li>
         </ul>

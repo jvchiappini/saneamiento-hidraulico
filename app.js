@@ -2740,6 +2740,34 @@ function buildPotabPDF(d) {
     doc.save("informe-potabilizadora.pdf");
 }
 
+/* ================= Navegación (menú hamburguesa + dropdowns) ================= */
+function setupNav() {
+    const toggle = $("nav-toggle");
+    const links = $("nav-links");
+    if (toggle && links) {
+        toggle.addEventListener("click", () => {
+            links.classList.toggle("open");
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+        });
+    }
+    document.querySelectorAll(".nav-dd > a").forEach((a) => {
+        a.addEventListener("click", (e) => {
+            if (window.innerWidth < 901) {
+                e.preventDefault();
+                const dd = a.parentElement;
+                const wasOpen = dd.classList.contains("open");
+                document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+                if (!wasOpen) dd.classList.add("open");
+            }
+        });
+    });
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".nav-dd")) {
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+        }
+    });
+}
+
 /* ================= Init ================= */
 loadState();
 loadPotabState();
@@ -2749,6 +2777,7 @@ renderBombeoForm();
 renderOptForm();
 renderGeomForm();
 renderPotabForms();
+setupNav();
 renderAll();
 setupFormulasToggle();
 setupPdf();

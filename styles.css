@@ -131,6 +131,113 @@ body {
     border-color: var(--primary);
 }
 
+/* ---------- Dropdown de navegación ---------- */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    margin-left: auto;
+    padding: .45rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: transform .2s, opacity .2s;
+}
+
+.nav-dd {
+    position: relative;
+}
+
+.nav-dd > a {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    padding: .35rem .7rem;
+    border-radius: 999px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.nav-dd > a::after {
+    content: "▾";
+    font-size: .6rem;
+    color: var(--muted);
+    margin-top: 1px;
+}
+
+.nav-dd > a:hover {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+}
+
+.nav-dd > a.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+.nav-dd > a.active::after {
+    color: #fff;
+}
+
+.dd-menu {
+    position: absolute;
+    top: calc(100% + .45rem);
+    left: 0;
+    min-width: 155px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: .4rem;
+    list-style: none;
+    display: none;
+    z-index: 60;
+}
+
+.dd-menu a {
+    display: block;
+    padding: .5rem .7rem;
+    border-radius: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .86rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.dd-menu a:hover {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+}
+
+.dd-menu a.active {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.nav-dd:hover > a {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+}
+
+.nav-dd:hover .dd-menu {
+    display: block;
+}
+
 /* ---------- Hero ---------- */
 .hero {
     position: relative;
@@ -1644,7 +1751,57 @@ footer .footnote {
     }
 
     .nav-links {
-        max-width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        margin-left: 0;
+        padding: .5rem 1.2rem 1rem;
+        max-height: calc(100vh - 64px);
+        overflow-y: auto;
+        display: none;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-links > li {
+        width: 100%;
+    }
+
+    .nav-links > li > a,
+    .nav-dd > a {
+        padding: .6rem .7rem;
+        border-radius: 10px;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-dd .dd-menu {
+        position: static;
+        display: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding: .2rem 0 0 .6rem;
+        min-width: 0;
+    }
+
+    .nav-dd.open .dd-menu {
+        display: block;
+    }
+
+    .dd-menu a {
+        padding: .55rem .7rem;
+        border-radius: 8px;
     }
 }
 
