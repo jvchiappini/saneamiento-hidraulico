@@ -627,7 +627,15 @@ body.show-formulas .formula, .formulas-page .formula { display: flex; }
 .informe td, .informe th { padding: .3rem .45rem; }
 .informe th { text-align: right; font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); border-bottom: 1px solid var(--border); }
 .informe th:first-child, .informe td:first-child { text-align: left; }
-.info-card td.pl { color: var(--muted); }
+.informe .info-card thead th {
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .25rem;
+}
+.informe .info-card td.pl { color: var(--muted); }
 .info-card td.pv { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
 .info-card td.pu { color: var(--muted); text-align: right; white-space: nowrap; }
 .informe .wide td, .informe .wide th { font-size: .74rem; padding: .3rem .4rem; }

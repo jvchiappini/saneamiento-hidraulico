@@ -842,84 +842,94 @@ function setupFormulasToggle() {
 }
 
 /* ================= Informe técnico ================= */
-function buildReportHTML(r) {
+function collectReportData(r) {
     const rows = optimalRows(r);
     const best = rows[0];
     const fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
-
-    const g = (l, v, u) => `<tr><td class="pl">${esc(l)}</td><td class="pv">${v}</td><td class="pu">${esc(u)}</td></tr>`;
+    const kv = (l, v, u) => [l, v, u];
 
     const inputsUrban = [
-        g("Manzanas del barrio", S.manzanas, "manz."),
-        g("Lotes / edificios por manzana", S.lotes, "lotes"),
-        g("Pisos tipo por edificio", S.pisos, "pisos"),
-        g("Departamentos por piso", S.deptos, "deptos"),
-        g("Dormitorios por departamento", S.dorm, "dorm."),
-        g("Personas por dormitorio", S.persDorm, "pers"),
-        g("Personal de servicio por depto.", S.persServ, "pers"),
-        g("Personal de logística por lote", S.pctLog, "%"),
+        kv("Manzanas del barrio", S.manzanas, "manz."),
+        kv("Lotes / edificios por manzana", S.lotes, "lotes"),
+        kv("Pisos tipo por edificio", S.pisos, "pisos"),
+        kv("Departamentos por piso", S.deptos, "deptos"),
+        kv("Dormitorios por departamento", S.dorm, "dorm."),
+        kv("Personas por dormitorio", S.persDorm, "pers"),
+        kv("Personal de servicio por depto.", S.persServ, "pers"),
+        kv("Personal de logística por lote", S.pctLog, "%"),
     ];
     const inputsCaud = [
-        g("Caudal unitario — departamentos", S.qDept, "l/pers/d"),
-        g("Caudal unitario — logística", S.qLog, "l/pers/d"),
-        g("K1 — Consumo máx. diario", S.k1, ""),
-        g("K2 — Consumo máx. horario", S.k2, ""),
-        g("K3 — Línea de impulsión", S.k3, ""),
-        g("Horas de operación de la bomba", S.horasOp, "hs/d"),
+        kv("Caudal unitario — departamentos", S.qDept, "l/pers/d"),
+        kv("Caudal unitario — logística", S.qLog, "l/pers/d"),
+        kv("K1 — Consumo máx. diario", S.k1, ""),
+        kv("K2 — Consumo máx. horario", S.k2, ""),
+        kv("K3 — Línea de impulsión", S.k3, ""),
+        kv("Horas de operación de la bomba", S.horasOp, "hs/d"),
     ];
     const inputsGeom = [
-        g("Longitud de succión", S.lSucc, "m"),
-        g("Longitud de impulsión", S.lImp, "m"),
-        g("Altura topográfica de succión", S.hTopoSucc, "m"),
-        g("Altura topográfica de impulsión", S.hTopoImp, "m"),
-        g("Presión de llegada al reservorio", S.pReservorio, "m"),
+        kv("Longitud de succión", S.lSucc, "m"),
+        kv("Longitud de impulsión", S.lImp, "m"),
+        kv("Altura topográfica de succión", S.hTopoSucc, "m"),
+        kv("Altura topográfica de impulsión", S.hTopoImp, "m"),
+        kv("Presión de llegada al reservorio", S.pReservorio, "m"),
     ];
     const inputsRend = r.alts.map((a, i) =>
-        g(`Alternativa ${i + 1} — η bomba / η motor`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+        kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
     const inputsEco = [
-        g("Costo base de tubería", "$ " + Sopt.pipeA, "$/m"),
-        g("Costo por mm de diámetro", "$ " + Sopt.pipeB, "$/m·mm"),
-        g("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
-        g("Costo de la bomba", "$ " + Sopt.pumpCost, "$/HP"),
-        g("Tasa de descuento", Sopt.rate, "%/año"),
-        g("Mantenimiento", Sopt.maint, "%/año"),
+        kv("Costo base de tubería", "$ " + Sopt.pipeA, "$/m"),
+        kv("Costo por mm de diámetro", "$ " + Sopt.pipeB, "$/m·mm"),
+        kv("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
+        kv("Costo de la bomba", "$ " + Sopt.pumpCost, "$/HP"),
+        kv("Tasa de descuento", Sopt.rate, "%/año"),
+        kv("Mantenimiento", Sopt.maint, "%/año"),
     ];
 
     const resCaud = [
-        g("Total de personas de los departamentos", f0(r.B11), "pers"),
-        g("Personal de logística", f0(r.B12), "pers"),
-        g("Caudal medio de bombeo (Qm)", f0(r.B15), "l/d"),
-        g("Caudal medio de bombeo", f(r.B16, 2), "m³/d"),
-        g("Caudal medio de bombeo", f(r.B17, 2), "l/s"),
-        g("Caudal por lote", f0(r.B18), "l/d"),
-        g("Caudal por lote", f(r.B19, 2), "l/s"),
+        kv("Total de personas de los departamentos", f0(r.B11), "pers"),
+        kv("Personal de logística", f0(r.B12), "pers"),
+        kv("Caudal medio de bombeo (Qm)", f0(r.B15), "l/d"),
+        kv("Caudal medio de bombeo", f(r.B16, 2), "m³/d"),
+        kv("Caudal medio de bombeo", f(r.B17, 2), "l/s"),
+        kv("Caudal por lote", f0(r.B18), "l/d"),
+        kv("Caudal por lote", f(r.B19, 2), "l/s"),
     ];
     const resBombeo = [
-        g("Caudal de bombeo (Qb)", f(r.B23, 4), "m³/s"),
-        g("Caudal de bombeo", f(r.D23, 2), "l/s"),
-        g("Diámetro de impulsión (Bresse)", f(r.B26, 3), "m"),
+        kv("Caudal de bombeo (Qb)", f(r.B23, 4), "m³/s"),
+        kv("Caudal de bombeo", f(r.D23, 2), "l/s"),
+        kv("Diámetro de impulsión (Bresse)", f(r.B26, 3), "m"),
     ];
 
-    const altRows = r.alts.map((a, i) => `<tr>
-        <td>Alt ${i + 1}</td><td>${a.dS}</td><td>${a.dI}</td>
-        <td>${f(a.vS, 2)}</td><td>${f(a.vI, 2)}</td>
-        <td>${f(a.JS, 5)}</td><td>${f(a.JI, 5)}</td>
-        <td>${f(a.leqS, 1)}</td><td>${f(a.leqI, 1)}</td>
-        <td>${f(a.hT, 2)}</td><td>${f(a.Pb, 2)}</td><td>${f(a.Pmb, 2)}</td><td>${f(a.Padop, 0)}</td></tr>`).join("");
+    const altsData = r.alts.map((a, i) => [
+        "Alt " + (i + 1), a.dS, a.dI, f(a.vS, 2), f(a.vI, 2), f(a.JS, 5), f(a.JI, 5),
+        f(a.leqS, 1), f(a.leqI, 1), f(a.hT, 2), f(a.Pb, 2), f(a.Pmb, 2), f(a.Padop, 0),
+    ]);
+    const pozoData = r.alts.map((a, i) => ["Alt " + (i + 1), f(a.hCav, 3), f(a.hSeg, 2), f(a.hPozo, 2)]);
+    const optData = best ? [[
+        best.dn, best.succ, f(best.m.vI, 2), f(best.m.hT, 2), f(best.m.Pmb, 1), f(best.m.Padop, 0),
+        f0(best.pipeCost), f0(best.pumpInv), f0(best.energy), f0(best.annual),
+    ]] : [["—"]];
 
-    const pozoRows = r.alts.map((a, i) =>
-        `<tr><td>Alt ${i + 1}</td><td>${f(a.hCav, 3)}</td><td>${f(a.hSeg, 2)}</td><td><strong>${f(a.hPozo, 2)}</strong></td></tr>`).join("");
+    const conclusion = best
+        ? "Se adopta la alternativa óptima: línea de impulsión de DN " + best.dn + " mm con tubería de succión de DN "
+          + best.succ + " mm. La altura manométrica resultante es de " + f(best.m.hT, 2) + " m.c.a., con una potencia "
+          + "adoptada de " + f(best.m.Padop, 0) + " HP y un costo anual de " + f0(best.annual) + " $/año."
+        : "Sin datos suficientes.";
 
-    const optRows = best ? `
-        <tr><td>${best.dn}</td><td>${best.succ}</td><td>${f(best.m.vI, 2)}</td><td>${f(best.m.hT, 2)}</td>
-        <td>${f(best.m.Pmb, 1)}</td><td>${f(best.m.Padop, 0)}</td><td>${f0(best.pipeCost)}</td><td>${f0(best.pumpInv)}</td>
-        <td>${f0(best.energy)}</td><td><strong>${f0(best.annual)}</strong></td></tr>` : `<tr><td colspan="10">—</td></tr>`;
+    return {
+        r, rows, best, fecha,
+        inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
+        resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+    };
+}
 
-    const concl = best ? `
-        <p>Se adopta la <strong>alternativa óptima</strong>: línea de impulsión de <strong>DN ${best.dn} mm</strong>
-        con tubería de succión de <strong>DN ${best.succ} mm</strong>. La altura manométrica resultante es de
-        <strong>${f(best.m.hT, 2)} m.c.a.</strong>, con una potencia adoptada de <strong>${f(best.m.Padop, 0)} HP</strong>
-        y un costo anual de <strong>${f0(best.annual)} $/año</strong>.</p>` : `<p>Sin datos suficientes.</p>`;
+function buildReportHTML(d) {
+    const row = (t) => `<tr><td class="pl">${esc(t[0])}</td><td class="pv">${t[1]}</td><td class="pu">${esc(t[2])}</td></tr>`;
+    const table = (rows) => `<table>
+        <thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th></tr></thead>
+        <tbody>${rows.map(row).join("")}</tbody></table>`;
+    const wide = (head, rows) => `<table class="wide">
+        <thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((c) => `<tr>${c.map((x) => `<td>${x}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 
     return `
     <div class="informe">
@@ -929,7 +939,7 @@ function buildReportHTML(r) {
                 <p class="informe-sub">Sistema de impulsión — Río · Saneamiento (Norma 68)</p>
             </div>
             <div class="informe-meta">
-                <div>Fecha: ${esc(fecha)}</div>
+                <div>Fecha: ${esc(d.fecha)}</div>
                 <div>Grupo Nº: ______________</div>
                 <div>Integrantes: ______________________</div>
             </div>
@@ -938,57 +948,42 @@ function buildReportHTML(r) {
         <div class="info-sec">
             <h4>1 · Datos de entrada</h4>
             <div class="info-grid">
-                <div class="info-card"><h5>Urbanísticos</h5><table>${inputsUrban.join("")}</table></div>
-                <div class="info-card"><h5>Caudales unitarios y coeficientes</h5><table>${inputsCaud.join("")}</table></div>
-                <div class="info-card"><h5>Geometría</h5><table>${inputsGeom.join("")}</table></div>
-                <div class="info-card"><h5>Rendimientos</h5><table>${inputsRend.join("")}</table></div>
-                <div class="info-card"><h5>Parámetros económicos</h5><table>${inputsEco.join("")}</table></div>
+                <div class="info-card"><h5>Urbanísticos</h5>${table(d.inputsUrban)}</div>
+                <div class="info-card"><h5>Caudales unitarios y coeficientes</h5>${table(d.inputsCaud)}</div>
+                <div class="info-card"><h5>Geometría</h5>${table(d.inputsGeom)}</div>
+                <div class="info-card"><h5>Rendimientos</h5>${table(d.inputsRend)}</div>
+                <div class="info-card"><h5>Parámetros económicos</h5>${table(d.inputsEco)}</div>
             </div>
         </div>
 
         <div class="info-sec">
             <h4>2 · Caudales y bombeo</h4>
             <div class="info-grid">
-                <div class="info-card"><h5>Caudales</h5><table>${resCaud.join("")}</table></div>
-                <div class="info-card"><h5>Caudal de bombeo y Bresse</h5><table>${resBombeo.join("")}</table></div>
+                <div class="info-card"><h5>Caudales</h5>${table(d.resCaud)}</div>
+                <div class="info-card"><h5>Caudal de bombeo y Bresse</h5>${table(d.resBombeo)}</div>
             </div>
         </div>
 
         <div class="info-sec">
             <h4>3 · Alternativas de diámetro</h4>
-            <table class="wide">
-                <thead><tr>
-                    <th>Alt</th><th>Suc (mm)</th><th>Imp (mm)</th><th>v suc (m/s)</th><th>v imp (m/s)</th>
-                    <th>J suc (m/m)</th><th>J imp (m/m)</th><th>Leq suc (m)</th><th>Leq imp (m)</th>
-                    <th>Hm (m.c.a.)</th><th>Pb (cv)</th><th>P motor (HP)</th><th>Padop (HP)</th>
-                </tr></thead>
-                <tbody>${altRows}</tbody>
-            </table>
+            ${wide(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "v imp (m/s)", "J suc (m/m)", "J imp (m/m)",
+                "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData)}
         </div>
 
         <div class="info-sec">
             <h4>4 · Alternativa óptima (mínimo costo anualizado)</h4>
-            <table class="wide">
-                <thead><tr>
-                    <th>DN Imp (mm)</th><th>DN Suc (mm)</th><th>v imp (m/s)</th><th>Hm (m.c.a.)</th>
-                    <th>P motor (HP)</th><th>Padop (HP)</th><th>Inv. tubería ($)</th><th>Inv. bomba ($)</th>
-                    <th>Energía ($/año)</th><th>Costo anual ($)</th>
-                </tr></thead>
-                <tbody>${optRows}</tbody>
-            </table>
+            ${wide(["DN Imp (mm)", "DN Suc (mm)", "v imp (m/s)", "Hm (m.c.a.)", "P motor (HP)", "Padop (HP)",
+                "Inv. tubería ($)", "Inv. bomba ($)", "Energía ($/año)", "Costo anual ($)"], d.optData)}
         </div>
 
         <div class="info-sec">
             <h4>5 · Pozo de bombeo</h4>
-            <table class="wide">
-                <thead><tr><th>Alternativa</th><th>Por cavitación (m)</th><th>Por seguridad (m)</th><th>Adoptada (m)</th></tr></thead>
-                <tbody>${pozoRows}</tbody>
-            </table>
+            ${wide(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData)}
         </div>
 
         <div class="info-sec concl">
             <h4>Conclusión</h4>
-            ${concl}
+            <p>${esc(d.conclusion)}</p>
         </div>
 
         <div class="informe-foot">
@@ -1001,30 +996,145 @@ function buildReportHTML(r) {
 function renderInforme(r) {
     const host = $("informe-content");
     if (!host) return;
-    host.innerHTML = buildReportHTML(r);
+    host.innerHTML = buildReportHTML(collectReportData(r));
+}
+
+function buildPDF(d) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
+    const PW = 210, PH = 297, M = 13;
+    let y = 0;
+
+    doc.setFillColor(11, 93, 86);
+    doc.rect(0, 0, PW, 30, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(17);
+    doc.text("Informe técnico", M, 13);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Sistema de impulsión — Río  ·  Saneamiento (Norma 68)", M, 20);
+    doc.setFontSize(8);
+    doc.text("Fecha: " + d.fecha, PW - M, 12, { align: "right" });
+    doc.text("Grupo Nº: ______________", PW - M, 17, { align: "right" });
+    doc.text("Integrantes: ______________________", PW - M, 22, { align: "right" });
+    doc.setTextColor(20, 39, 31);
+    y = 36;
+
+    const ensure = (need) => { if (y + need > 272) { doc.addPage(); y = 20; } };
+    const heading = (txt) => {
+        ensure(12);
+        doc.setFillColor(11, 93, 86);
+        doc.rect(M, y - 4.5, 2, 6, "F");
+        doc.setTextColor(11, 93, 86);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.text(txt, M + 4, y);
+        y += 7;
+    };
+    const sub = (txt) => {
+        ensure(10);
+        doc.setTextColor(20, 39, 31);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.5);
+        doc.text(txt, M, y);
+        y += 4;
+    };
+    const kvTable = (rows) => {
+        doc.autoTable({
+            startY: y,
+            head: [["Parámetro", "Valor", "Unidad"]],
+            body: rows,
+            theme: "grid",
+            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 8, fontStyle: "bold" },
+            bodyStyles: { fontSize: 8, textColor: [22, 39, 31] },
+            alternateRowStyles: { fillColor: [247, 250, 249] },
+            columnStyles: { 1: { halign: "right" }, 2: { halign: "right" } },
+            styles: { cellPadding: 1.7 },
+            margin: { left: M, right: M },
+        });
+        y = doc.lastAutoTable.finalY + 6;
+    };
+    const wideTable = (head, rows, fs) => {
+        doc.autoTable({
+            startY: y,
+            head: [head],
+            body: rows,
+            theme: "striped",
+            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 7.5, fontStyle: "bold" },
+            bodyStyles: { fontSize: fs || 7, textColor: [22, 39, 31] },
+            styles: { cellPadding: 1.4, halign: "right" },
+            columnStyles: { 0: { halign: "left" } },
+            margin: { left: M, right: M },
+        });
+        y = doc.lastAutoTable.finalY + 6;
+    };
+
+    heading("1 · Datos de entrada");
+    sub("Urbanísticos");
+    kvTable(d.inputsUrban);
+    sub("Caudales unitarios y coeficientes");
+    kvTable(d.inputsCaud);
+    sub("Geometría");
+    kvTable(d.inputsGeom);
+    sub("Rendimientos de las alternativas");
+    kvTable(d.inputsRend);
+    sub("Parámetros económicos");
+    kvTable(d.inputsEco);
+
+    heading("2 · Caudales y bombeo");
+    sub("Caudales");
+    kvTable(d.resCaud);
+    sub("Caudal de bombeo y Bresse");
+    kvTable(d.resBombeo);
+
+    heading("3 · Alternativas de diámetro");
+    wideTable(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "v imp (m/s)", "J suc (m/m)", "J imp (m/m)",
+        "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData, 6.5);
+
+    heading("4 · Alternativa óptima (mínimo costo anualizado)");
+    wideTable(["DN Imp (mm)", "DN Suc (mm)", "v imp (m/s)", "Hm (m.c.a.)", "P motor (HP)", "Padop (HP)",
+        "Inv. tubería ($)", "Inv. bomba ($)", "Energía ($/año)", "Costo anual ($)"], d.optData, 6.5);
+
+    heading("5 · Pozo de bombeo");
+    wideTable(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData);
+
+    heading("Conclusión");
+    ensure(24);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(20, 39, 31);
+    const lines = doc.splitTextToSize(d.conclusion, PW - 2 * M);
+    doc.text(lines, M, y);
+    y += lines.length * 4.5;
+
+    const pages = doc.getNumberOfPages();
+    for (let i = 1; i <= pages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(7);
+        doc.setTextColor(140);
+        doc.text("Informe generado automáticamente · Saneamiento (Norma 68)", M, PH - 8);
+        doc.text("Página " + i + " de " + pages, PW - M, PH - 8, { align: "right" });
+    }
+
+    doc.save("informe-sistema-impulsion.pdf");
 }
 
 function setupPdf() {
     const btn = $("pdf-btn");
     if (!btn) return;
     btn.addEventListener("click", () => {
-        const el = $("informe-content");
-        if (!el || !el.innerHTML) return;
         btn.disabled = true;
         btn.textContent = "Generando PDF…";
         const done = () => { btn.disabled = false; btn.textContent = "Descargar PDF"; };
-        if (window.html2pdf) {
-            const opt = {
-                margin: 12,
-                filename: "informe-sistema-impulsion.pdf",
-                image: { type: "jpeg", quality: 0.96 },
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-                pagebreak: { mode: ["css", "legacy"] },
-            };
-            html2pdf().set(opt).from(el).save()
-                .then(done)
-                .catch(() => { done(); window.print(); });
+        if (window.jspdf && window.jspdf.jsPDF) {
+            try {
+                buildPDF(collectReportData(calc()));
+            } catch (e) {
+                done();
+                window.print();
+            }
+            done();
         } else {
             done();
             window.print();
