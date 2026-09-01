@@ -4,30 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saneamiento Hidráulico · Sistema de Impulsión</title>
-    <meta name="description" content="Reimplementación web interactiva de la hoja 'Datos y Sistema de Impulsión' — cálculos de saneamiento hidráulico, Norma 68.">
+    <meta name="description" content="Cálculo interactivo de la hoja 'Datos y Sistema de Impulsión' (Norma 68). Datos, caudales, bombeo, alternativas, pérdidas, altura, potencia y pozo.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body data-page="index">
 
-<nav class="topnav" id="topnav">
-    <a class="brand" href="#top">
-        <span class="brand-dot"></span>
-        Saneamiento&nbsp;Hidráulico
-    </a>
+<nav class="topnav">
+    <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
     <ul class="nav-links">
-        <li><a href="#datos">Datos</a></li>
-        <li><a href="#caudales">Caudales</a></li>
-        <li><a href="#bombeo">Bombeo</a></li>
-        <li><a href="#alternativas">Alternativas</a></li>
-        <li><a href="#perdidas">Pérdidas</a></li>
-        <li><a href="#altura">Altura</a></li>
-        <li><a href="#potencia">Potencia</a></li>
-        <li><a href="#pozo">Pozo</a></li>
-        <li><a href="#referencias">Norma 68</a></li>
+        <li><a href="index.html" class="active">Inicio</a></li>
+        <li><a href="referencias.html">Norma 68</a></li>
+        <li><a href="formulas.html">Fórmulas</a></li>
     </ul>
+    <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
 </nav>
 
 <header class="hero" id="top">
@@ -36,13 +28,10 @@
         <h1>Sistema de impulsión <span class="accent-word">Río</span></h1>
         <p class="hero-sub">
             Cálculo interactivo de la hoja <strong>“Datos y Sistema de Impulsión”</strong>: desde los datos
-            urbanísticos del barrio hasta la potencia de la bomba. Cambiá cualquier valor y todo se recalcula al instante.
+            urbanísticos del barrio hasta la potencia de la bomba. Toda la hoja en una sola página, con las
+            tablas de la Norma 68 en una página aparte.
         </p>
         <div class="hero-kpis" id="hero-kpis"></div>
-        <div class="hero-actions">
-            <a class="btn btn-light" href="#datos">Comenzar el cálculo ↓</a>
-            <a class="btn btn-ghost" href="#referencias">Ver tablas Norma 68</a>
-        </div>
     </div>
     <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
         <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
@@ -52,8 +41,31 @@
 <main>
     <section class="banner-note">
         <span class="badge-soft">Norma 68</span>
-        Cálculos según la guía de trabajo práctico de la cátedra. La planilla original sigue disponible en el
-        repositorio. Otras hojas (Potabilizadora, Impulsión al tanque, etc.) se agregarán próximamente.
+        Cálculos según la guía de trabajo práctico de la cátedra. Las fórmulas se generan en LaTeX y podés
+        mostrarlas/ocultarlas con el botón <strong>“Ver fórmulas”</strong>. Las tablas de referencia están en
+        <a href="referencias.html">Norma 68</a>.
+    </section>
+
+    <section class="card step" id="navegacion">
+        <div class="step-head">
+            <span class="step-num">§</span>
+            <div>
+                <h2>Secciones de la hoja</h2>
+                <p class="lede">Una sola hoja de cálculo (Excel) dividida en secciones. Saltá directamente a cada etapa.</p>
+            </div>
+        </div>
+        <div class="link-grid">
+            <a class="link-card" href="#datos"><span class="lc-num">1</span><h3>Datos del barrio</h3><p>Población del proyecto.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#caudales"><span class="lc-num">2</span><h3>Caudales</h3><p>Población total y consumos.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#bombeo"><span class="lc-num">3</span><h3>Bombeo y Bresse</h3><p>Caudal de bombeo y diámetro.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#alternativas"><span class="lc-num">4</span><h3>Alternativas</h3><p>Diámetros + óptima por costo.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#perdidas"><span class="lc-num">5</span><h3>Pérdidas</h3><p>Fricción y singulares.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#altura"><span class="lc-num">6</span><h3>Altura manométrica</h3><p>Altura que vence la bomba.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#potencia"><span class="lc-num">7</span><h3>Potencia</h3><p>Bomba y motor.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="#pozo"><span class="lc-num">8</span><h3>Pozo de bombeo</h3><p>Cavitación y seguridad.</p><span class="lc-arrow">Ir ↓</span></a>
+            <a class="link-card" href="referencias.html"><span class="lc-num">★</span><h3>Norma 68</h3><p>Tablas 3, 6 y 7.</p><span class="lc-arrow">Ir →</span></a>
+            <a class="link-card" href="formulas.html"><span class="lc-num">ƒ</span><h3>Fórmulas</h3><p>Índice completo con variables.</p><span class="lc-arrow">Ir →</span></a>
+        </div>
     </section>
 
     <section class="card step" id="datos">
@@ -61,10 +73,11 @@
             <span class="step-num">1</span>
             <div>
                 <h2>Datos del barrio</h2>
-                <p class="lede">Parámetros urbanísticos que definen la población del proyecto. Editalos y el resto de la hoja se actualiza.</p>
+                <p class="lede">Parámetros urbanísticos que definen la población del proyecto. Editalos y todo el resto se actualiza.</p>
             </div>
         </div>
         <div class="grid-3" id="datos-form"></div>
+        <div class="formulas" data-formulas="personas,logistica"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -80,7 +93,6 @@
                 </ul>
             </div>
         </details>
-        <p class="footnote">Los números de edificios y pisos se calculan a partir de los apellidos y nombres del grupo, según la guía (ver observaciones en la planilla).</p>
     </section>
 
     <section class="card step" id="caudales">
@@ -101,6 +113,7 @@
                 <div id="caudales-content"></div>
             </div>
         </div>
+        <div class="formulas" data-formulas="qm_l,qm_m3,qm_ls,qlote_l,qlote_ls"></div>
     </section>
 
     <section class="card step" id="bombeo">
@@ -113,6 +126,7 @@
         </div>
         <div class="grid-3" id="bombeo-form"></div>
         <div id="bombeo-content"></div>
+        <div class="formulas" data-formulas="qb_m3,qb_ls,horas,bresse"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -138,6 +152,7 @@
                 <p class="lede">Se eligen <strong>tres diámetros comerciales</strong> alrededor del valor de Bresse (manualmente) y una <strong>cuarta alternativa óptima</strong> calculada automáticamente por mínimo costo. La succión debe ser un diámetro superior al de impulsión.</p>
             </div>
         </div>
+
         <div class="panel opt-panel">
             <h3><span class="tag">Algoritmo</span> Alternativa óptima por mínimo costo anualizado</h3>
             <p class="lede">A diferencia de las 3 alternativas manuales, esta se elige automáticamente: el algoritmo evalúa todos los diámetros comerciales que verifican velocidad y selecciona el de <strong>menor costo anual</strong> (inversión de tubería + bomba + energía + mantenimiento).</p>
@@ -146,15 +161,15 @@
             <h3 class="sub-title">Análisis de Pareto</h3>
             <p class="lede">Según el principio de Pareto (80/20): se ordenan los costos de mayor a menor para ver de un vistazo cuánto pesa cada diámetro y qué componente domina el costo de la alternativa óptima.</p>
             <div class="chart-grid">
-                <div class="chart-box">
-                    <div id="opt-chart"></div>
-                </div>
-                <div class="chart-box">
-                    <div id="comp-chart"></div>
-                </div>
+                <div class="chart-box"><div id="opt-chart"></div></div>
+                <div class="chart-box"><div id="comp-chart"></div></div>
             </div>
+            <div class="formulas" data-formulas="anualidad,costo_tubo,energia,costo_total"></div>
         </div>
+
         <div class="alt-grid" id="alternativas-content"></div>
+        <div class="formulas" data-formulas="vel,verif_vel,j_pt,leq_s,leq_i,perd_s,perd_i,hm_s,hm_i,hm_total,pb_cv,p_hp,pmb,holgura,phmb"></div>
+
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -180,6 +195,21 @@
                 </div>
             </div>
         </details>
+
+        <div class="costos-grid" style="margin-top:1.4rem">
+            <div class="panel">
+                <h3>Selección del diámetro de mínimo costo</h3>
+                <ul class="clean-list">
+                    <li><strong>Inversión</strong> — costo de la tubería y del equipo de bombeo.</li>
+                    <li><strong>Operación y mantenimiento</strong> — costo de la energía (potencia) y mantenimiento.</li>
+                    <li><strong>Vida útil</strong> — bomba 7 años, tubería 50 años.</li>
+                </ul>
+            </div>
+            <div class="panel">
+                <h3>Criterio</h3>
+                <p>El diámetro más adecuado es el que minimiza el costo total anualizado. Un diámetro mayor reduce pérdidas (menos energía) pero aumenta la inversión en tubería; uno menor reduce la inversión pero aumenta el consumo de energía.</p>
+            </div>
+        </div>
     </section>
 
     <section class="card step" id="perdidas">
@@ -191,6 +221,7 @@
             </div>
         </div>
         <div id="perdidas-content"></div>
+        <div class="formulas" data-formulas="j_pt,leq_s,leq_i,perd_s,perd_i"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -227,7 +258,9 @@
                 <p class="lede">Suma de altura topográfica, pérdidas (fricción + singulares) y altura de velocidad. Es la altura que debe vencer la bomba.</p>
             </div>
         </div>
+        <div class="grid-3" id="geom-form"></div>
         <div id="altura-content"></div>
+        <div class="formulas" data-formulas="vel,hm_s,hm_i,hm_total"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -256,10 +289,11 @@
             <span class="step-num">7</span>
             <div>
                 <h2>Potencia de la bomba y del motor</h2>
-                <p class="lede">Potencia hidráulica, al freno y al motor, con rendimientos de la Tabla 6 y 7 de la Norma 68, holgura y potencia comercial adoptada (Tabla 8).</p>
+                <p class="lede">Potencia hidráulica, al freno y al motor, con rendimientos de las Tablas 6 y 7 de la Norma 68, holgura y potencia comercial adoptada (Tabla 8).</p>
             </div>
         </div>
         <div id="potencia-content"></div>
+        <div class="formulas" data-formulas="pb_cv,p_hp,pmb,holgura,phmb"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -290,6 +324,7 @@
             </div>
         </div>
         <div id="pozo-content"></div>
+        <div class="formulas" data-formulas="cavitacion,pozo"></div>
         <details class="notes">
             <summary>
                 <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
@@ -306,51 +341,11 @@
             </div>
         </details>
     </section>
-
-    <section class="card step" id="costos">
-        <div class="step-head">
-            <span class="step-num">9</span>
-            <div>
-                <h2>Selección del diámetro de mínimo costo</h2>
-                <p class="lede">El diámetro definitivo se elige con un análisis económico entre las tres alternativas.</p>
-            </div>
-        </div>
-        <div class="costos-grid">
-            <div class="panel">
-                <h3>Se consideran</h3>
-                <ul class="clean-list">
-                    <li><strong>Inversión</strong> — costo de la tubería y del equipo de bombeo.</li>
-                    <li><strong>Operación y mantenimiento</strong> — costo de la energía (potencia) y mantenimiento.</li>
-                    <li><strong>Vida útil</strong> — bomba 7 años, tubería 50 años.</li>
-                </ul>
-            </div>
-            <div class="panel">
-                <h3>Criterio</h3>
-                <p>El diámetro más adecuado es el que minimiza el costo total anualizado. Un diámetro mayor reduce pérdidas (menos energía) pero aumenta la inversión en tubería; uno menor reduce la inversión pero aumenta el consumo de energía.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="card step" id="referencias">
-        <div class="step-head">
-            <span class="step-num">★</span>
-            <div>
-                <h2>Tablas de referencia — Norma 68</h2>
-                <p class="lede">Tablas utilizadas en el cálculo. Extraídas tal cual de la planilla original.</p>
-            </div>
-        </div>
-        <h3 class="sub-title">Tabla 3 — Longitudes equivalentes para pérdidas singulares (m)</h3>
-        <div class="table-wrap" id="tabla3"></div>
-        <h3 class="sub-title">Tabla 6 — Rendimiento de bombas centrífugas</h3>
-        <div class="table-wrap" id="tabla6"></div>
-        <h3 class="sub-title">Tabla 7 — Rendimiento de motores eléctricos</h3>
-        <div class="table-wrap" id="tabla7"></div>
-    </section>
 </main>
 
 <footer>
     <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
-    <p class="footnote">Página generada como reimplementación web interactiva de la planilla Excel del trabajo práctico.</p>
+    <p class="footnote">Las fórmulas se renderizan en LaTeX (SVG) y pueden mostrarse u ocultarse desde la barra superior.</p>
 </footer>
 
 <script src="data.js"></script>

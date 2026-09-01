@@ -1,5 +1,8 @@
 "use strict";
 
+/* ================= Pagina actual ================= */
+const PAGE = document.body.dataset.page || "index";
+
 /* ================= Estado de entrada ================= */
 const S = {
     manzanas: 12, lotes: 6, pisos: 22, deptos: 6, dorm: 3, persDorm: 2, persServ: 1, pctLog: 10,
@@ -15,18 +18,29 @@ const S = {
     etaM: [0.88, 0.88, 0.9],
 };
 
-// Parámetros económicos del algoritmo de mínimo costo
+// Parametros economicos del algoritmo de minimo costo
 const Sopt = {
-    pipeA: 40,    // costo base de tubería ($/m)
-    pipeB: 0.4,   // costo incremental por mm de DN ($/m·mm)
-    kwh: 0.06,    // costo de la energía ($/kWh)
-    pumpCost: 300,// costo de la bomba ($/HP)
-    rate: 8,      // tasa de descuento (% anual)
-    maint: 2,     // mantenimiento (% de la inversión por año)
+    pipeA: 40, pipeB: 0.4, kwh: 0.06, pumpCost: 300, rate: 8, maint: 2,
 };
 
-// Diámetros comerciales considerados por el algoritmo (disponibles en Tabla 3)
+// Diametros comerciales considerados por el algoritmo (disponibles en Tabla 3)
 const CAND_DN = [100, 125, 150, 200, 250, 300, 350, 400, 450, 500];
+
+/* ================= Persistencia ================= */
+const LS_KEY = "sh-state-v1";
+function loadState() {
+    try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (raw) {
+            const o = JSON.parse(raw);
+            Object.assign(S, o.S || {});
+            Object.assign(Sopt, o.Sopt || {});
+        }
+    } catch (e) { /* noop */ }
+}
+function saveState() {
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ S, Sopt })); } catch (e) { /* noop */ }
+}
 
 /* ================= Utilidades ================= */
 const $ = (id) => document.getElementById(id);
@@ -75,7 +89,6 @@ function parseHP(s) {
     return v;
 }
 
-// η bomba según Tabla 6 (por caudal en l/s)
 function etaBomba(qLps) {
     let best = TABLE6[0], bestD = 1e9;
     for (const r of TABLE6) {
@@ -85,7 +98,6 @@ function etaBomba(qLps) {
     return best.hb / 100;
 }
 
-// η motor según Tabla 7 (por potencia en HP, interpolación)
 const T7 = TABLE7.map((r) => ({ hp: parseHP(r.hp), hm: r.hm }));
 function etaMotor(hp) {
     const pts = T7;
@@ -100,7 +112,7 @@ function etaMotor(hp) {
     return 0.88;
 }
 
-/* ================= Cálculos base ================= */
+/* ================= Calculos base ================= */
 function baseCalc() {
     const B3 = S.manzanas, B4 = S.lotes, B5 = S.pisos, B6 = S.deptos, B7 = S.dorm,
           B8 = S.persDorm, B9 = S.persServ, B10 = S.pctLog;
@@ -119,7 +131,7 @@ function baseCalc() {
     return { B11, B12, B15, B16, B17, B18, B19, B23, D23, B26 };
 }
 
-/* ================= Métricas de una alternativa ================= */
+/* ================= Metricas de una alternativa ================= */
 function altMetrics(b, dS, dI, etaB, etaM) {
     const B23 = b.B23;
     const vS = B23 / (Math.PI * Math.pow(dS / 1000, 2) / 4);
@@ -164,7 +176,7 @@ function calc() {
     return { ...b, alts };
 }
 
-/* ================= Algoritmo de mínimo costo ================= */
+/* ================= Algoritmo de minimo costo ================= */
 function annFactor(n) {
     const i = Sopt.rate / 100;
     const fm = Math.pow(1 + i, n);
@@ -181,14 +193,13 @@ function optimalRows(b) {
         const succ = CAND_DN.find((s) => s > dn);
         if (!succ) continue;
 
-        // η motor se obtiene de Tabla 7 según la potencia (iterar para estabilizar)
         let etaM = 0.88, m = null;
         for (let k = 0; k < 3; k++) {
             m = altMetrics(b, succ, dn, etaB, etaM);
             etaM = etaMotor(m.Pmb);
         }
 
-        if (!m.vCheckS || !m.vCheckI) continue; // solo diámetros que verifican velocidad
+        if (!m.vCheckS || !m.vCheckI) continue;
 
         const pipeCost = (Sopt.pipeA + Sopt.pipeB * dn) * (S.lImp + S.lSucc);
         const pumpInv = Sopt.pumpCost * m.Padop;
@@ -237,6 +248,14 @@ const OPT_FIELDS = [
     { id: "maint", label: "Mantenimiento", unit: "%/año" },
 ];
 
+const GEOM_FIELDS = [
+    { id: "lSucc", label: "Longitud de tubería de succión", unit: "m" },
+    { id: "lImp", label: "Longitud de tubería de impulsión", unit: "m" },
+    { id: "hTopoSucc", label: "Altura topográfica de succión", unit: "m" },
+    { id: "hTopoImp", label: "Altura topográfica de impulsión", unit: "m" },
+    { id: "pReservorio", label: "Presión de llegada al reservorio", unit: "m" },
+];
+
 function renderField(field, src = S) {
     const val = src[field.id];
     return `
@@ -253,27 +272,42 @@ function renderField(field, src = S) {
 function bind(id, setter) {
     const el = $("in-" + id);
     if (!el) return;
-    el.addEventListener("input", () => { setter(nf(el)); scheduleRecompute(); });
+    el.addEventListener("input", () => { setter(nf(el)); saveState(); scheduleRecompute(); });
 }
 
 function renderDatos() {
-    $("datos-form").innerHTML = DATOS_FIELDS.map((fd) => renderField(fd)).join("");
+    const host = $("datos-form");
+    if (!host) return;
+    host.innerHTML = DATOS_FIELDS.map((fd) => renderField(fd)).join("");
     DATOS_FIELDS.forEach((fd) => bind(fd.id, (v) => S[fd.id] = v));
 }
 
 function renderCaudalUnitario() {
-    $("caudales-unitarios-form").innerHTML = CAUDAL_FIELDS.map((fd) => renderField(fd)).join("");
+    const host = $("caudales-unitarios-form");
+    if (!host) return;
+    host.innerHTML = CAUDAL_FIELDS.map((fd) => renderField(fd)).join("");
     CAUDAL_FIELDS.forEach((fd) => bind(fd.id, (v) => S[fd.id] = v));
 }
 
 function renderBombeoForm() {
-    $("bombeo-form").innerHTML = BOMBEO_FIELDS.map((fd) => renderField(fd)).join("");
+    const host = $("bombeo-form");
+    if (!host) return;
+    host.innerHTML = BOMBEO_FIELDS.map((fd) => renderField(fd)).join("");
     BOMBEO_FIELDS.forEach((fd) => bind(fd.id, (v) => S[fd.id] = v));
 }
 
 function renderOptForm() {
-    $("opt-form").innerHTML = OPT_FIELDS.map((fd) => renderField(fd, Sopt)).join("");
+    const host = $("opt-form");
+    if (!host) return;
+    host.innerHTML = OPT_FIELDS.map((fd) => renderField(fd, Sopt)).join("");
     OPT_FIELDS.forEach((fd) => bind(fd.id, (v) => Sopt[fd.id] = v));
+}
+
+function renderGeomForm() {
+    const host = $("geom-form");
+    if (!host) return;
+    host.innerHTML = GEOM_FIELDS.map((fd) => renderField(fd)).join("");
+    GEOM_FIELDS.forEach((fd) => bind(fd.id, (v) => S[fd.id] = v));
 }
 
 /* ================= Recalculo con debounce ================= */
@@ -299,6 +333,7 @@ function doRestore() {
 function renderAll() {
     const r = calc();
     renderHero(r);
+    renderResumen(r);
     renderCaudales(r);
     renderBombeo(r);
     renderAlternativas(r);
@@ -307,6 +342,7 @@ function renderAll() {
     renderPotencia(r);
     renderPozo(r);
     renderReferencias(r);
+    renderFormulas();
 }
 
 function kpi(label, value, unit) {
@@ -315,13 +351,37 @@ function kpi(label, value, unit) {
 }
 
 function renderHero(r) {
+    const host = $("hero-kpis");
+    if (!host) return;
     const hm1 = r.alts[0].hT;
     const padop1 = r.alts[0].Padop;
-    $("hero-kpis").innerHTML =
+    host.innerHTML =
         kpi("Caudal de bombeo", f(r.D23, 2), "l/s") +
         kpi("Diam. Bresse", "≈ " + f(r.B26 * 1000, 0), "mm") +
         kpi("Alt. manométrica (Alt 1)", f(hm1, 2), "m.c.a.") +
         kpi("Potencia adoptada (Alt 1)", f(padop1, 0), "HP");
+}
+
+function renderResumen(r) {
+    const host = $("resumen-content");
+    if (!host) return;
+    const rows = optimalRows(r);
+    const cards = r.alts.map((a, i) => `
+        <div class="res-card">
+            <div class="res-card-title">Alternativa ${i + 1}</div>
+            <div class="res-card-sub">Suc ${a.dS} / Imp ${a.dI} mm</div>
+            <div class="res-card-main">${f(a.hT, 2)} <small>m.c.a.</small></div>
+            <div class="res-card-foot">${f(a.Padop, 0)} HP adoptados</div>
+        </div>`).join("");
+    const opt = rows[0] ? `
+        <div class="res-card res-opt">
+            <div class="res-card-title">Óptima (algoritmo)</div>
+            <div class="res-card-sub">Suc ${rows[0].succ} / Imp ${rows[0].dn} mm</div>
+            <div class="res-card-main">${f0(rows[0].annual)} <small>$/año</small></div>
+            <div class="res-card-foot">${f(rows[0].m.hT, 2)} m.c.a. · ${f(rows[0].m.Padop, 0)} HP</div>
+        </div>` : "";
+    host.innerHTML = `<div class="res-grid">${cards}${opt}</div>
+        <p class="footnote">Detalle completo en la sección <a href="#alternativas">Alternativas de diámetro ↓</a></p>`;
 }
 
 function formulaBox(label, eq) {
@@ -329,11 +389,9 @@ function formulaBox(label, eq) {
 }
 
 function renderCaudales(r) {
-    const eq11 = `B3×B4×(B5×B6×(B7×B8+B9)) = ${S.manzanas}×${S.lotes}×(${S.pisos}×${S.deptos}×(${S.dorm}×${S.persDorm}+${S.persServ}))`;
-    const eq12 = `(B6×B5)×B10/100×B4×B3 = (${S.deptos}×${S.pisos})×${S.pctLog}/100×${S.lotes}×${S.manzanas}`;
-    const eq15 = `B11×qDept + B12×qLog = ${f0(r.B11)}×${S.qDept} + ${f0(r.B12)}×${S.qLog}`;
-
-    $("caudales-content").innerHTML = `
+    const host = $("caudales-content");
+    if (!host) return;
+    host.innerHTML = `
         <div class="results">
             <div class="result-row"><span class="r-label">Total personas de los departamentos</span>
                 <span class="r-value">${f0(r.B11)} <small>pers</small></span></div>
@@ -349,17 +407,13 @@ function renderCaudales(r) {
                 <span class="r-value">${f0(r.B18)} <small>l/d</small></span></div>
             <div class="result-row"><span class="r-label">Caudal por lote</span>
                 <span class="r-value">${f(r.B19, 2)} <small>l/s</small></span></div>
-        </div>
-        ${formulaBox("Qm (l/d)", eq15)}
-        ${formulaBox("Total pers.", eq11)}
-        ${formulaBox("Logística", eq12)}
-    `;
+        </div>`;
 }
 
 function renderBombeo(r) {
-    const eq23 = `K1×K3×Qm/86400 = ${S.k1}×${S.k3}×${f(r.B16, 2)}/86400`;
-    const eq26 = `1,3×√Qb×(horas/24)^(1/4) = 1,3×√${f(r.B23, 5)}×(${S.horasOp}/24)^(1/4)`;
-    $("bombeo-content").innerHTML = `
+    const host = $("bombeo-content");
+    if (!host) return;
+    host.innerHTML = `
         <div class="results">
             <div class="result-row highlight"><span class="r-label">Caudal de bombeo (Q<sub>b</sub>)</span>
                 <span class="r-value">${f(r.B23, 4)} <small>m³/s</small></span></div>
@@ -370,12 +424,7 @@ function renderBombeo(r) {
             <div class="result-row highlight"><span class="r-label">Diámetro de impulsión (Bresse)</span>
                 <span class="r-value">${f(r.B26, 3)} m ≈ ${f(r.B26 * 1000, 0)} <small>mm</small></span></div>
         </div>
-        <div class="alt-grid" style="margin-top:1.2rem;grid-template-columns:1fr 1fr;gap:.8rem">
-            <div class="panel">${formulaBox("Qb (m³/s)", eq23)}</div>
-            <div class="panel">${formulaBox("D Bresse (m)", eq26)}</div>
-        </div>
-        <p class="footnote">Alrededor del valor de Bresse se eligen tres diámetros comerciales, uno de los cuales se adoptará por mínimo costo.</p>
-    `;
+        <p class="footnote">Alrededor del valor de Bresse se eligen tres diámetros comerciales, uno de los cuales se adoptará por mínimo costo.</p>`;
 }
 
 function vBadge(ok, low) {
@@ -400,52 +449,40 @@ function metricsHTML(a) {
 }
 
 function renderAlternativas(r) {
+    const host = $("alternativas-content");
+    if (!host) return;
+
     const rows = optimalRows(r);
     const best = rows[0];
 
-    const manual = r.alts.map((a, i) => {
-        const n = i + 1;
-        return `
+    const manual = r.alts.map((a, i) => `
         <div class="alt-card">
             <div class="alt-head">
-                <span class="alt-title">Alternativa ${n}</span>
+                <span class="alt-title">Alternativa ${i + 1}</span>
                 <span class="alt-badge">Suc ${a.dS} / Imp ${a.dI} mm</span>
             </div>
             <div class="alt-body">
                 <div class="alt-diams">
-                    <div class="field">
-                        <label>Succión (mm)</label>
-                        <input type="number" id="in-altS-${i}" value="${a.dS}" step="1" min="13" inputmode="decimal">
-                    </div>
-                    <div class="field">
-                        <label>Impulsión (mm)</label>
-                        <input type="number" id="in-altI-${i}" value="${a.dI}" step="1" min="13" inputmode="decimal">
-                    </div>
+                    <div class="field"><label>Succión (mm)</label>
+                        <input type="number" id="in-altS-${i}" value="${a.dS}" step="1" min="13" inputmode="decimal"></div>
+                    <div class="field"><label>Impulsión (mm)</label>
+                        <input type="number" id="in-altI-${i}" value="${a.dI}" step="1" min="13" inputmode="decimal"></div>
                 </div>
                 <div class="alt-diams">
-                    <div class="field">
-                        <label>η bomba</label>
-                        <input type="number" id="in-etaB-${i}" value="${a.etaB}" step="0.01" min="0" max="1" inputmode="decimal">
-                    </div>
-                    <div class="field">
-                        <label>η motor</label>
-                        <input type="number" id="in-etaM-${i}" value="${a.etaM}" step="0.01" min="0" max="1" inputmode="decimal">
-                    </div>
+                    <div class="field"><label>η bomba</label>
+                        <input type="number" id="in-etaB-${i}" value="${a.etaB}" step="0.01" min="0" max="1" inputmode="decimal"></div>
+                    <div class="field"><label>η motor</label>
+                        <input type="number" id="in-etaM-${i}" value="${a.etaM}" step="0.01" min="0" max="1" inputmode="decimal"></div>
                 </div>
                 ${metricsHTML(a)}
             </div>
             <div class="alt-foot">
-                <div class="big-result">
-                    <span class="br-label">Altura manométrica total</span>
-                    <span class="br-value">${f(a.hT, 2)} <small>m.c.a.</small></span>
-                </div>
-                <div class="big-result" style="margin-top:.3rem">
-                    <span class="br-label">Potencia adoptada</span>
-                    <span class="br-value">${f(a.Padop, 0)} <small>HP</small></span>
-                </div>
+                <div class="big-result"><span class="br-label">Altura manométrica total</span>
+                    <span class="br-value">${f(a.hT, 2)} <small>m.c.a.</small></span></div>
+                <div class="big-result" style="margin-top:.3rem"><span class="br-label">Potencia adoptada</span>
+                    <span class="br-value">${f(a.Padop, 0)} <small>HP</small></span></div>
             </div>
-        </div>`;
-    }).join("");
+        </div>`).join("");
 
     const optCard = best ? `
         <div class="alt-card alt-opt">
@@ -464,42 +501,36 @@ function renderAlternativas(r) {
                 ${metricsHTML(best.m)}
             </div>
             <div class="alt-foot">
-                <div class="big-result">
-                    <span class="br-label">Altura manométrica total</span>
-                    <span class="br-value">${f(best.m.hT, 2)} <small>m.c.a.</small></span>
-                </div>
-                <div class="big-result" style="margin-top:.3rem">
-                    <span class="br-label">Potencia adoptada</span>
-                    <span class="br-value">${f(best.m.Padop, 0)} <small>HP</small></span>
-                </div>
-                <div class="big-result opt-cost" style="margin-top:.3rem">
-                    <span class="br-label">Costo anual total</span>
-                    <span class="br-value">${f0(best.annual)} <small>$/año</small></span>
-                </div>
+                <div class="big-result"><span class="br-label">Altura manométrica total</span>
+                    <span class="br-value">${f(best.m.hT, 2)} <small>m.c.a.</small></span></div>
+                <div class="big-result" style="margin-top:.3rem"><span class="br-label">Potencia adoptada</span>
+                    <span class="br-value">${f(best.m.Padop, 0)} <small>HP</small></span></div>
+                <div class="big-result opt-cost" style="margin-top:.3rem"><span class="br-label">Costo anual total</span>
+                    <span class="br-value">${f0(best.annual)} <small>$/año</small></span></div>
             </div>
         </div>` : "";
 
-    $("alternativas-content").innerHTML = manual + optCard;
+    host.innerHTML = manual + optCard;
 
     for (let i = 0; i < r.alts.length; i++) {
         const s = $("in-altS-" + i), im = $("in-altI-" + i), b = $("in-etaB-" + i), m = $("in-etaM-" + i);
-        s.addEventListener("input", () => { S.altSucc[i] = nf(s); scheduleRecompute(); });
-        im.addEventListener("input", () => { S.altImp[i] = nf(im); scheduleRecompute(); });
-        b.addEventListener("input", () => { S.etaB[i] = nf(b); scheduleRecompute(); });
-        m.addEventListener("input", () => { S.etaM[i] = nf(m); scheduleRecompute(); });
+        s.addEventListener("input", () => { S.altSucc[i] = nf(s); saveState(); scheduleRecompute(); });
+        im.addEventListener("input", () => { S.altImp[i] = nf(im); saveState(); scheduleRecompute(); });
+        b.addEventListener("input", () => { S.etaB[i] = nf(b); saveState(); scheduleRecompute(); });
+        m.addEventListener("input", () => { S.etaM[i] = nf(m); saveState(); scheduleRecompute(); });
     }
 
     renderOptResult(r);
 }
 
 function renderOptResult(r) {
-    const rows = optimalRows(r);
     const host = $("opt-result");
     if (!host) return;
+    const rows = optimalRows(r);
     if (!rows.length) {
         host.innerHTML = `<p class="footnote">Ningún diámetro comercial verifica las velocidades (0,7–4,0 m/s) con estos parámetros.</p>`;
-        $("opt-chart").innerHTML = "";
-        $("comp-chart").innerHTML = "";
+        if ($("opt-chart")) $("opt-chart").innerHTML = "";
+        if ($("comp-chart")) $("comp-chart").innerHTML = "";
         return;
     }
     const best = rows[0];
@@ -605,32 +636,31 @@ function paretoSVG(title, items, hlLabel) {
     </div>`;
 }
 
-function lossTable(r) {
-    const pick = (key) => r.alts.map((a) => f(a.cS.row[key], 1)).join(" / ");
-    const pickI = (key) => r.alts.map((a) => f(a.cI.row[key], 1)).join(" / ");
-    return `
-        <tr><td>Válvula de pie</td><td>${pick("valvPie")}</td></tr>
-        <tr><td>Curva 90°</td><td>${pick("curva90")}</td></tr>
-        <tr><td>Tee 2 salidas</td><td>${pick("tee2")}</td></tr>
-        <tr><td>Válvula de cierre</td><td>${pick("valvCierre")}</td></tr>
-        <tr class="total-row"><td><strong>Leq succión total</strong></td><td><strong>${r.alts.map((a) => f(a.leqS, 1)).join(" / ")}</strong></td></tr>
-        <tr><td colspan="2" class="sep"></td></tr>
-        <tr><td>Curva 90°</td><td>${pickI("curva90")}</td></tr>
-        <tr><td>Válvula de retención</td><td>${pickI("valvRet")}</td></tr>
-        <tr><td>Válvula de cierre</td><td>${pickI("valvCierre")}</td></tr>
-        <tr><td>Tee lateral</td><td>${pickI("teeLateral")}</td></tr>
-        <tr class="total-row"><td><strong>Leq impulsión total</strong></td><td><strong>${r.alts.map((a) => f(a.leqI, 1)).join(" / ")}</strong></td></tr>`;
-}
-
 function renderPerdidas(r) {
-    $("perdidas-content").innerHTML = `
+    const host = $("perdidas-content");
+    if (!host) return;
+    const pick = (key) => r.alts.map((a) => f(a.cS.row[key], 1)).join("</td><td>");
+    const pickI = (key) => r.alts.map((a) => f(a.cI.row[key], 1)).join("</td><td>");
+    host.innerHTML = `
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Longitudes equivalentes (Tabla 3 · Norma 68)</th>
                     <th>Alt 1<br><small>Suc ${r.alts[0].dS} / Imp ${r.alts[0].dI}</small></th>
                     <th>Alt 2<br><small>Suc ${r.alts[1].dS} / Imp ${r.alts[1].dI}</small></th>
                     <th>Alt 3<br><small>Suc ${r.alts[2].dS} / Imp ${r.alts[2].dI}</small></th></tr></thead>
-                <tbody>${lossTable(r)}</tbody>
+                <tbody>
+                    <tr><td>Válvula de pie</td><td>${pick("valvPie")}</td></tr>
+                    <tr><td>Curva 90°</td><td>${pick("curva90")}</td></tr>
+                    <tr><td>Tee 2 salidas</td><td>${pick("tee2")}</td></tr>
+                    <tr><td>Válvula de cierre</td><td>${pick("valvCierre")}</td></tr>
+                    <tr class="total-row"><td><strong>Leq succión total</strong></td><td><strong>${r.alts.map((a) => f(a.leqS, 1)).join("</strong></td><td><strong>")}</strong></td></tr>
+                    <tr><td colspan="4" class="sep"></td></tr>
+                    <tr><td>Curva 90°</td><td>${pickI("curva90")}</td></tr>
+                    <tr><td>Válvula de retención</td><td>${pickI("valvRet")}</td></tr>
+                    <tr><td>Válvula de cierre</td><td>${pickI("valvCierre")}</td></tr>
+                    <tr><td>Tee lateral</td><td>${pickI("teeLateral")}</td></tr>
+                    <tr class="total-row"><td><strong>Leq impulsión total</strong></td><td><strong>${r.alts.map((a) => f(a.leqI, 1)).join("</strong></td><td><strong>")}</strong></td></tr>
+                </tbody>
             </table>
         </div>
         <div class="table-wrap">
@@ -647,7 +677,9 @@ function renderPerdidas(r) {
 }
 
 function renderAltura(r) {
-    $("altura-content").innerHTML = `
+    const host = $("altura-content");
+    if (!host) return;
+    host.innerHTML = `
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Componente</th><th>Alt 1</th><th>Alt 2</th><th>Alt 3</th></tr></thead>
@@ -671,7 +703,9 @@ function renderAltura(r) {
 }
 
 function renderPotencia(r) {
-    $("potencia-content").innerHTML = `
+    const host = $("potencia-content");
+    if (!host) return;
+    host.innerHTML = `
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Parámetro</th><th>Alt 1</th><th>Alt 2</th><th>Alt 3</th></tr></thead>
@@ -699,7 +733,9 @@ function renderPotencia(r) {
 }
 
 function renderPozo(r) {
-    $("pozo-content").innerHTML = `
+    const host = $("pozo-content");
+    if (!host) return;
+    host.innerHTML = `
         <div class="table-wrap">
             <table>
                 <thead><tr><th>Parámetro</th><th>Alt 1</th><th>Alt 2</th><th>Alt 3</th></tr></thead>
@@ -718,43 +754,98 @@ function renderPozo(r) {
 
 /* ================= Referencias ================= */
 function renderReferencias(r) {
-    const used = new Set(r.alts.flatMap((a) => [a.dS, a.dI]));
+    const t3 = $("tabla3");
+    if (t3) {
+        const used = new Set(r.alts.flatMap((a) => [a.dS, a.dI]));
+        t3.innerHTML = `
+            <table>
+                <thead><tr>
+                    <th>DN (mm)</th><th>Ref</th><th>Curva 90°</th><th>Válv. cierre</th>
+                    <th>Tee lateral</th><th>Tee 2 salidas</th><th>Válv. pie</th><th>Válv. retención</th>
+                </tr></thead>
+                <tbody>
+                ${TABLE3.map((row) => `
+                    <tr class="${used.has(row.dn) ? "selected-row" : ""}">
+                        <td>${row.dn}</td><td>${row.ref}</td>
+                        <td>${f(row.curva90, 1)}</td><td>${f(row.valvCierre, 1)}</td>
+                        <td>${f(row.teeLateral, 1)}</td><td>${f(row.tee2, 1)}</td>
+                        <td>${f(row.valvPie, 1)}</td><td>${f(row.valvRet, 1)}</td>
+                    </tr>`).join("")}
+                </tbody>
+            </table>`;
+    }
+    const t6 = $("tabla6");
+    if (t6) {
+        t6.innerHTML = `
+            <table>
+                <thead><tr><th>Q (l/s)</th><th>η<sub>bomba</sub> (%)</th></tr></thead>
+                <tbody>${TABLE6.map((row) => `<tr><td>${f(row.q, 1)}</td><td>${row.hb}</td></tr>`).join("")}</tbody>
+            </table>`;
+    }
+    const t7 = $("tabla7");
+    if (t7) {
+        t7.innerHTML = `
+            <table>
+                <thead><tr><th>Motor (HP)</th><th>η<sub>motor</sub> (%)</th></tr></thead>
+                <tbody>${TABLE7.map((row) => `<tr><td>${row.hp}</td><td>${f(row.hm, 1)}</td></tr>`).join("")}</tbody>
+            </table>`;
+    }
+}
 
-    $("tabla3").innerHTML = `
-        <table>
-            <thead><tr>
-                <th>DN (mm)</th><th>Ref</th><th>Curva 90°</th><th>Válv. cierre</th>
-                <th>Tee lateral</th><th>Tee 2 salidas</th><th>Válv. pie</th><th>Válv. retención</th>
-            </tr></thead>
-            <tbody>
-            ${TABLE3.map((row) => `
-                <tr class="${used.has(row.dn) ? "selected-row" : ""}">
-                    <td>${row.dn}</td><td>${row.ref}</td>
-                    <td>${f(row.curva90, 1)}</td><td>${f(row.valvCierre, 1)}</td>
-                    <td>${f(row.teeLateral, 1)}</td><td>${f(row.tee2, 1)}</td>
-                    <td>${f(row.valvPie, 1)}</td><td>${f(row.valvRet, 1)}</td>
-                </tr>`).join("")}
-            </tbody>
-        </table>`;
+/* ================= Fórmulas ================= */
+function formulaFigure(id) {
+    const meta = FORMULA_META[id] || id;
+    const fdata = FORMULAS.find((x) => x.id === id);
+    const vars = fdata && fdata.vars ? fdata.vars.map(([sym, desc]) =>
+        `<li><code>${esc(sym)}</code><span>${esc(desc)}</span></li>`).join("") : "";
+    return `
+    <figure class="formula" data-fid="${id}">
+        <img src="formulas/${id}.svg" alt="${esc(meta)}" loading="lazy">
+        <figcaption>
+            <span class="f-name">${esc(meta)}</span>
+            ${vars ? `<ul class="f-vars">${vars}</ul>` : ""}
+        </figcaption>
+    </figure>`;
+}
 
-    $("tabla6").innerHTML = `
-        <table>
-            <thead><tr><th>Q (l/s)</th><th>η<sub>bomba</sub> (%)</th></tr></thead>
-            <tbody>${TABLE6.map((row) => `<tr><td>${f(row.q, 1)}</td><td>${row.hb}</td></tr>`).join("")}</tbody>
-        </table>`;
+function renderFormulas() {
+    document.querySelectorAll(".formulas[data-formulas]").forEach((el) => {
+        const spec = el.getAttribute("data-formulas").trim();
+        if (spec === "all") {
+            el.innerHTML = FORMULAS.map((fdata) => formulaFigure(fdata.id)).join("");
+        } else {
+            el.innerHTML = spec.split(",").map((id) => formulaFigure(id.trim())).join("");
+        }
+    });
+}
 
-    $("tabla7").innerHTML = `
-        <table>
-            <thead><tr><th>Motor (HP)</th><th>η<sub>motor</sub> (%)</th></tr></thead>
-            <tbody>${TABLE7.map((row) => `<tr><td>${row.hp}</td><td>${f(row.hm, 1)}</td></tr>`).join("")}</tbody>
-        </table>`;
+/* ================= Toggle de fórmulas ================= */
+function setupFormulasToggle() {
+    const btn = document.getElementById("toggle-formulas");
+    const count = FORMULAS.length;
+    if (btn) {
+        const apply = (show) => {
+            document.body.classList.toggle("show-formulas", show);
+            btn.textContent = show ? "Ocultar fórmulas" : `Ver fórmulas (${count})`;
+            btn.classList.toggle("on", show);
+        };
+        btn.addEventListener("click", () => {
+            const show = !document.body.classList.contains("show-formulas");
+            apply(show);
+            try { localStorage.setItem("sh-formulas", show ? "1" : "0"); } catch (e) { /* noop */ }
+        });
+        let pref = "0";
+        try { pref = localStorage.getItem("sh-formulas") || "0"; } catch (e) { /* noop */ }
+        if (pref === "1") apply(true);
+    }
 }
 
 /* ================= Init ================= */
-function recompute() { renderAll(); }
-
+loadState();
 renderDatos();
 renderCaudalUnitario();
 renderBombeoForm();
 renderOptForm();
+renderGeomForm();
 renderAll();
+setupFormulasToggle();

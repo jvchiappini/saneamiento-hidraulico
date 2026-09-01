@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas de la Norma 68 · Saneamiento</title>
+    <meta name="description" content="Tablas 3, 6 y 7 de la Norma 68 usadas en el cálculo del sistema de impulsión.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="referencias">
+
+<nav class="topnav">
+    <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="referencias.html" class="active">Norma 68</a></li>
+        <li><a href="formulas.html">Fórmulas</a></li>
+    </ul>
+</nav>
+
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="crumb"><a href="index.html">Inicio</a> / Norma 68</p>
+        <h1>Tablas de referencia — Norma 68</h1>
+        <p>Tablas utilizadas en el cálculo del sistema de impulsión. Extraídas tal cual de la planilla original.</p>
+        <div class="sub-actions">
+            <a href="index.html">← Volver al cálculo</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="card step" id="referencias">
+        <div class="step-head">
+            <span class="step-num">★</span>
+            <div>
+                <h2>Norma 68</h2>
+                <p class="lede">Estas tablas se usan en las distintas etapas de la hoja de cálculo.</p>
+            </div>
+        </div>
+
+        <h3 class="sub-title">Tabla 1 — Caudales unitarios (usada en <a href="index.html#caudales">Caudales</a>)</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Uso</th><th>Caudal unitario</th><th>Fuente</th></tr></thead>
+                <tbody>
+                    <tr><td>Departamentos</td><td>200 l/pers/d</td><td>Norma 68, Tabla 1</td></tr>
+                    <tr><td>Oficinas / logística</td><td>50 l/pers/d</td><td>Norma 68, Tabla 1</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="sub-title">Tabla 3 — Longitudes equivalentes para pérdidas singulares (m)</h3>
+        <p class="footnote" style="margin-top:0">Usada en <a href="index.html#perdidas">Pérdidas de carga</a>. Las filas resaltadas son los diámetros de las alternativas actuales.</p>
+        <div class="table-wrap" id="tabla3"></div>
+
+        <h3 class="sub-title">Tabla 6 — Rendimiento de bombas centrífugas</h3>
+        <p class="footnote" style="margin-top:0">Usada en <a href="index.html#potencia">Potencia</a> y en la <a href="index.html#alternativas">alternativa óptima</a>.</p>
+        <div class="table-wrap" id="tabla6"></div>
+
+        <h3 class="sub-title">Tabla 7 — Rendimiento de motores eléctricos</h3>
+        <p class="footnote" style="margin-top:0">Usada en <a href="index.html#potencia">Potencia</a> y en la <a href="index.html#alternativas">alternativa óptima</a>.</p>
+        <div class="table-wrap" id="tabla7"></div>
+
+        <h3 class="sub-title">Tabla 8 — Potencias comerciales de motores (HP)</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Potencias normalizadas (HP)</th></tr></thead>
+                <tbody>
+                    <tr><td>1 · 1,5 · 2 · 3 · 5 · 7,5 · 10 · 15 · 20 · 25 · 30 · 40 · 50 · 60 · 75 · 100 · 125 · 150 · 200 · 300</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <details class="notes">
+            <summary>
+                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                </svg>
+                <span>Notas de la cátedra</span>
+            </summary>
+            <div class="notes-body">
+                <ul>
+                    <li>Los <strong>caudales unitarios</strong> se deben verificar en la Norma 68 para cada proyecto.</li>
+                    <li>Las pérdidas de accesorios se verifican en la <strong>Tabla 3 de la Norma 68</strong>.</li>
+                    <li><strong>η<sub>bomba</sub></strong> = Tabla VI · <strong>η<sub>motor</sub></strong> = Tabla VII (si pasa de 100 → 90%).</li>
+                    <li>La potencia adoptada se elige de la <strong>Tabla 8</strong> (potencias comerciales).</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+</main>
+
+<footer>
+    <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -79,6 +79,25 @@ body {
     transition: background .15s, color .15s;
 }
 .nav-links a:hover { background: var(--primary-soft); color: var(--primary-dark); }
+.nav-links a.active { background: var(--primary); color: #fff; }
+
+.btn-toggle {
+    flex: 0 0 auto;
+    margin-left: .6rem;
+    padding: .5rem .85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--primary-dark);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: .82rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .15s, color .15s, border-color .15s;
+}
+.btn-toggle:hover { background: var(--primary-soft); }
+.btn-toggle.on { background: var(--primary); color: #fff; border-color: var(--primary); }
 
 /* ---------- Hero ---------- */
 .hero {
@@ -166,8 +185,8 @@ body {
 /* ---------- Layout ---------- */
 main {
     max-width: 1080px;
-    margin: -2rem auto 0;
-    padding: 0 1.5rem 3rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
     position: relative;
     z-index: 2;
 }
@@ -462,6 +481,89 @@ main {
 .lg-teal { background: var(--primary); }
 .lg-amber { background: var(--accent); }
 .lg-line { background: #b45309; height: 3px; border-radius: 2px; }
+
+/* ---------- Subpaginas ---------- */
+.page-hero {
+    background: linear-gradient(135deg, #0b5d56 0%, #0f766e 45%, #0d9488 100%);
+    color: #fff;
+}
+.page-hero-inner { max-width: 1080px; margin: 0 auto; padding: 2.4rem 1.5rem 2.4rem; }
+.crumb { font-size: .78rem; color: #a7f3d0; margin-bottom: .5rem; }
+.crumb a { color: #a7f3d0; text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.page-hero h1 { font-size: clamp(1.4rem, 3vw, 2.1rem); font-weight: 800; letter-spacing: -.01em; }
+.page-hero p { color: #d9f2ec; margin-top: .45rem; max-width: 760px; font-size: .98rem; }
+.page-hero .sub-actions { margin-top: .9rem; }
+.sub-actions a { color: #fff; font-weight: 600; font-size: .85rem; text-decoration: none; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.35); padding: .4rem .9rem; border-radius: 999px; }
+.sub-actions a:hover { background: rgba(255,255,255,.22); }
+
+/* ---------- Tarjetas de navegación ---------- */
+.link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 1rem; margin-top: .4rem; }
+.link-card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.2rem 1.2rem 1rem;
+    text-decoration: none;
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    transition: transform .12s, box-shadow .15s, border-color .15s;
+}
+.link-card:hover { transform: translateY(-2px); border-color: var(--primary); box-shadow: 0 10px 26px rgba(16, 35, 29, .1); }
+.lc-num { font-size: .72rem; font-weight: 800; color: #fff; background: var(--primary); border-radius: 999px; padding: .15rem .6rem; display: inline-block; margin-bottom: .55rem; }
+.link-card h3 { font-size: 1.02rem; font-weight: 700; }
+.link-card p { font-size: .84rem; color: var(--muted); margin-top: .25rem; }
+.lc-arrow { color: var(--primary); font-weight: 700; margin-top: .55rem; display: inline-block; }
+
+/* ---------- Resumen de alternativas ---------- */
+.res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 1rem; }
+.res-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: .95rem 1.05rem; box-shadow: var(--shadow); }
+.res-card-title { font-size: .84rem; font-weight: 700; }
+.res-card-sub { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
+.res-card-main { font-size: 1.45rem; font-weight: 800; color: var(--primary-dark); font-variant-numeric: tabular-nums; margin-top: .25rem; }
+.res-card-main small { font-size: .72rem; font-weight: 600; color: var(--muted); }
+.res-card-foot { font-size: .76rem; color: var(--muted); margin-top: .15rem; }
+.res-opt { border: 2px solid var(--accent); }
+.res-opt .res-card-title { color: #92400e; }
+
+/* ---------- Fórmulas (SVG LaTeX) ---------- */
+.formulas { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.2rem; }
+.formula {
+    display: none;
+    flex: 1 1 320px;
+    max-width: 440px;
+    flex-direction: column;
+    gap: .5rem;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: .75rem .95rem;
+}
+body.show-formulas .formula, .formulas-page .formula { display: flex; }
+.formula img { height: 42px; width: auto; align-self: flex-start; max-width: 100%; }
+.f-name { font-size: .84rem; font-weight: 700; color: var(--ink); display: block; }
+.f-vars {
+    list-style: none;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: .7rem;
+    row-gap: .18rem;
+    margin-top: .35rem;
+    border-top: 1px dashed var(--border);
+    padding-top: .45rem;
+}
+.f-vars code {
+    font-family: var(--mono);
+    font-size: .74rem;
+    color: var(--primary-dark);
+    background: var(--primary-soft);
+    border-radius: 4px;
+    padding: .05rem .32rem;
+    white-space: nowrap;
+}
+.f-vars span { font-size: .76rem; color: var(--muted); }
+.formulas-formula-title { font-size: .9rem; font-weight: 700; margin: 1.2rem 0 .4rem; }
 
 /* ---------- Tables ---------- */
 .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1.2rem; }

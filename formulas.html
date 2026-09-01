@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas las fórmulas · Saneamiento</title>
+    <meta name="description" content="Índice completo de fórmulas del sistema de impulsión en LaTeX, con explicación de variables.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="formulas" class="formulas-page">
+
+<nav class="topnav">
+    <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="referencias.html">Norma 68</a></li>
+        <li><a href="formulas.html" class="active">Fórmulas</a></li>
+    </ul>
+</nav>
+
+<header class="page-hero">
+    <div class="page-hero-inner">
+        <p class="crumb"><a href="index.html">Inicio</a> / Fórmulas</p>
+        <h1>Todas las fórmulas del sistema de impulsión</h1>
+        <p>Renderizadas en LaTeX (SVG). Cada fórmula incluye la explicación de sus variables.</p>
+        <div class="sub-actions">
+            <a href="index.html">← Volver al cálculo</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="card step" id="formulas">
+        <div class="step-head">
+            <span class="step-num">ƒ</span>
+            <div>
+                <h2>Índice de fórmulas</h2>
+                <p class="lede">Todas las fórmulas que se calculan en la hoja, agrupadas por etapa.</p>
+            </div>
+        </div>
+
+        <h3 class="formulas-formula-title">1 · Datos y caudales</h3>
+        <div class="formulas" data-formulas="personas,logistica,qm_l,qm_m3,qm_ls,qlote_l,qlote_ls"></div>
+
+        <h3 class="formulas-formula-title">2 · Caudal de bombeo y Bresse</h3>
+        <div class="formulas" data-formulas="qb_m3,qb_ls,horas,bresse"></div>
+
+        <h3 class="formulas-formula-title">3 · Velocidades</h3>
+        <div class="formulas" data-formulas="vel,verif_vel"></div>
+
+        <h3 class="formulas-formula-title">4 · Pérdidas de carga</h3>
+        <div class="formulas" data-formulas="j_pt,leq_s,leq_i,perd_s,perd_i"></div>
+
+        <h3 class="formulas-formula-title">5 · Altura manométrica</h3>
+        <div class="formulas" data-formulas="hm_s,hm_i,hm_total"></div>
+
+        <h3 class="formulas-formula-title">6 · Potencia de la bomba y del motor</h3>
+        <div class="formulas" data-formulas="pb_cv,p_hp,pmb,holgura,phmb"></div>
+
+        <h3 class="formulas-formula-title">7 · Pozo de bombeo</h3>
+        <div class="formulas" data-formulas="cavitacion,pozo"></div>
+
+        <h3 class="formulas-formula-title">8 · Mínimo costo anualizado (alternativa óptima)</h3>
+        <div class="formulas" data-formulas="anualidad,costo_tubo,energia,costo_total"></div>
+    </section>
+</main>
+
+<footer>
+    <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+    <p class="footnote">Fórmulas generadas con LaTeX (dvisvgm) y embebidas como SVG.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
