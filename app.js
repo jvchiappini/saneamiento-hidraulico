@@ -6,7 +6,7 @@ const PAGE = document.body.dataset.page || "index";
 /* ================= Estado de entrada ================= */
 const S = {
     manzanas: 12, lotes: 6, pisos: 22, deptos: 6, dorm: 3, persDorm: 2, persServ: 1, pctLog: 10,
-    qDept: 200, qLog: 50,
+    qDept: 200, qLog: 50, caudalTipo: "",
     k1: 1.2, k2: 1.5, k3: 1.05,
     horasOp: 12,
     lSucc: 2, lImp: 669.35,
@@ -243,11 +243,6 @@ const DATOS_FIELDS = [
     { id: "pctLog", label: "Personal de logística por lote", unit: "%" },
 ];
 
-const CAUDAL_FIELDS = [
-    { id: "qDept", label: "Caudal unitario departamentos", unit: "l/pers/d" },
-    { id: "qLog", label: "Caudal unitario logística", unit: "l/pers/d" },
-];
-
 const BOMBEO_FIELDS = [
     { id: "k1", label: "K1 — Consumo máx. diario", unit: "" },
     { id: "k2", label: "K2 — Consumo máx. horario", unit: "" },
@@ -301,8 +296,45 @@ function renderDatos() {
 function renderCaudalUnitario() {
     const host = $("caudales-unitarios-form");
     if (!host) return;
-    host.innerHTML = CAUDAL_FIELDS.map((fd) => renderField(fd)).join("");
-    CAUDAL_FIELDS.forEach((fd) => bind(fd.id, (v) => S[fd.id] = v));
+    host.innerHTML = `
+        <div class="field">
+            <label>Tipo de inmueble (Norma 68 · Tabla 1)</label>
+            <div class="input-row">
+                <select id="in-caudalTipo">
+                    <option value="">— Seleccionar de la tabla —</option>
+                    ${TABLE1.map((row) => `<option value="${esc(row.tipo)}">${esc(row.tipo)}</option>`).join("")}
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <label>Caudal unitario departamentos</label>
+            <div class="input-row">
+                <input type="number" inputmode="decimal" id="in-qDept" value="${S.qDept}" step="any" min="0">
+                <span class="unit">l/pers/d</span>
+            </div>
+        </div>
+        <div class="field">
+            <label>Caudal unitario logística</label>
+            <div class="input-row">
+                <input type="number" inputmode="decimal" id="in-qLog" value="${S.qLog}" step="any" min="0">
+                <span class="unit">l/pers/d</span>
+            </div>
+        </div>`;
+    const tipo = $("in-caudalTipo");
+    tipo.value = S.caudalTipo || "";
+    tipo.addEventListener("change", () => {
+        S.caudalTipo = tipo.value;
+        const row = TABLE1.find((x) => x.tipo === tipo.value);
+        if (row) {
+            S.qDept = row.consumo;
+            const inp = $("in-qDept");
+            inp.value = row.consumo;
+            saveState();
+            scheduleRecompute();
+        }
+    });
+    bind("qDept", (v) => { S.qDept = v; S.caudalTipo = ""; });
+    bind("qLog", (v) => S.qLog = v);
 }
 
 function renderBombeoForm() {
@@ -785,6 +817,19 @@ function renderPozo(r) {
 
 /* ================= Referencias ================= */
 function renderReferencias(r) {
+    const t1 = $("tabla1");
+    if (t1) {
+        t1.innerHTML = `
+            <table>
+                <thead><tr><th>Tipo de inmueble</th><th>Consumo mínimo de litros por día</th></tr></thead>
+                <tbody>
+                ${TABLE1.map((row) => `
+                    <tr class="${row.tipo === "Departamentos" ? "selected-row" : ""}">
+                        <td>${esc(row.tipo)}</td><td>${f(row.consumo, 1)} <small>${esc(row.unidad)}</small></td>
+                    </tr>`).join("")}
+                </tbody>
+            </table>`;
+    }
     const t3 = $("tabla3");
     if (t3) {
         const used = new Set(r.alts.flatMap((a) => [a.dS, a.dI]));

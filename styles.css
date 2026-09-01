@@ -299,6 +299,23 @@ main {
     box-shadow: 0 0 0 3px rgba(15, 118, 110, .15);
 }
 .input-row .unit { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.input-row select {
+    width: 100%;
+    padding: .5rem .7rem;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--mono);
+    transition: border-color .15s, box-shadow .15s;
+}
+.input-row select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, .15);
+}
 
 /* ---------- Results ---------- */
 .results { display: flex; flex-direction: column; gap: .55rem; }

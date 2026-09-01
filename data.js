@@ -1,5 +1,32 @@
 "use strict";
 
+// Tabla 1 de la Norma 68: caudales unitarios
+// tipo: tipo de inmueble · consumo: valor · unidad: unidad del consumo
+const TABLE1 = [
+    { tipo: "Alojamiento provisorio", consumo: 80, unidad: "por persona" },
+    { tipo: "Casas populares o rurales", consumo: 120, unidad: "por persona" },
+    { tipo: "Residencias", consumo: 250, unidad: "por persona" },
+    { tipo: "Departamentos", consumo: 200, unidad: "por persona" },
+    { tipo: "Hoteles (sin cocina y sin lavandería)", consumo: 150, unidad: "por huésped" },
+    { tipo: "Hospitales", consumo: 350, unidad: "por cama" },
+    { tipo: "Escuelas internados", consumo: 150, unidad: "por persona" },
+    { tipo: "Escuelas externas", consumo: 50, unidad: "por persona" },
+    { tipo: "Cuarteles", consumo: 150, unidad: "por persona" },
+    { tipo: "Edificios públicos o comerciales", consumo: 50, unidad: "por persona" },
+    { tipo: "Escritorios", consumo: 50, unidad: "por persona" },
+    { tipo: "Cines y teatros", consumo: 2, unidad: "por butaca" },
+    { tipo: "Restaurantes y similares", consumo: 25, unidad: "por comida servida" },
+    { tipo: "Garages", consumo: 50, unidad: "por automóvil" },
+    { tipo: "Lavandería", consumo: 30, unidad: "por kg de ropa seca" },
+    { tipo: "Mercados", consumo: 5, unidad: "por metro cuadrado" },
+    { tipo: "Mataderos (animales de gran porte)", consumo: 300, unidad: "por cabeza abatida" },
+    { tipo: "Mataderos (animales de pequeño porte)", consumo: 150, unidad: "por cabeza abatida" },
+    { tipo: "Fábricas en general (uso personal)", consumo: 70, unidad: "por operario" },
+    { tipo: "Estaciones de servicio para automóviles", consumo: 150, unidad: "por vehículo servido" },
+    { tipo: "Caballerizas", consumo: 100, unidad: "por caballo" },
+    { tipo: "Jardines", consumo: 1.5, unidad: "por metro cuadrado" },
+];
+
 // Tabla 3 de la Norma 68: longitudes equivalentes (m) para pérdidas singulares
 // Extraída de la planilla original (columnas X..AR de la hoja "Datos y Sistema de Impulsión").
 // dn: diámetro nominal (mm) · ref: referencia en pulgadas
