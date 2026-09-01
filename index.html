@@ -65,6 +65,7 @@
             <a class="link-card" href="#pozo"><span class="lc-num">8</span><h3>Pozo de bombeo</h3><p>Cavitación y seguridad.</p><span class="lc-arrow">Ir ↓</span></a>
             <a class="link-card" href="referencias.html"><span class="lc-num">★</span><h3>Norma 68</h3><p>Tablas 3, 6 y 7.</p><span class="lc-arrow">Ir →</span></a>
             <a class="link-card" href="formulas.html"><span class="lc-num">ƒ</span><h3>Fórmulas</h3><p>Índice completo con variables.</p><span class="lc-arrow">Ir →</span></a>
+            <a class="link-card" href="#informe"><span class="lc-num">▤</span><h3>Informe técnico</h3><p>Resumen profesional descargable en PDF.</p><span class="lc-arrow">Ir ↓</span></a>
         </div>
     </section>
 
@@ -341,6 +342,21 @@
             </div>
         </details>
     </section>
+
+    <section class="card step" id="informe">
+        <div class="step-head">
+            <span class="step-num">▤</span>
+            <div>
+                <h2>Informe técnico</h2>
+                <p class="lede">Informe profesional con todos los datos calculados. Se genera automáticamente con los valores actuales de la hoja.</p>
+            </div>
+        </div>
+        <div class="informe-toolbar">
+            <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
+            <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como PDF</strong> (se imprime solo el informe).</span>
+        </div>
+        <div id="informe-content"></div>
+    </section>
 </main>
 
 <footer>
@@ -350,5 +366,6 @@
 
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>

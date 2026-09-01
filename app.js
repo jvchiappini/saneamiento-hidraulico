@@ -342,6 +342,7 @@ function renderAll() {
     renderPotencia(r);
     renderPozo(r);
     renderReferencias(r);
+    renderInforme(r);
     renderFormulas();
 }
 
@@ -840,6 +841,197 @@ function setupFormulasToggle() {
     }
 }
 
+/* ================= Informe técnico ================= */
+function buildReportHTML(r) {
+    const rows = optimalRows(r);
+    const best = rows[0];
+    const fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+
+    const g = (l, v, u) => `<tr><td class="pl">${esc(l)}</td><td class="pv">${v}</td><td class="pu">${esc(u)}</td></tr>`;
+
+    const inputsUrban = [
+        g("Manzanas del barrio", S.manzanas, "manz."),
+        g("Lotes / edificios por manzana", S.lotes, "lotes"),
+        g("Pisos tipo por edificio", S.pisos, "pisos"),
+        g("Departamentos por piso", S.deptos, "deptos"),
+        g("Dormitorios por departamento", S.dorm, "dorm."),
+        g("Personas por dormitorio", S.persDorm, "pers"),
+        g("Personal de servicio por depto.", S.persServ, "pers"),
+        g("Personal de logística por lote", S.pctLog, "%"),
+    ];
+    const inputsCaud = [
+        g("Caudal unitario — departamentos", S.qDept, "l/pers/d"),
+        g("Caudal unitario — logística", S.qLog, "l/pers/d"),
+        g("K1 — Consumo máx. diario", S.k1, ""),
+        g("K2 — Consumo máx. horario", S.k2, ""),
+        g("K3 — Línea de impulsión", S.k3, ""),
+        g("Horas de operación de la bomba", S.horasOp, "hs/d"),
+    ];
+    const inputsGeom = [
+        g("Longitud de succión", S.lSucc, "m"),
+        g("Longitud de impulsión", S.lImp, "m"),
+        g("Altura topográfica de succión", S.hTopoSucc, "m"),
+        g("Altura topográfica de impulsión", S.hTopoImp, "m"),
+        g("Presión de llegada al reservorio", S.pReservorio, "m"),
+    ];
+    const inputsRend = r.alts.map((a, i) =>
+        g(`Alternativa ${i + 1} — η bomba / η motor`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    const inputsEco = [
+        g("Costo base de tubería", "$ " + Sopt.pipeA, "$/m"),
+        g("Costo por mm de diámetro", "$ " + Sopt.pipeB, "$/m·mm"),
+        g("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
+        g("Costo de la bomba", "$ " + Sopt.pumpCost, "$/HP"),
+        g("Tasa de descuento", Sopt.rate, "%/año"),
+        g("Mantenimiento", Sopt.maint, "%/año"),
+    ];
+
+    const resCaud = [
+        g("Total de personas de los departamentos", f0(r.B11), "pers"),
+        g("Personal de logística", f0(r.B12), "pers"),
+        g("Caudal medio de bombeo (Qm)", f0(r.B15), "l/d"),
+        g("Caudal medio de bombeo", f(r.B16, 2), "m³/d"),
+        g("Caudal medio de bombeo", f(r.B17, 2), "l/s"),
+        g("Caudal por lote", f0(r.B18), "l/d"),
+        g("Caudal por lote", f(r.B19, 2), "l/s"),
+    ];
+    const resBombeo = [
+        g("Caudal de bombeo (Qb)", f(r.B23, 4), "m³/s"),
+        g("Caudal de bombeo", f(r.D23, 2), "l/s"),
+        g("Diámetro de impulsión (Bresse)", f(r.B26, 3), "m"),
+    ];
+
+    const altRows = r.alts.map((a, i) => `<tr>
+        <td>Alt ${i + 1}</td><td>${a.dS}</td><td>${a.dI}</td>
+        <td>${f(a.vS, 2)}</td><td>${f(a.vI, 2)}</td>
+        <td>${f(a.JS, 5)}</td><td>${f(a.JI, 5)}</td>
+        <td>${f(a.leqS, 1)}</td><td>${f(a.leqI, 1)}</td>
+        <td>${f(a.hT, 2)}</td><td>${f(a.Pb, 2)}</td><td>${f(a.Pmb, 2)}</td><td>${f(a.Padop, 0)}</td></tr>`).join("");
+
+    const pozoRows = r.alts.map((a, i) =>
+        `<tr><td>Alt ${i + 1}</td><td>${f(a.hCav, 3)}</td><td>${f(a.hSeg, 2)}</td><td><strong>${f(a.hPozo, 2)}</strong></td></tr>`).join("");
+
+    const optRows = best ? `
+        <tr><td>${best.dn}</td><td>${best.succ}</td><td>${f(best.m.vI, 2)}</td><td>${f(best.m.hT, 2)}</td>
+        <td>${f(best.m.Pmb, 1)}</td><td>${f(best.m.Padop, 0)}</td><td>${f0(best.pipeCost)}</td><td>${f0(best.pumpInv)}</td>
+        <td>${f0(best.energy)}</td><td><strong>${f0(best.annual)}</strong></td></tr>` : `<tr><td colspan="10">—</td></tr>`;
+
+    const concl = best ? `
+        <p>Se adopta la <strong>alternativa óptima</strong>: línea de impulsión de <strong>DN ${best.dn} mm</strong>
+        con tubería de succión de <strong>DN ${best.succ} mm</strong>. La altura manométrica resultante es de
+        <strong>${f(best.m.hT, 2)} m.c.a.</strong>, con una potencia adoptada de <strong>${f(best.m.Padop, 0)} HP</strong>
+        y un costo anual de <strong>${f0(best.annual)} $/año</strong>.</p>` : `<p>Sin datos suficientes.</p>`;
+
+    return `
+    <div class="informe">
+        <div class="informe-head">
+            <div>
+                <h3>Informe técnico</h3>
+                <p class="informe-sub">Sistema de impulsión — Río · Saneamiento (Norma 68)</p>
+            </div>
+            <div class="informe-meta">
+                <div>Fecha: ${esc(fecha)}</div>
+                <div>Grupo Nº: ______________</div>
+                <div>Integrantes: ______________________</div>
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>1 · Datos de entrada</h4>
+            <div class="info-grid">
+                <div class="info-card"><h5>Urbanísticos</h5><table>${inputsUrban.join("")}</table></div>
+                <div class="info-card"><h5>Caudales unitarios y coeficientes</h5><table>${inputsCaud.join("")}</table></div>
+                <div class="info-card"><h5>Geometría</h5><table>${inputsGeom.join("")}</table></div>
+                <div class="info-card"><h5>Rendimientos</h5><table>${inputsRend.join("")}</table></div>
+                <div class="info-card"><h5>Parámetros económicos</h5><table>${inputsEco.join("")}</table></div>
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>2 · Caudales y bombeo</h4>
+            <div class="info-grid">
+                <div class="info-card"><h5>Caudales</h5><table>${resCaud.join("")}</table></div>
+                <div class="info-card"><h5>Caudal de bombeo y Bresse</h5><table>${resBombeo.join("")}</table></div>
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>3 · Alternativas de diámetro</h4>
+            <table class="wide">
+                <thead><tr>
+                    <th>Alt</th><th>Suc (mm)</th><th>Imp (mm)</th><th>v suc (m/s)</th><th>v imp (m/s)</th>
+                    <th>J suc (m/m)</th><th>J imp (m/m)</th><th>Leq suc (m)</th><th>Leq imp (m)</th>
+                    <th>Hm (m.c.a.)</th><th>Pb (cv)</th><th>P motor (HP)</th><th>Padop (HP)</th>
+                </tr></thead>
+                <tbody>${altRows}</tbody>
+            </table>
+        </div>
+
+        <div class="info-sec">
+            <h4>4 · Alternativa óptima (mínimo costo anualizado)</h4>
+            <table class="wide">
+                <thead><tr>
+                    <th>DN Imp (mm)</th><th>DN Suc (mm)</th><th>v imp (m/s)</th><th>Hm (m.c.a.)</th>
+                    <th>P motor (HP)</th><th>Padop (HP)</th><th>Inv. tubería ($)</th><th>Inv. bomba ($)</th>
+                    <th>Energía ($/año)</th><th>Costo anual ($)</th>
+                </tr></thead>
+                <tbody>${optRows}</tbody>
+            </table>
+        </div>
+
+        <div class="info-sec">
+            <h4>5 · Pozo de bombeo</h4>
+            <table class="wide">
+                <thead><tr><th>Alternativa</th><th>Por cavitación (m)</th><th>Por seguridad (m)</th><th>Adoptada (m)</th></tr></thead>
+                <tbody>${pozoRows}</tbody>
+            </table>
+        </div>
+
+        <div class="info-sec concl">
+            <h4>Conclusión</h4>
+            ${concl}
+        </div>
+
+        <div class="informe-foot">
+            <p>El presente informe fue generado automáticamente con los parámetros de la hoja de cálculo.
+            Verificar caudales unitarios y coeficientes según la Norma 68.</p>
+        </div>
+    </div>`;
+}
+
+function renderInforme(r) {
+    const host = $("informe-content");
+    if (!host) return;
+    host.innerHTML = buildReportHTML(r);
+}
+
+function setupPdf() {
+    const btn = $("pdf-btn");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+        const el = $("informe-content");
+        if (!el || !el.innerHTML) return;
+        btn.disabled = true;
+        btn.textContent = "Generando PDF…";
+        const done = () => { btn.disabled = false; btn.textContent = "Descargar PDF"; };
+        if (window.html2pdf) {
+            const opt = {
+                margin: 12,
+                filename: "informe-sistema-impulsion.pdf",
+                image: { type: "jpeg", quality: 0.96 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff", logging: false },
+                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+                pagebreak: { mode: ["css", "legacy"] },
+            };
+            html2pdf().set(opt).from(el).save()
+                .then(done)
+                .catch(() => { done(); window.print(); });
+        } else {
+            done();
+            window.print();
+        }
+    });
+}
+
 /* ================= Init ================= */
 loadState();
 renderDatos();
@@ -849,3 +1041,4 @@ renderOptForm();
 renderGeomForm();
 renderAll();
 setupFormulasToggle();
+setupPdf();
