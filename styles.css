@@ -638,7 +638,21 @@ body.show-formulas .formula, .formulas-page .formula { display: flex; }
 .informe .info-card td.pl { color: var(--muted); }
 .info-card td.pv { font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
 .info-card td.pu { color: var(--muted); text-align: right; white-space: nowrap; }
-.informe .wide td, .informe .wide th { font-size: .74rem; padding: .3rem .4rem; }
+.informe .wide-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+.informe .wide { min-width: 640px; border-collapse: collapse; }
+.informe .wide td, .informe .wide th { font-size: .72rem; padding: .3rem .5rem; white-space: nowrap; }
+.informe .wide th {
+    color: #fff;
+    background: var(--primary);
+    font-size: .66rem;
+    letter-spacing: .04em;
+    text-align: center;
+}
+.informe .wide td { text-align: center; }
+.informe .wide td:first-child, .informe .wide th:first-child { text-align: left; font-weight: 600; }
+.informe .wide tbody tr { border-bottom: 1px solid var(--border); }
+.informe .wide tbody tr:last-child { border-bottom: none; }
+.informe .wide tbody tr:nth-child(even) { background: #f7faf9; }
 .info-card tr { border-bottom: 1px dashed var(--border); }
 .info-card tr:last-child { border-bottom: none; }
 .concl p { line-height: 1.7; }

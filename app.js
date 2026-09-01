@@ -927,9 +927,9 @@ function buildReportHTML(d) {
     const table = (rows) => `<table>
         <thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th></tr></thead>
         <tbody>${rows.map(row).join("")}</tbody></table>`;
-    const wide = (head, rows) => `<table class="wide">
+    const wide = (head, rows) => `<div class="wide-wrap"><table class="wide">
         <thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
-        <tbody>${rows.map((c) => `<tr>${c.map((x) => `<td>${x}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+        <tbody>${rows.map((c) => `<tr>${c.map((x) => `<td>${x}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 
     return `
     <div class="informe">
