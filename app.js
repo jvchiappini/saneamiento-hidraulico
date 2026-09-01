@@ -21,8 +21,8 @@ const S = {
 // Parametros economicos del algoritmo de minimo costo
 const Sopt = {
     pipeCost: { ...PIPE_COST_DEFAULT },
-    motorCost: { ...MOTOR_COST_DEFAULT },
-    kwh: 0.06, pumpCost: 300, rate: 8, maint: 2,
+    bombaCost: { ...BOMBA_COST_DEFAULT },
+    kwh: 0.06, rate: 8, maint: 2,
 };
 
 // Diametros comerciales considerados por el algoritmo (disponibles en Tabla 3)
@@ -201,13 +201,13 @@ function annFactor(n) {
     return i * fm / (fm - 1);
 }
 
-function motorCost(hp) {
-    const c = Sopt.motorCost[hp];
+function bombaCost(hp) {
+    const c = Sopt.bombaCost[hp];
     if (c != null) return c;
-    const hps = Object.keys(Sopt.motorCost).map(Number).sort((a, b) => a - b);
+    const hps = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b);
     const nearest = hps.find((x) => x >= hp - 1e-9) ?? hps[hps.length - 1];
-    if (nearest != null && Sopt.motorCost[nearest] != null) return Sopt.motorCost[nearest];
-    return Sopt.pumpCost * hp;
+    if (nearest != null && Sopt.bombaCost[nearest] != null) return Sopt.bombaCost[nearest];
+    return 0;
 }
 
 function optimalRows(b) {
@@ -230,7 +230,7 @@ function optimalRows(b) {
 
         const perMeter = Sopt.pipeCost[dn] != null ? Sopt.pipeCost[dn] : 0;
         const pipeCost = perMeter * (S.lImp + S.lSucc);
-        const pumpInv = motorCost(m.Padop);
+        const pumpInv = bombaCost(m.Padop);
         const energyKWh = m.Pmb * 0.7457 * S.horasOp * 365;
         const energy = energyKWh * Sopt.kwh;
         const maint = (pipeCost + pumpInv) * Sopt.maint / 100;
@@ -264,7 +264,6 @@ const BOMBEO_FIELDS = [
 
 const OPT_FIELDS = [
     { id: "kwh", label: "Costo de la energía", unit: "$/kWh" },
-    { id: "pumpCost", label: "Costo de la bomba", unit: "$/HP" },
     { id: "rate", label: "Tasa de descuento", unit: "%/año" },
     { id: "maint", label: "Mantenimiento", unit: "%/año" },
 ];
@@ -383,7 +382,7 @@ function renderOptForm() {
         OPT_FIELDS.forEach((fd) => bind(fd.id, (v) => Sopt[fd.id] = v));
     }
     renderCostTable("pipe-cost-form", "Diámetro nominal (mm)", Sopt.pipeCost, (dn) => `in-pipeCost-${dn}`, "$/m");
-    renderCostTable("motor-cost-form", "Potencia del motor (HP)", Sopt.motorCost, (hp) => `in-motorCost-${hp}`, "$");
+    renderCostTable("bomba-cost-form", "Potencia de la bomba (HP)", Sopt.bombaCost, (hp) => `in-bombaCost-${hp}`, "$");
 }
 
 function renderCostTable(hostId, labelCol, obj, idFor, unit) {
@@ -596,7 +595,6 @@ function renderHero(r) {
 function renderResumen(r) {
     const host = $("resumen-content");
     if (!host) return;
-    const rows = optimalRows(r);
     const cards = r.alts.map((a, i) => `
         <div class="res-card">
             <div class="res-card-title">Alternativa ${i + 1}</div>
@@ -606,15 +604,8 @@ function renderResumen(r) {
             <div class="res-card-main">${f(a.hT, 2)} <small>m.c.a.</small></div>
             <div class="res-card-foot">${f(a.Padop, 0)} HP adoptados</div>
         </div>`).join("");
-    const opt = rows[0] ? `
-        <div class="res-card res-opt">
-            <div class="res-card-title">Óptima (algoritmo)</div>
-            <div class="res-card-sub">Suc ${rows[0].succ} / Imp ${rows[0].dn} mm</div>
-            <div class="res-card-main">${f0(rows[0].annual)} <small>$/año</small></div>
-            <div class="res-card-foot">${f(rows[0].m.hT, 2)} m.c.a. · ${f(rows[0].m.Padop, 0)} HP</div>
-        </div>` : "";
-    host.innerHTML = `<div class="res-grid">${cards}${opt}</div>
-        <p class="footnote">Detalle completo en la sección <a href="#alternativas">Alternativas de diámetro ↓</a></p>`;
+    host.innerHTML = `<div class="res-grid">${cards}</div>
+        <p class="footnote">Detalle completo en la sección <a href="#alternativas">Alternativas de diámetro ↓</a> · La alternativa óptima por mínimo costo se calcula en la página <a href="auto.html">Cálculo automático</a>.</p>`;
 }
 
 function formulaBox(label, eq) {
@@ -697,9 +688,6 @@ function renderAlternativas(r) {
     const host = $("alternativas-content");
     if (!host) return;
 
-    const rows = optimalRows(r);
-    const best = rows[0];
-
     const manual = r.alts.map((a, i) => `
         <div class="alt-card">
             <div class="alt-head">
@@ -729,33 +717,7 @@ function renderAlternativas(r) {
             </div>
         </div>`).join("");
 
-    const optCard = best ? `
-        <div class="alt-card alt-opt">
-            <div class="alt-head">
-                <span class="alt-title">Alternativa óptima</span>
-                <span class="alt-badge opt-badge">ALGORITMO</span>
-            </div>
-            <div class="alt-body">
-                <p class="opt-desc">Elegida por <strong>mínimo costo anualizado</strong> entre todos los diámetros que verifican velocidad.</p>
-                <div class="alt-diams">
-                    <div class="field"><label>Succión (mm)</label>
-                        <input type="number" value="${best.m.dS}" disabled></div>
-                    <div class="field"><label>Impulsión (mm)</label>
-                        <input type="number" value="${best.m.dI}" disabled></div>
-                </div>
-                ${metricsHTML(best.m)}
-            </div>
-            <div class="alt-foot">
-                <div class="big-result"><span class="br-label">Altura manométrica total</span>
-                    <span class="br-value">${f(best.m.hT, 2)} <small>m.c.a.</small></span></div>
-                <div class="big-result" style="margin-top:.3rem"><span class="br-label">Potencia adoptada</span>
-                    <span class="br-value">${f(best.m.Padop, 0)} <small>HP</small></span></div>
-                <div class="big-result opt-cost" style="margin-top:.3rem"><span class="br-label">Costo anual total</span>
-                    <span class="br-value">${f0(best.annual)} <small>$/año</small></span></div>
-            </div>
-        </div>` : "";
-
-    host.innerHTML = manual + optCard;
+    host.innerHTML = manual;
 
     for (let i = 0; i < r.alts.length; i++) {
         const s = $("in-altS-" + i), im = $("in-altI-" + i), b = $("in-etaB-" + i), m = $("in-etaM-" + i);
@@ -764,8 +726,6 @@ function renderAlternativas(r) {
         b.addEventListener("input", () => { S.etaB[i] = nf(b); saveState(); scheduleRecompute(); });
         m.addEventListener("input", () => { S.etaM[i] = nf(m); saveState(); scheduleRecompute(); });
     }
-
-    renderOptResult(r);
 }
 
 function renderOptResult(r) {
@@ -1173,10 +1133,12 @@ function collectReportData(r) {
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
     const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
         .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
+    const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
+        .map((hp) => kv(`Costo bomba ${f(hp, 1)} HP`, "$ " + Sopt.bombaCost[hp], "$"));
     const inputsEco = [
         ...pipeCostRows,
+        ...bombaCostRows,
         kv("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
-        kv("Costo de la bomba", "$ " + Sopt.pumpCost, "$/HP"),
         kv("Tasa de descuento", Sopt.rate, "%/año"),
         kv("Mantenimiento", Sopt.maint, "%/año"),
     ];

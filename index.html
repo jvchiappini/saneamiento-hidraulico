@@ -204,62 +204,9 @@
                 <div>
                     <h2>Alternativas de diámetro</h2>
                     <p class="lede">Se eligen <strong>tres diámetros comerciales</strong> alrededor del valor de Bresse
-                        (manualmente) y una <strong>cuarta alternativa óptima</strong> calculada automáticamente por
-                        mínimo costo. La succión debe ser un diámetro superior al de impulsión.</p>
+                        (manualmente). La succión debe ser un diámetro superior al de impulsión. La alternativa óptima
+                        por mínimo costo se calcula en la página <a href="auto.html">Cálculo automático</a>.</p>
                 </div>
-            </div>
-
-            <div class="panel opt-panel">
-                <details class="collapse" open>
-                    <summary>
-                        <span class="tag">Algoritmo</span>
-                        <span>Alternativa óptima por mínimo costo anualizado</span>
-                    </summary>
-                    <div class="collapse-body">
-                        <p class="lede">A diferencia de las 3 alternativas manuales, esta se elige automáticamente: el
-                            algoritmo evalúa todos los diámetros comerciales que verifican velocidad y selecciona el de
-                            <strong>menor costo anual</strong> (inversión de tubería + bomba + energía + mantenimiento).
-                        </p>
-                        <div class="grid-3" id="opt-form"></div>
-
-                        <details class="collapse collapse-inner" open>
-                            <summary>
-                                <span>Costo de tuberías por diámetro <span class="tag">editable</span></span>
-                            </summary>
-                            <div class="collapse-body">
-                                <p class="lede">Valores de referencia predefinidos por diámetro nominal (DN) en $/m.
-                                    Modificalos y el algoritmo recalcula automáticamente la alternativa óptima.</p>
-                                <div id="pipe-cost-form"></div>
-                            </div>
-                        </details>
-
-                        <details class="collapse collapse-inner" open>
-                            <summary>
-                                <span>Costo de motores según potencia (HP) <span class="tag">editable</span></span>
-                            </summary>
-                            <div class="collapse-body">
-                                <p class="lede">Valores de referencia predefinidos por potencia del motor en $. Modificalos
-                                    y el algoritmo recalcula automáticamente la alternativa óptima.</p>
-                                <div id="motor-cost-form"></div>
-                            </div>
-                        </details>
-
-                        <div id="opt-result"></div>
-                        <h3 class="sub-title">Análisis de Pareto</h3>
-                        <p class="lede">Según el principio de Pareto (80/20): se ordenan los costos de mayor a menor para
-                            ver de un vistazo cuánto pesa cada diámetro y qué componente domina el costo de la alternativa
-                            óptima.</p>
-                        <div class="chart-grid">
-                            <div class="chart-box">
-                                <div id="opt-chart"></div>
-                            </div>
-                            <div class="chart-box">
-                                <div id="comp-chart"></div>
-                            </div>
-                        </div>
-                        <div class="formulas" data-formulas="anualidad,costo_tubo,energia,costo_total"></div>
-                    </div>
-                </details>
             </div>
 
             <div class="alt-grid" id="alternativas-content"></div>
