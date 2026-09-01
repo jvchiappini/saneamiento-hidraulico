@@ -755,7 +755,7 @@ function renderPerdidas(r) {
     host.innerHTML = `
         <div class="table-wrap">
             <table>
-                <thead><tr><th>Longitudes equivalentes (Tabla 3 · Norma 68)</th>
+                <thead><tr><th>Longitudes equivalentes (<a href="referencias.html#tabla3" class="link-underlined" style="color:#fff;">Tabla 3 de la Norma 68</a>)</th>
                     <th>Alt 1<br><small>Suc ${r.alts[0].dS} / Imp ${r.alts[0].dI}</small></th>
                     <th>Alt 2<br><small>Suc ${r.alts[1].dS} / Imp ${r.alts[1].dI}</small></th>
                     <th>Alt 3<br><small>Suc ${r.alts[2].dS} / Imp ${r.alts[2].dI}</small></th></tr></thead>
