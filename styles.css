@@ -381,6 +381,7 @@ main {
     display: flex;
     justify-content: space-between;
     gap: .6rem;
+    flex-wrap: wrap;
     font-size: .88rem;
     padding: .3rem 0;
     border-bottom: 1px dashed var(--border);
@@ -421,6 +422,18 @@ main {
 .badge-state.ok { background: var(--good-bg); color: var(--good); }
 .badge-state.fail { background: var(--bad-bg); color: var(--bad); }
 .badge-state.warn { background: var(--warn-bg); color: var(--warn); }
+.badge-state {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .68rem;
+    font-weight: 700;
+    padding: .14rem .45rem;
+    border-radius: 999px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+.res-card .badge-state { font-size: .64rem; }
 
 /* ---------- Alternativa óptima ---------- */
 .opt-panel {

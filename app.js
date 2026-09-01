@@ -158,15 +158,31 @@ function altMetrics(b, dS, dI, etaB, etaM) {
     const hSeg = 0.5;
     const hPozo = Math.max(hCav, hSeg);
 
+    // Verificaciones del Excel (fila 32-33, 52-53, F28)
+    // 0,7 <= v <= 4,0  ->  "Verifica" / "Aumentar Diametro" / "Disminuir Diametro"
+    const vState = (v) => {
+        if (v < 0.7) return { ok: false, text: "Disminuir Diámetro", kind: "warn" };
+        if (v <= 4.0) return { ok: true, text: "Verifica", kind: "ok" };
+        return { ok: false, text: "Aumentar Diámetro", kind: "fail" };
+    };
+    const vStateB = (v) => {
+        if (v <= 0.5) return { ok: false, text: "Disminuir Diámetro", kind: "warn" };
+        return { ok: true, text: "Verifica", kind: "ok" };
+    };
+    const sState = vState(vS);
+    const iState = vState(vI);
+    const sStateB = vStateB(vS);
+    const iStateB = vStateB(vI);
+    // La succión debe ser un diámetro superior al de impulsión (nota F28)
+    const sGtI = dS > dI;
+
     return {
         dS, dI, vS, vI, JS, JI,
         cS, cI, leqS, leqI,
         hS, hI, hT,
         etaB, etaM, Pb, HP, Pmb, holg, Phmb, Padop,
         hCav, hSeg, hPozo,
-        vCheckS: vS >= 0.7 && vS <= 4.0,
-        vCheckI: vI >= 0.7 && vI <= 4.0,
-        vLowS: vS < 0.5, vLowI: vI < 0.5,
+        sState, iState, sStateB, iStateB, sGtI,
     };
 }
 
@@ -199,7 +215,7 @@ function optimalRows(b) {
             etaM = etaMotor(m.Pmb);
         }
 
-        if (!m.vCheckS || !m.vCheckI) continue;
+        if (!m.sState.ok || !m.iState.ok) continue;
 
         const pipeCost = (Sopt.pipeA + Sopt.pipeB * dn) * (S.lImp + S.lSucc);
         const pumpInv = Sopt.pumpCost * m.Padop;
@@ -371,6 +387,8 @@ function renderResumen(r) {
         <div class="res-card">
             <div class="res-card-title">Alternativa ${i + 1}</div>
             <div class="res-card-sub">Suc ${a.dS} / Imp ${a.dI} mm</div>
+            <div class="res-card-foot">v suc ${badge(a.sState)}</div>
+            <div class="res-card-foot">v imp ${badge(a.iState)}</div>
             <div class="res-card-main">${f(a.hT, 2)} <small>m.c.a.</small></div>
             <div class="res-card-foot">${f(a.Padop, 0)} HP adoptados</div>
         </div>`).join("");
@@ -428,17 +446,29 @@ function renderBombeo(r) {
         <p class="footnote">Alrededor del valor de Bresse se eligen tres diámetros comerciales, uno de los cuales se adoptará por mínimo costo.</p>`;
 }
 
-function vBadge(ok, low) {
-    if (!ok) return `<span class="badge-state ${low ? "warn" : "fail"}">${low ? "velocidad baja" : "fuera de rango"}</span>`;
-    return `<span class="badge-state ok">✓ verifica</span>`;
+function badge(state, label) {
+    if (!state) return `<span class="badge-state fail">✕ no verifica</span>`;
+    return `<span class="badge-state ${state.kind}">${state.ok ? "✓ " : "✕ "}${esc(state.text)}</span>`;
+}
+
+function diagBadge(ok) {
+    return ok
+        ? `<span class="badge-state ok">✓ Verifica</span>`
+        : `<span class="badge-state fail">✕ Succión debe ser mayor</span>`;
 }
 
 function metricsHTML(a) {
     return `
-        <div class="metric"><span class="m-label">v succión</span>
-            <span class="m-value">${f(a.vS, 2)} m/s ${vBadge(a.vCheckS, a.vLowS)}</span></div>
-        <div class="metric"><span class="m-label">v impulsión</span>
-            <span class="m-value">${f(a.vI, 2)} m/s ${vBadge(a.vCheckI, a.vLowI)}</span></div>
+        <div class="metric"><span class="m-label">v succión · 0,7–4,0 m/s</span>
+            <span class="m-value">${f(a.vS, 2)} m/s ${badge(a.sState)}</span></div>
+        <div class="metric"><span class="m-label">v impulsión · 0,7–4,0 m/s</span>
+            <span class="m-value">${f(a.vI, 2)} m/s ${badge(a.iState)}</span></div>
+        <div class="metric"><span class="m-label">v &gt; 0,5 m/s (succión)</span>
+            <span class="m-value">${badge(a.sStateB)}</span></div>
+        <div class="metric"><span class="m-label">v &gt; 0,5 m/s (impulsión)</span>
+            <span class="m-value">${badge(a.iStateB)}</span></div>
+        <div class="metric"><span class="m-label">Succión &gt; Impulsión</span>
+            <span class="m-value">${diagBadge(a.sGtI)}</span></div>
         <div class="metric"><span class="m-label">J succión</span>
             <span class="m-value">${f(a.JS, 5)} <small>m/m</small></span></div>
         <div class="metric"><span class="m-label">J impulsión</span>
@@ -900,8 +930,9 @@ function collectReportData(r) {
     ];
 
     const altsData = r.alts.map((a, i) => [
-        "Alt " + (i + 1), a.dS, a.dI, f(a.vS, 2), f(a.vI, 2), f(a.JS, 5), f(a.JI, 5),
-        f(a.leqS, 1), f(a.leqI, 1), f(a.hT, 2), f(a.Pb, 2), f(a.Pmb, 2), f(a.Padop, 0),
+        "Alt " + (i + 1), a.dS, a.dI, f(a.vS, 2), a.sState.text, f(a.vI, 2), a.iState.text,
+        a.sStateB.text, a.iStateB.text, a.sGtI ? "Verifica" : "No verifica",
+        f(a.JS, 5), f(a.JI, 5), f(a.leqS, 1), f(a.leqI, 1), f(a.hT, 2), f(a.Pb, 2), f(a.Pmb, 2), f(a.Padop, 0),
     ]);
     const pozoData = r.alts.map((a, i) => ["Alt " + (i + 1), f(a.hCav, 3), f(a.hSeg, 2), f(a.hPozo, 2)]);
     const optData = best ? [[
@@ -966,7 +997,8 @@ function buildReportHTML(d) {
 
         <div class="info-sec">
             <h4>3 · Alternativas de diámetro</h4>
-            ${wide(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "v imp (m/s)", "J suc (m/m)", "J imp (m/m)",
+            ${wide(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "Verif. suc.", "v imp (m/s)", "Verif. imp.",
+                "v>0,5 suc", "v>0,5 imp", "Suc>Imp", "J suc (m/m)", "J imp (m/m)",
                 "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData)}
         </div>
 
@@ -1089,8 +1121,9 @@ function buildPDF(d) {
     kvTable(d.resBombeo);
 
     heading("3 · Alternativas de diámetro");
-    wideTable(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "v imp (m/s)", "J suc (m/m)", "J imp (m/m)",
-        "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData, 6.5);
+    wideTable(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "Verif. suc.", "v imp (m/s)", "Verif. imp.",
+        "v>0,5 suc", "v>0,5 imp", "Suc>Imp", "J suc (m/m)", "J imp (m/m)",
+        "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData, 5.5);
 
     heading("4 · Alternativa óptima (mínimo costo anualizado)");
     wideTable(["DN Imp (mm)", "DN Suc (mm)", "v imp (m/s)", "Hm (m.c.a.)", "P motor (HP)", "Padop (HP)",
