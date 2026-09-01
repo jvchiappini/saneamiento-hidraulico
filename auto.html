@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saneamiento Hidráulico · Cálculo automático</title>
+    <meta name="description"
+        content="Cálculo totalmente automático del sistema de impulsión (Norma 68): ingresás los parámetros y todo se calcula solo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="auto">
+
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Manual</a></li>
+            <li><a href="auto.html" class="active">Cálculo automático</a></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+        <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento</p>
+            <h1>Cálculo <span class="accent-word">automático</span></h1>
+            <p class="hero-sub">
+                Ingresá los parámetros del proyecto y el sistema resuelve <strong>toda la hoja solo</strong>: caudales,
+                diámetro de Bresse, alternativas comerciales, alternativa óptima por mínimo costo, motor y pozo de
+                bombeo.
+            </p>
+            <div class="hero-kpis" id="auto-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
+        </svg>
+    </header>
+
+    <main>
+        <section class="banner-note">
+            <span class="badge-soft">Norma 68</span>
+            Cálculos según la guía de trabajo práctico de la cátedra. En esta página <strong>no se toman decisiones
+            manuales</strong>: los diámetros y el motor se eligen automáticamente por mínimo costo anualizado. Para
+            decidir a mano, usá la página <a href="index.html">Manual</a>.
+        </section>
+
+        <section class="card step" id="parametros">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <div>
+                    <h2>Parámetros de entrada</h2>
+                    <p class="lede">Todo lo que se necesita del proyecto. El resto se calcula automáticamente.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Urbanismo <span class="tag">Datos del barrio</span></h3>
+                    <div id="datos-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Caudales unitarios <span class="tag">Norma 68 · Tabla 1</span></h3>
+                    <div id="caudales-unitarios-form"></div>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Coeficientes y bombeo</h3>
+                    <div id="bombeo-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Geometría del sistema</h3>
+                    <div id="geom-form"></div>
+                </div>
+            </div>
+            <div class="panel">
+                <h3>Parámetros económicos <span class="tag">Mínimo costo</span></h3>
+                <div class="grid-3" id="opt-form"></div>
+                <details class="collapse collapse-inner" open>
+                    <summary>
+                        <span>Costo de tuberías por diámetro <span class="tag">editable</span></span>
+                    </summary>
+                    <div class="collapse-body">
+                        <div id="pipe-cost-form"></div>
+                    </div>
+                </details>
+                <details class="collapse collapse-inner" open>
+                    <summary>
+                        <span>Costo de motores según potencia (HP) <span class="tag">editable</span></span>
+                    </summary>
+                    <div class="collapse-body">
+                        <div id="motor-cost-form"></div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="card step" id="resultados">
+            <div class="step-head">
+                <span class="step-num">2</span>
+                <div>
+                    <h2>Resultados automáticos</h2>
+                    <p class="lede">Se muestran las alternativas comerciales alrededor del diámetro de Bresse y la
+                        adoptada por mínimo costo anualizado.</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Diámetros comerciales automáticos</h3>
+                <p class="lede">Las tres alternativas más cercanas al diámetro de Bresse, con succión de un diámetro
+                    mayor. El motor se calcula automáticamente con las Tablas 6 y 7 de la Norma 68.</p>
+                <div id="auto-alts"></div>
+            </div>
+
+            <div class="panel opt-panel" style="margin-top:1.2rem">
+                <h3><span class="tag">Algoritmo</span> Alternativa adoptada por mínimo costo</h3>
+                <p class="lede">Entre todas las combinaciones tubería × motor que verifican velocidad se elige la de
+                    <strong>menor costo anual</strong> (tubería + bomba + energía + mantenimiento).
+                </p>
+                <div class="grid-2">
+                    <div id="auto-opt"></div>
+                    <div class="chart-box">
+                        <div id="auto-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+        <p class="footnote">Las fórmulas se renderizan en LaTeX (SVG) y pueden mostrarse u ocultarse desde la barra
+            superior.</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

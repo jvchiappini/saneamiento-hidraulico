@@ -442,6 +442,11 @@ function doRestore() {
 
 /* ================= Render: resultados ================= */
 function renderAll() {
+    if (PAGE === "auto") {
+        renderAutoResults();
+        renderFormulas();
+        return;
+    }
     const r = calc();
     renderHero(r);
     renderResumen(r);
@@ -455,6 +460,120 @@ function renderAll() {
     renderReferencias(r);
     renderInforme(r);
     renderFormulas();
+}
+
+/* ================= Pagina automatica ================= */
+const AUTO_SUCC_POOL = [...CAND_DN, 550, 600, 700];
+
+function autoDiameters(b) {
+    const bresseMm = b.B26 * 1000;
+    const sorted = [...CAND_DN].sort((a, b) => a - b);
+    const near = [...sorted]
+        .sort((x, y) => Math.abs(x - bresseMm) - Math.abs(y - bresseMm))
+        .slice(0, 3)
+        .sort((a, b) => a - b);
+    const etaB = etaBomba(b.D23);
+    return near.map((dI) => {
+        const dS = AUTO_SUCC_POOL.find((s) => s > dI) ?? dI;
+        let etaM = 0.88, m = null;
+        for (let k = 0; k < 3; k++) {
+            m = altMetrics(b, dS, dI, etaB, etaM);
+            etaM = etaMotor(m.Pmb);
+        }
+        return { dI, dS, m, etaB, etaM };
+    });
+}
+
+function renderAutoResults() {
+    const r = calc();
+    const rows = optimalRows(r);
+    const best = rows[0];
+
+    const kpis = $("auto-kpis");
+    if (kpis) {
+        kpis.innerHTML =
+            kpi("Caudal de bombeo", f(r.D23, 2), "l/s") +
+            kpi("Diam. Bresse", "≈ " + f(r.B26 * 1000, 0), "mm") +
+            kpi("Alt. manométrica", best ? f(best.m.hT, 2) : "—", "m.c.a.") +
+            kpi("Potencia adoptada", best ? f(best.m.Padop, 0) : "—", "HP");
+    }
+
+    const alts = $("auto-alts");
+    if (alts) {
+        const auto = autoDiameters(r);
+        alts.innerHTML = `
+            <div class="table-wrap">
+                <table>
+                    <thead><tr>
+                        <th>Alt.</th><th>Imp (mm)</th><th>Suc (mm)</th><th>v imp (m/s)</th>
+                        <th>v suc (m/s)</th><th>Hm (m.c.a.)</th><th>P motor (HP)</th><th>Padop (HP)</th>
+                    </tr></thead>
+                    <tbody>
+                    ${auto.map((a, i) => `
+                        <tr>
+                            <td><strong>${i + 1}</strong></td>
+                            <td><strong>${a.dI}</strong></td><td>${a.dS}</td>
+                            <td>${f(a.m.vI, 2)}</td><td>${f(a.m.vS, 2)}</td>
+                            <td>${f(a.m.hT, 2)}</td><td>${f(a.m.Pmb, 1)}</td>
+                            <td>${f(a.m.Padop, 0)}</td>
+                        </tr>`).join("")}
+                    </tbody>
+                </table>
+            </div>
+            <p class="footnote">
+                Motor calculado automáticamente: η<sub>bomba</sub> ${f(auto[0].etaB * 100, 0)}% (Tabla 6) ·
+                η<sub>motor</sub> iterado con la Tabla 7 · holgura según potencia · potencia comercial adoptada
+                (Tabla 8).
+            </p>`;
+    }
+
+    const opt = $("auto-opt");
+    if (opt) {
+        if (!best) {
+            opt.innerHTML = `<p class="footnote">Ningún diámetro comercial verifica las velocidades (0,7–4,0 m/s) con estos parámetros.</p>`;
+        } else {
+            opt.innerHTML = `
+                <div class="results">
+                    <div class="result-row highlight"><span class="r-label">Diámetro de impulsión adoptado</span>
+                        <span class="r-value"><strong>DN ${best.dn} mm</strong></span></div>
+                    <div class="result-row"><span class="r-label">Diámetro de succión</span>
+                        <span class="r-value">DN ${best.succ} mm</span></div>
+                    <div class="result-row"><span class="r-label">Velocidad en impulsión</span>
+                        <span class="r-value">${f(best.m.vI, 2)} m/s ${badge(best.m.iState)}</span></div>
+                    <div class="result-row"><span class="r-label">Velocidad en succión</span>
+                        <span class="r-value">${f(best.m.vS, 2)} m/s ${badge(best.m.sState)}</span></div>
+                    <div class="result-row highlight"><span class="r-label">Altura manométrica total</span>
+                        <span class="r-value">${f(best.m.hT, 2)} m.c.a.</span></div>
+                    <div class="result-row"><span class="r-label">Potencia del motor</span>
+                        <span class="r-value">${f(best.m.Pmb, 2)} HP</span></div>
+                    <div class="result-row highlight"><span class="r-label">Potencia adoptada</span>
+                        <span class="r-value">${f(best.m.Padop, 0)} HP</span></div>
+                    <div class="result-row"><span class="r-label">Inversión tubería + bomba</span>
+                        <span class="r-value">${f0(best.pipeCost)} + ${f0(best.pumpInv)} $</span></div>
+                    <div class="result-row"><span class="r-label">Energía anual</span>
+                        <span class="r-value">${f0(best.energy)} $/año</span></div>
+                    <div class="result-row highlight"><span class="r-label">Costo anual total</span>
+                        <span class="r-value">${f0(best.annual)} $/año</span></div>
+                    <div class="result-row"><span class="r-label">Pozo — altura por cavitación</span>
+                        <span class="r-value">${f(best.m.hCav, 2)} m</span></div>
+                    <div class="result-row"><span class="r-label">Pozo — altura mínima sobre la criba</span>
+                        <span class="r-value">${f(best.m.hPozo, 2)} m</span></div>
+                </div>`;
+        }
+    }
+
+    const chart = $("auto-chart");
+    if (chart) {
+        if (!rows.length) {
+            chart.innerHTML = "";
+        } else {
+            chart.innerHTML = paretoSVG(
+                "Costo anual por combinación tubería × motor ($/año)",
+                rows.map((row) => ({ label: `${row.dn} mm · ${f(row.m.Padop, 0)} HP`, value: row.annual, hl: row === best })),
+                "Mínimo (óptimo)"
+            );
+        }
+    }
 }
 
 function kpi(label, value, unit) {
