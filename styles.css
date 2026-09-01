@@ -74,8 +74,7 @@ body {
     list-style: none;
     display: flex;
     gap: .2rem;
-    overflow-x: auto;
-    scrollbar-width: none;
+    overflow: visible;
     margin-left: auto;
 }
 
@@ -234,7 +233,8 @@ body {
     color: var(--primary-dark);
 }
 
-.nav-dd:hover .dd-menu {
+.nav-dd:hover .dd-menu,
+.nav-dd.open .dd-menu {
     display: block;
 }
 
@@ -1749,6 +1749,9 @@ footer .footnote {
     .card {
         padding: 1.4rem 1.2rem 1.6rem;
     }
+}
+
+@media (max-width: 1024px) {
 
     .nav-links {
         position: absolute;

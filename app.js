@@ -2752,13 +2752,11 @@ function setupNav() {
     }
     document.querySelectorAll(".nav-dd > a").forEach((a) => {
         a.addEventListener("click", (e) => {
-            if (window.innerWidth < 901) {
-                e.preventDefault();
-                const dd = a.parentElement;
-                const wasOpen = dd.classList.contains("open");
-                document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
-                if (!wasOpen) dd.classList.add("open");
-            }
+            e.preventDefault();
+            const dd = a.parentElement;
+            const wasOpen = dd.classList.contains("open");
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+            if (!wasOpen) dd.classList.add("open");
         });
     });
     document.addEventListener("click", (e) => {
