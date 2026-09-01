@@ -443,6 +443,7 @@ function doRestore() {
 function renderAll() {
     if (PAGE === "auto") {
         renderAutoResults();
+        renderInforme(calc());
         renderFormulas();
         return;
     }
@@ -1182,6 +1183,92 @@ function collectReportData(r) {
     };
 }
 
+/* Informe de la página de cálculo automático */
+function collectAutoReportData(r) {
+    const auto = autoDiameters(r);
+    const rows = optimalRows(r);
+    const best = rows[0];
+    const fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+    const kv = (l, v, u) => [l, v, u];
+
+    const inputsUrban = [
+        kv("Manzanas del barrio", S.manzanas, "manz."),
+        kv("Lotes / edificios por manzana", S.lotes, "lotes"),
+        kv("Pisos tipo por edificio", S.pisos, "pisos"),
+        kv("Departamentos por piso", S.deptos, "deptos"),
+        kv("Dormitorios por departamento", S.dorm, "dorm."),
+        kv("Personas por dormitorio", S.persDorm, "pers"),
+        kv("Personal de servicio por depto.", S.persServ, "pers"),
+        kv("Personal de logística por lote", S.pctLog, "%"),
+    ];
+    const inputsCaud = [
+        kv("Caudal unitario — departamentos", S.qDept, "l/pers/d"),
+        kv("Caudal unitario — logística", S.qLog, "l/pers/d"),
+        kv("K1 — Consumo máx. diario", S.k1, ""),
+        kv("K2 — Consumo máx. horario", S.k2, ""),
+        kv("K3 — Línea de impulsión", S.k3, ""),
+        kv("Horas de operación de la bomba", S.horasOp, "hs/d"),
+    ];
+    const inputsGeom = [
+        kv("Longitud de succión", S.lSucc, "m"),
+        kv("Longitud de impulsión", S.lImp, "m"),
+        kv("Altura topográfica de succión", S.hTopoSucc, "m"),
+        kv("Altura topográfica de impulsión", S.hTopoImp, "m"),
+        kv("Presión de llegada al reservorio", S.pReservorio, "m"),
+    ];
+    const inputsRend = auto.map((a, i) =>
+        kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
+        .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
+    const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
+        .map((hp) => kv(`Costo bomba ${f(hp, 1)} HP`, "$ " + Sopt.bombaCost[hp], "$"));
+    const inputsEco = [
+        ...pipeCostRows,
+        ...bombaCostRows,
+        kv("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
+        kv("Tasa de descuento", Sopt.rate, "%/año"),
+        kv("Mantenimiento", Sopt.maint, "%/año"),
+    ];
+
+    const resCaud = [
+        kv("Total de personas de los departamentos", f0(r.B11), "pers"),
+        kv("Personal de logística", f0(r.B12), "pers"),
+        kv("Caudal medio de bombeo (Qm)", f0(r.B15), "l/d"),
+        kv("Caudal medio de bombeo", f(r.B16, 2), "m³/d"),
+        kv("Caudal medio de bombeo", f(r.B17, 2), "l/s"),
+        kv("Caudal por lote", f0(r.B18), "l/d"),
+        kv("Caudal por lote", f(r.B19, 2), "l/s"),
+    ];
+    const resBombeo = [
+        kv("Caudal de bombeo (Qb)", f(r.B23, 4), "m³/s"),
+        kv("Caudal de bombeo", f(r.D23, 2), "l/s"),
+        kv("Diámetro de impulsión (Bresse)", f(r.B26, 3), "m"),
+    ];
+
+    const altsData = auto.map((a, i) => [
+        "Alt " + (i + 1), a.dS, a.dI, f(a.m.vS, 2), a.m.sState.text, f(a.m.vI, 2), a.m.iState.text,
+        a.m.sStateB.text, a.m.iStateB.text, a.m.sGtI ? "Verifica" : "No verifica",
+        f(a.m.JS, 5), f(a.m.JI, 5), f(a.m.leqS, 1), f(a.m.leqI, 1), f(a.m.hT, 2), f(a.m.Pb, 2), f(a.m.Pmb, 2), f(a.m.Padop, 0),
+    ]);
+    const pozoData = auto.map((a, i) => ["Alt " + (i + 1), f(a.m.hCav, 3), f(a.m.hSeg, 2), f(a.m.hPozo, 2)]);
+    const optData = best ? [[
+        best.dn, best.succ, f(best.m.vI, 2), f(best.m.hT, 2), f(best.m.Pmb, 1), f(best.m.Padop, 0),
+        f0(best.pipeCost), f0(best.pumpInv), f0(best.energy), f0(best.annual),
+    ]] : [["—"]];
+
+    const conclusion = best
+        ? "Se adopta la alternativa óptima: línea de impulsión de DN " + best.dn + " mm con tubería de succión de DN "
+        + best.succ + " mm. La altura manométrica resultante es de " + f(best.m.hT, 2) + " m.c.a., con una potencia "
+        + "adoptada de " + f(best.m.Padop, 0) + " HP y un costo anual de " + f0(best.annual) + " $/año."
+        : "Sin datos suficientes.";
+
+    return {
+        r, rows, best, fecha,
+        inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
+        resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+    };
+}
+
 function buildReportHTML(d) {
     const row = (t) => `<tr><td class="pl">${esc(t[0])}</td><td class="pv">${t[1]}</td><td class="pu">${esc(t[2])}</td></tr>`;
     const table = (rows) => `<table>
@@ -1257,7 +1344,7 @@ function buildReportHTML(d) {
 function renderInforme(r) {
     const host = $("informe-content");
     if (!host) return;
-    host.innerHTML = buildReportHTML(collectReportData(r));
+    host.innerHTML = buildReportHTML(PAGE === "auto" ? collectAutoReportData(r) : collectReportData(r));
 }
 
 function buildPDF(d) {
@@ -1391,7 +1478,7 @@ function setupPdf() {
         const done = () => { btn.disabled = false; btn.textContent = "Descargar PDF"; };
         if (window.jspdf && window.jspdf.jsPDF) {
             try {
-                buildPDF(collectReportData(calc()));
+                buildPDF(PAGE === "auto" ? collectAutoReportData(calc()) : collectReportData(calc()));
             } catch (e) {
                 done();
                 window.print();

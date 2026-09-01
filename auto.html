@@ -132,6 +132,23 @@
                 </div>
             </div>
         </section>
+
+        <section class="card step" id="informe">
+            <div class="step-head">
+                <span class="step-num">▤</span>
+                <div>
+                    <h2>Informe técnico</h2>
+                    <p class="lede">Informe profesional con todos los datos calculados automáticamente. Se genera con los
+                        valores actuales de los parámetros.</p>
+                </div>
+            </div>
+            <div class="informe-toolbar">
+                <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
+                <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como
+                        PDF</strong> (se imprime solo el informe).</span>
+            </div>
+            <div id="informe-content"></div>
+        </section>
     </main>
 
     <footer>
@@ -142,6 +159,8 @@
 
     <script src="data.js"></script>
     <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </body>
 
 </html>
