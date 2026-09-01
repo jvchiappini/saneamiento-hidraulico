@@ -824,3 +824,54 @@ footer .footnote { margin-top: .4rem; font-size: .78rem; }
     .card { padding: 1.4rem 1.2rem 1.6rem; }
     .nav-links { max-width: 100%; }
 }
+
+/* ---------- Tabla 3 Accesorios & Banner ---------- */
+.t3-image-banner {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .8rem 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+}
+.t3-img-title {
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: .5rem;
+}
+.t3-banner-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: #fff;
+}
+.t3-th {
+    text-align: center !important;
+    vertical-align: bottom;
+    padding: .4rem .3rem !important;
+    min-width: 68px;
+}
+.t3-img-header {
+    display: block;
+    height: 38px;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto 4px auto;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 2px 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+.t3-lbl {
+    display: block;
+    font-size: .68rem;
+    line-height: 1.1;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #e2f1ed;
+}

@@ -116,7 +116,7 @@ function etaMotor(hp) {
 /* ================= Calculos base ================= */
 function baseCalc() {
     const B3 = S.manzanas, B4 = S.lotes, B5 = S.pisos, B6 = S.deptos, B7 = S.dorm,
-          B8 = S.persDorm, B9 = S.persServ, B10 = S.pctLog;
+        B8 = S.persDorm, B9 = S.persServ, B10 = S.pctLog;
 
     const B11 = B3 * B4 * (B5 * B6 * (B7 * B8 + B9));
     const B12 = (B6 * B5) * B10 / 100 * B4 * B3;
@@ -881,19 +881,58 @@ function renderReferencias(r) {
     const t3 = $("tabla3");
     if (t3) {
         const used = new Set(r.alts.flatMap((a) => [a.dS, a.dI]));
+        const fv = (v) => (v != null ? f(v, 1) : "—");
         t3.innerHTML = `
             <table>
-                <thead><tr>
-                    <th>DN (mm)</th><th>Ref</th><th>Curva 90°</th><th>Válv. cierre</th>
-                    <th>Tee lateral</th><th>Tee 2 salidas</th><th>Válv. pie</th><th>Válv. retención</th>
-                </tr></thead>
+                <thead>
+                    <tr>
+                        <th>DN (mm)</th>
+                        <th>Ref (")</th>
+                        <th class="t3-th"><img src="fittings/image_1.png" alt="Curva 90" class="t3-img-header"><span class="t3-lbl">Curva 90°</span></th>
+                        <th class="t3-th"><img src="fittings/image_2.png" alt="Accesorio 2" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_3.png" alt="Accesorio 3" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_4.png" alt="Accesorio 4" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_5.png" alt="Accesorio 5" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_6.png" alt="Accesorio 6" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_7.png" alt="Accesorio 7" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_8.png" alt="Accesorio 8" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_9.png" alt="Accesorio 9" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_10.png" alt="Valv. de cierre" class="t3-img-header"><span class="t3-lbl">Valv. cierre</span></th>
+                        <th class="t3-th"><img src="fittings/image_11.png" alt="Valv. de cierre" class="t3-img-header"><span class="t3-lbl">Valv. cierre</span></th>
+                        <th class="t3-th"><img src="fittings/image_12.png" alt="Accesorio 12" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_13.png" alt="Accesorio 13" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_14.png" alt="Tee lateral" class="t3-img-header"><span class="t3-lbl">Tee lateral</span></th>
+                        <th class="t3-th"><img src="fittings/image_15.png" alt="Tee 2 salidas" class="t3-img-header"><span class="t3-lbl">Tee 2 salidas</span></th>
+                        <th class="t3-th"><img src="fittings/image_16.png" alt="Valv. de Pie" class="t3-img-header"><span class="t3-lbl">Valv. Pie</span></th>
+                        <th class="t3-th"><img src="fittings/image_17.png" alt="Accesorio 17" class="t3-img-header"></th>
+                        <th class="t3-th"><img src="fittings/image_18.png" alt="Valv. de retención" class="t3-img-header"><span class="t3-lbl">Valv. retención</span></th>
+                        <th class="t3-th"><img src="fittings/image_19.png" alt="Valv. de retención" class="t3-img-header"><span class="t3-lbl">Valv. retención</span></th>
+                    </tr>
+                </thead>
                 <tbody>
                 ${TABLE3.map((row) => `
                     <tr class="${used.has(row.dn) ? "selected-row" : ""}">
-                        <td>${row.dn}</td><td>${row.ref}</td>
-                        <td>${f(row.curva90, 1)}</td><td>${f(row.valvCierre, 1)}</td>
-                        <td>${f(row.teeLateral, 1)}</td><td>${f(row.tee2, 1)}</td>
-                        <td>${f(row.valvPie, 1)}</td><td>${f(row.valvRet, 1)}</td>
+                        <td><strong>${row.dn}</strong></td>
+                        <td>${row.ref}</td>
+                        <td>${fv(row.curva90)}</td>
+                        <td>${fv(row.img2)}</td>
+                        <td>${fv(row.img3)}</td>
+                        <td>${fv(row.img4)}</td>
+                        <td>${fv(row.img5)}</td>
+                        <td>${fv(row.img6)}</td>
+                        <td>${fv(row.img7)}</td>
+                        <td>${fv(row.img8)}</td>
+                        <td>${fv(row.img9)}</td>
+                        <td>${fv(row.valvCierre)}</td>
+                        <td>${fv(row.valvCierre_11)}</td>
+                        <td>${fv(row.img12)}</td>
+                        <td>${fv(row.img13)}</td>
+                        <td>${fv(row.teeLateral)}</td>
+                        <td>${fv(row.tee2)}</td>
+                        <td>${fv(row.valvPie)}</td>
+                        <td>${fv(row.img17)}</td>
+                        <td>${fv(row.valvRet)}</td>
+                        <td>${fv(row.valvRet_19)}</td>
                     </tr>`).join("")}
                 </tbody>
             </table>`;
@@ -1036,8 +1075,8 @@ function collectReportData(r) {
 
     const conclusion = best
         ? "Se adopta la alternativa óptima: línea de impulsión de DN " + best.dn + " mm con tubería de succión de DN "
-          + best.succ + " mm. La altura manométrica resultante es de " + f(best.m.hT, 2) + " m.c.a., con una potencia "
-          + "adoptada de " + f(best.m.Padop, 0) + " HP y un costo anual de " + f0(best.annual) + " $/año."
+        + best.succ + " mm. La altura manométrica resultante es de " + f(best.m.hT, 2) + " m.c.a., con una potencia "
+        + "adoptada de " + f(best.m.Padop, 0) + " HP y un costo anual de " + f0(best.annual) + " $/año."
         : "Sin datos suficientes.";
 
     return {
@@ -1092,14 +1131,14 @@ function buildReportHTML(d) {
         <div class="info-sec">
             <h4>3 · Alternativas de diámetro</h4>
             ${wide(["Alt", "Suc (mm)", "Imp (mm)", "v suc (m/s)", "Verif. suc.", "v imp (m/s)", "Verif. imp.",
-                "v>0,5 suc", "v>0,5 imp", "Suc>Imp", "J suc (m/m)", "J imp (m/m)",
-                "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData)}
+        "v>0,5 suc", "v>0,5 imp", "Suc>Imp", "J suc (m/m)", "J imp (m/m)",
+        "Leq suc (m)", "Leq imp (m)", "Hm (m.c.a.)", "Pb (cv)", "P motor (HP)", "Padop (HP)"], d.altsData)}
         </div>
 
         <div class="info-sec">
             <h4>4 · Alternativa óptima (mínimo costo anualizado)</h4>
             ${wide(["DN Imp (mm)", "DN Suc (mm)", "v imp (m/s)", "Hm (m.c.a.)", "P motor (HP)", "Padop (HP)",
-                "Inv. tubería ($)", "Inv. bomba ($)", "Energía ($/año)", "Costo anual ($)"], d.optData)}
+            "Inv. tubería ($)", "Inv. bomba ($)", "Energía ($/año)", "Costo anual ($)"], d.optData)}
         </div>
 
         <div class="info-sec">

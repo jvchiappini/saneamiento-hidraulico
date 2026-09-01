@@ -1,375 +1,487 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saneamiento Hidráulico · Sistema de Impulsión</title>
-    <meta name="description" content="Cálculo interactivo de la hoja 'Datos y Sistema de Impulsión' (Norma 68). Datos, caudales, bombeo, alternativas, pérdidas, altura, potencia y pozo.">
+    <meta name="description"
+        content="Cálculo interactivo de la hoja 'Datos y Sistema de Impulsión' (Norma 68). Datos, caudales, bombeo, alternativas, pérdidas, altura, potencia y pozo.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body data-page="index">
 
-<nav class="topnav">
-    <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
-    <ul class="nav-links">
-        <li><a href="index.html" class="active">Inicio</a></li>
-        <li><a href="referencias.html">Norma 68</a></li>
-        <li><a href="formulas.html">Fórmulas</a></li>
-    </ul>
-    <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
-</nav>
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Inicio</a></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+        <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
+    </nav>
 
-<header class="hero" id="top">
-    <div class="hero-inner">
-        <p class="eyebrow">Trabajo práctico · Saneamiento</p>
-        <h1>Sistema de impulsión <span class="accent-word">Río</span></h1>
-        <p class="hero-sub">
-            Cálculo interactivo de la hoja <strong>“Datos y Sistema de Impulsión”</strong>: desde los datos
-            urbanísticos del barrio hasta la potencia de la bomba. Toda la hoja en una sola página, con las
-            tablas de la Norma 68 en una página aparte.
-        </p>
-        <div class="hero-kpis" id="hero-kpis"></div>
-    </div>
-    <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
-    </svg>
-</header>
-
-<main>
-    <section class="banner-note">
-        <span class="badge-soft">Norma 68</span>
-        Cálculos según la guía de trabajo práctico de la cátedra. Las fórmulas se generan en LaTeX y podés
-        mostrarlas/ocultarlas con el botón <strong>“Ver fórmulas”</strong>. Las tablas de referencia están en
-        <a href="referencias.html">Norma 68</a>.
-    </section>
-
-    <section class="card step" id="navegacion">
-        <div class="step-head">
-            <span class="step-num">§</span>
-            <div>
-                <h2>Secciones de la hoja</h2>
-                <p class="lede">Una sola hoja de cálculo (Excel) dividida en secciones. Saltá directamente a cada etapa.</p>
-            </div>
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento</p>
+            <h1>Sistema de impulsión <span class="accent-word">Río</span></h1>
+            <p class="hero-sub">
+                Cálculo interactivo de la hoja <strong>“Datos y Sistema de Impulsión”</strong>: desde los datos
+                urbanísticos del barrio hasta la potencia de la bomba. Toda la hoja en una sola página, con las
+                tablas de la Norma 68 en una página aparte.
+            </p>
+            <div class="hero-kpis" id="hero-kpis"></div>
         </div>
-        <div class="link-grid">
-            <a class="link-card" href="#datos"><span class="lc-num">1</span><h3>Datos del barrio</h3><p>Población del proyecto.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#caudales"><span class="lc-num">2</span><h3>Caudales</h3><p>Población total y consumos.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#bombeo"><span class="lc-num">3</span><h3>Bombeo y Bresse</h3><p>Caudal de bombeo y diámetro.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#alternativas"><span class="lc-num">4</span><h3>Alternativas</h3><p>Diámetros + óptima por costo.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#perdidas"><span class="lc-num">5</span><h3>Pérdidas</h3><p>Fricción y singulares.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#altura"><span class="lc-num">6</span><h3>Altura manométrica</h3><p>Altura que vence la bomba.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#potencia"><span class="lc-num">7</span><h3>Potencia</h3><p>Bomba y motor.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="#pozo"><span class="lc-num">8</span><h3>Pozo de bombeo</h3><p>Cavitación y seguridad.</p><span class="lc-arrow">Ir ↓</span></a>
-            <a class="link-card" href="referencias.html"><span class="lc-num">★</span><h3>Norma 68</h3><p>Tablas 3, 6 y 7.</p><span class="lc-arrow">Ir →</span></a>
-            <a class="link-card" href="formulas.html"><span class="lc-num">ƒ</span><h3>Fórmulas</h3><p>Índice completo con variables.</p><span class="lc-arrow">Ir →</span></a>
-            <a class="link-card" href="#informe"><span class="lc-num">▤</span><h3>Informe técnico</h3><p>Resumen profesional descargable en PDF.</p><span class="lc-arrow">Ir ↓</span></a>
-        </div>
-    </section>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
+        </svg>
+    </header>
 
-    <section class="card step" id="datos">
-        <div class="step-head">
-            <span class="step-num">1</span>
-            <div>
-                <h2>Datos del barrio</h2>
-                <p class="lede">Parámetros urbanísticos que definen la población del proyecto. Editalos y todo el resto se actualiza.</p>
-            </div>
-        </div>
-        <div class="grid-3" id="datos-form"></div>
-        <div class="formulas" data-formulas="personas,logistica"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra</span>
-            </summary>
-            <div class="notes-body">
-                <ul>
-                    <li>De acuerdo a las indicaciones previas del <strong>sistema de ponderación</strong>, modificar los datos de entrada del sistema de impulsión.</li>
-                    <li><strong>Obs.:</strong> solo se modifican las celdas con relleno amarillo (en esta página, los campos editables).</li>
-                    <li>Los <strong>caudales unitarios</strong> se deben verificar en la Norma 68 para cada proyecto.</li>
-                </ul>
-            </div>
-        </details>
-    </section>
+    <main>
+        <section class="banner-note">
+            <span class="badge-soft">Norma 68</span>
+            Cálculos según la guía de trabajo práctico de la cátedra. Las fórmulas se generan en LaTeX y podés
+            mostrarlas/ocultarlas con el botón <strong>“Ver fórmulas”</strong>. Las tablas de referencia están en
+            <a href="referencias.html">Norma 68</a>.
+        </section>
 
-    <section class="card step" id="caudales">
-        <div class="step-head">
-            <span class="step-num">2</span>
-            <div>
-                <h2>Caudales</h2>
-                <p class="lede">Población total y consumos. Los caudales unitarios provienen de la Norma 68 (Tabla 1).</p>
+        <section class="card step" id="navegacion">
+            <div class="step-head">
+                <span class="step-num">§</span>
+                <div>
+                    <h2>Secciones de la hoja</h2>
+                    <p class="lede">Una sola hoja de cálculo (Excel) dividida en secciones. Saltá directamente a cada
+                        etapa.</p>
+                </div>
             </div>
-        </div>
-        <div class="grid-2">
-            <div class="panel">
-                <h3>Caudales unitarios <span class="tag">Norma 68 · Tabla 1</span></h3>
-                <div id="caudales-unitarios-form"></div>
+            <div class="link-grid">
+                <a class="link-card" href="#datos"><span class="lc-num">1</span>
+                    <h3>Datos del barrio</h3>
+                    <p>Población del proyecto.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#caudales"><span class="lc-num">2</span>
+                    <h3>Caudales</h3>
+                    <p>Población total y consumos.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#bombeo"><span class="lc-num">3</span>
+                    <h3>Bombeo y Bresse</h3>
+                    <p>Caudal de bombeo y diámetro.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#alternativas"><span class="lc-num">4</span>
+                    <h3>Alternativas</h3>
+                    <p>Diámetros + óptima por costo.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#perdidas"><span class="lc-num">5</span>
+                    <h3>Pérdidas</h3>
+                    <p>Fricción y singulares.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#altura"><span class="lc-num">6</span>
+                    <h3>Altura manométrica</h3>
+                    <p>Altura que vence la bomba.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#potencia"><span class="lc-num">7</span>
+                    <h3>Potencia</h3>
+                    <p>Bomba y motor.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="#pozo"><span class="lc-num">8</span>
+                    <h3>Pozo de bombeo</h3>
+                    <p>Cavitación y seguridad.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
+                <a class="link-card" href="referencias.html"><span class="lc-num">★</span>
+                    <h3>Norma 68</h3>
+                    <p>Tablas 3, 6 y 7.</p><span class="lc-arrow">Ir →</span>
+                </a>
+                <a class="link-card" href="formulas.html"><span class="lc-num">ƒ</span>
+                    <h3>Fórmulas</h3>
+                    <p>Índice completo con variables.</p><span class="lc-arrow">Ir →</span>
+                </a>
+                <a class="link-card" href="#informe"><span class="lc-num">▤</span>
+                    <h3>Informe técnico</h3>
+                    <p>Resumen profesional descargable en PDF.</p><span class="lc-arrow">Ir ↓</span>
+                </a>
             </div>
-            <div class="panel">
-                <h3>Resultados</h3>
-                <div id="caudales-content"></div>
-            </div>
-        </div>
-        <div class="formulas" data-formulas="qm_l,qm_m3,qm_ls,qlote_l,qlote_ls"></div>
-    </section>
+        </section>
 
-    <section class="card step" id="bombeo">
-        <div class="step-head">
-            <span class="step-num">3</span>
-            <div>
-                <h2>Caudal de bombeo y diámetro de Bresse</h2>
-                <p class="lede">Con los coeficientes K1–K3 y las horas de operación se dimensiona el caudal a impulsar y el diámetro económico teórico.</p>
+        <section class="card step" id="datos">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <div>
+                    <h2>Datos del barrio</h2>
+                    <p class="lede">Parámetros urbanísticos que definen la población del proyecto. Editalos y todo el
+                        resto se actualiza.</p>
+                </div>
             </div>
-        </div>
-        <div class="grid-3" id="bombeo-form"></div>
-        <div id="bombeo-content"></div>
-        <div class="formulas" data-formulas="qb_m3,qb_ls,horas,bresse"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Coeficientes K</span>
-            </summary>
-            <div class="notes-body">
-                <ul>
-                    <li><strong>K1</strong> — Constante de máximo consumo diario (1,2; ronda el 20%). Es un valor que afecta a todo el sistema.</li>
-                    <li><strong>K2</strong> — Consumo máximo horario. Es el rango, el pico que se da entre la línea media y la línea máxima de consumo del día (1,5; ronda el 50%). Interesa dentro de la distribución para las viviendas.</li>
-                    <li><strong>K3</strong> — Solo va en la línea de impulsión y durante toda la planta de tratamiento. Es el agua que se requiere diariamente para el mantenimiento de la planta, que consiste en el lavado de los filtros (1,05; ronda el 5%).</li>
-                </ul>
-            </div>
-        </details>
-    </section>
-
-    <section class="card step" id="alternativas">
-        <div class="step-head">
-            <span class="step-num">4</span>
-            <div>
-                <h2>Alternativas de diámetro</h2>
-                <p class="lede">Se eligen <strong>tres diámetros comerciales</strong> alrededor del valor de Bresse (manualmente) y una <strong>cuarta alternativa óptima</strong> calculada automáticamente por mínimo costo. La succión debe ser un diámetro superior al de impulsión.</p>
-            </div>
-        </div>
-
-        <div class="panel opt-panel">
-            <h3><span class="tag">Algoritmo</span> Alternativa óptima por mínimo costo anualizado</h3>
-            <p class="lede">A diferencia de las 3 alternativas manuales, esta se elige automáticamente: el algoritmo evalúa todos los diámetros comerciales que verifican velocidad y selecciona el de <strong>menor costo anual</strong> (inversión de tubería + bomba + energía + mantenimiento).</p>
-            <div class="grid-3" id="opt-form"></div>
-            <h3 class="sub-title">Costo de tuberías por diámetro <span class="tag">editable</span></h3>
-            <p class="lede">Valores de referencia predefinidos por diámetro nominal (DN) en $/m. Modificalos y el algoritmo recalcula automáticamente la alternativa óptima.</p>
-            <div id="pipe-cost-form"></div>
-            <div id="opt-result"></div>
-            <h3 class="sub-title">Análisis de Pareto</h3>
-            <p class="lede">Según el principio de Pareto (80/20): se ordenan los costos de mayor a menor para ver de un vistazo cuánto pesa cada diámetro y qué componente domina el costo de la alternativa óptima.</p>
-            <div class="chart-grid">
-                <div class="chart-box"><div id="opt-chart"></div></div>
-                <div class="chart-box"><div id="comp-chart"></div></div>
-            </div>
-            <div class="formulas" data-formulas="anualidad,costo_tubo,energia,costo_total"></div>
-        </div>
-
-        <div class="alt-grid" id="alternativas-content"></div>
-        <div class="formulas" data-formulas="vel,verif_vel,j_pt,leq_s,leq_i,perd_s,perd_i,hm_s,hm_i,hm_total,pb_cv,p_hp,pmb,holgura,phmb"></div>
-
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Diámetros</span>
-            </summary>
-            <div class="notes-body">
-                <div class="notes-block">
-                    <h4>Diámetro de impulsión</h4>
+            <div class="grid-3" id="datos-form"></div>
+            <div class="formulas" data-formulas="personas,logistica"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra</span>
+                </summary>
+                <div class="notes-body">
                     <ul>
-                        <li>Generalmente se colocan <strong>3 alternativas</strong> de diámetro.</li>
-                        <li>La recomendación es tomar al menos <strong>una tubería de diámetro inferior y una de diámetro superior</strong> al valor de Bresse.</li>
-                        <li>Para elegir se deben considerar los costos de tuberías, mantenimiento, etc., y ver cuál es el <strong>más económico a corto y largo plazo</strong>.</li>
+                        <li>De acuerdo a las indicaciones previas del <strong>sistema de ponderación</strong>, modificar
+                            los datos de entrada del sistema de impulsión.</li>
+                        <li><strong>Obs.:</strong> solo se modifican las celdas con relleno amarillo (en esta página,
+                            los campos editables).</li>
+                        <li>Los <strong>caudales unitarios</strong> se deben verificar en la Norma 68 para cada
+                            proyecto.</li>
                     </ul>
                 </div>
-                <div class="notes-block">
-                    <h4>Diámetro de succión</h4>
+            </details>
+        </section>
+
+        <section class="card step" id="caudales">
+            <div class="step-head">
+                <span class="step-num">2</span>
+                <div>
+                    <h2>Caudales</h2>
+                    <p class="lede">Población total y consumos. Los caudales unitarios provienen de la Norma 68 (Tabla
+                        1).</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Caudales unitarios <span class="tag">Norma 68 · Tabla 1</span></h3>
+                    <div id="caudales-unitarios-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="caudales-content"></div>
+                </div>
+            </div>
+            <div class="formulas" data-formulas="qm_l,qm_m3,qm_ls,qlote_l,qlote_ls"></div>
+        </section>
+
+        <section class="card step" id="bombeo">
+            <div class="step-head">
+                <span class="step-num">3</span>
+                <div>
+                    <h2>Caudal de bombeo y diámetro de Bresse</h2>
+                    <p class="lede">Con los coeficientes K1–K3 y las horas de operación se dimensiona el caudal a
+                        impulsar y el diámetro económico teórico.</p>
+                </div>
+            </div>
+            <div class="grid-3" id="bombeo-form"></div>
+            <div id="bombeo-content"></div>
+            <div class="formulas" data-formulas="qb_m3,qb_ls,horas,bresse"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Coeficientes K</span>
+                </summary>
+                <div class="notes-body">
                     <ul>
-                        <li><strong>Siempre debe ser mayor</strong> al de impulsión.</li>
-                        <li>Luego se verifican las velocidades, para saber si el caudal que se está considerando verifica las condiciones de diseño.</li>
+                        <li><strong>K1</strong> — Constante de máximo consumo diario (1,2; ronda el 20%). Es un valor
+                            que afecta a todo el sistema.</li>
+                        <li><strong>K2</strong> — Consumo máximo horario. Es el rango, el pico que se da entre la línea
+                            media y la línea máxima de consumo del día (1,5; ronda el 50%). Interesa dentro de la
+                            distribución para las viviendas.</li>
+                        <li><strong>K3</strong> — Solo va en la línea de impulsión y durante toda la planta de
+                            tratamiento. Es el agua que se requiere diariamente para el mantenimiento de la planta, que
+                            consiste en el lavado de los filtros (1,05; ronda el 5%).</li>
                     </ul>
                 </div>
-            </div>
-        </details>
+            </details>
+        </section>
 
-        <div class="costos-grid" style="margin-top:1.4rem">
-            <div class="panel">
-                <h3>Selección del diámetro de mínimo costo</h3>
-                <ul class="clean-list">
-                    <li><strong>Inversión</strong> — costo de la tubería y del equipo de bombeo.</li>
-                    <li><strong>Operación y mantenimiento</strong> — costo de la energía (potencia) y mantenimiento.</li>
-                    <li><strong>Vida útil</strong> — bomba 7 años, tubería 50 años.</li>
-                </ul>
+        <section class="card step" id="alternativas">
+            <div class="step-head">
+                <span class="step-num">4</span>
+                <div>
+                    <h2>Alternativas de diámetro</h2>
+                    <p class="lede">Se eligen <strong>tres diámetros comerciales</strong> alrededor del valor de Bresse
+                        (manualmente) y una <strong>cuarta alternativa óptima</strong> calculada automáticamente por
+                        mínimo costo. La succión debe ser un diámetro superior al de impulsión.</p>
+                </div>
             </div>
-            <div class="panel">
-                <h3>Criterio</h3>
-                <p>El diámetro más adecuado es el que minimiza el costo total anualizado. Un diámetro mayor reduce pérdidas (menos energía) pero aumenta la inversión en tubería; uno menor reduce la inversión pero aumenta el consumo de energía.</p>
-            </div>
-        </div>
-    </section>
 
-    <section class="card step" id="perdidas">
-        <div class="step-head">
-            <span class="step-num">5</span>
-            <div>
-                <h2>Pérdidas de carga</h2>
-                <p class="lede">Pérdidas por fricción (Fair–Whipple–Hsiao, acero galvanizado) y por singularidades (longitudes equivalentes, Tabla 3 de la Norma 68).</p>
+            <div class="panel opt-panel">
+                <h3><span class="tag">Algoritmo</span> Alternativa óptima por mínimo costo anualizado</h3>
+                <p class="lede">A diferencia de las 3 alternativas manuales, esta se elige automáticamente: el algoritmo
+                    evalúa todos los diámetros comerciales que verifican velocidad y selecciona el de <strong>menor
+                        costo anual</strong> (inversión de tubería + bomba + energía + mantenimiento).</p>
+                <div class="grid-3" id="opt-form"></div>
+                <h3 class="sub-title">Costo de tuberías por diámetro <span class="tag">editable</span></h3>
+                <p class="lede">Valores de referencia predefinidos por diámetro nominal (DN) en $/m. Modificalos y el
+                    algoritmo recalcula automáticamente la alternativa óptima.</p>
+                <div id="pipe-cost-form"></div>
+                <div id="opt-result"></div>
+                <h3 class="sub-title">Análisis de Pareto</h3>
+                <p class="lede">Según el principio de Pareto (80/20): se ordenan los costos de mayor a menor para ver de
+                    un vistazo cuánto pesa cada diámetro y qué componente domina el costo de la alternativa óptima.</p>
+                <div class="chart-grid">
+                    <div class="chart-box">
+                        <div id="opt-chart"></div>
+                    </div>
+                    <div class="chart-box">
+                        <div id="comp-chart"></div>
+                    </div>
+                </div>
+                <div class="formulas" data-formulas="anualidad,costo_tubo,energia,costo_total"></div>
             </div>
-        </div>
-        <div id="perdidas-content"></div>
-        <div class="formulas" data-formulas="j_pt,leq_s,leq_i,perd_s,perd_i"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Pérdidas y longitudes</span>
-            </summary>
-            <div class="notes-body">
-                <div class="notes-block">
-                    <h4>Pérdidas localizadas</h4>
-                    <ul>
-                        <li>Se ven los <strong>accesorios</strong>.</li>
-                        <li>Se verifican las pérdidas en la <strong>Tabla 3 de la Norma 68</strong>.</li>
-                        <li><strong>Obs.:</strong> en la práctica no hay tubería de 125.</li>
-                        <li><strong>Válvula de cierre</strong> → el registro de globo abierto es el que más se usa para este caso.</li>
+
+            <div class="alt-grid" id="alternativas-content"></div>
+            <div class="formulas"
+                data-formulas="vel,verif_vel,j_pt,leq_s,leq_i,perd_s,perd_i,hm_s,hm_i,hm_total,pb_cv,p_hp,pmb,holgura,phmb">
+            </div>
+
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Diámetros</span>
+                </summary>
+                <div class="notes-body">
+                    <div class="notes-block">
+                        <h4>Diámetro de impulsión</h4>
+                        <ul>
+                            <li>Generalmente se colocan <strong>3 alternativas</strong> de diámetro.</li>
+                            <li>La recomendación es tomar al menos <strong>una tubería de diámetro inferior y una de
+                                    diámetro superior</strong> al valor de Bresse.</li>
+                            <li>Para elegir se deben considerar los costos de tuberías, mantenimiento, etc., y ver cuál
+                                es el <strong>más económico a corto y largo plazo</strong>.</li>
+                        </ul>
+                    </div>
+                    <div class="notes-block">
+                        <h4>Diámetro de succión</h4>
+                        <ul>
+                            <li><strong>Siempre debe ser mayor</strong> al de impulsión.</li>
+                            <li>Luego se verifican las velocidades, para saber si el caudal que se está considerando
+                                verifica las condiciones de diseño.</li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+
+            <div class="costos-grid" style="margin-top:1.4rem">
+                <div class="panel">
+                    <h3>Selección del diámetro de mínimo costo</h3>
+                    <ul class="clean-list">
+                        <li><strong>Inversión</strong> — costo de la tubería y del equipo de bombeo.</li>
+                        <li><strong>Operación y mantenimiento</strong> — costo de la energía (potencia) y mantenimiento.
+                        </li>
+                        <li><strong>Vida útil</strong> — bomba 7 años, tubería 50 años.</li>
                     </ul>
                 </div>
-                <div class="notes-block">
-                    <h4>Longitud de tubería</h4>
+                <div class="panel">
+                    <h3>Criterio</h3>
+                    <p>El diámetro más adecuado es el que minimiza el costo total anualizado. Un diámetro mayor reduce
+                        pérdidas (menos energía) pero aumenta la inversión en tubería; uno menor reduce la inversión
+                        pero aumenta el consumo de energía.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="perdidas">
+            <div class="step-head">
+                <span class="step-num">5</span>
+                <div>
+                    <h2>Pérdidas de carga</h2>
+                    <p class="lede">Pérdidas por fricción (Fair–Whipple–Hsiao, acero galvanizado) y por singularidades
+                        (longitudes equivalentes, Tabla 3 de la Norma 68).</p>
+                </div>
+            </div>
+            <div id="perdidas-content"></div>
+            <details class="notes" style="margin-top:1.2rem">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path
+                            d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z">
+                        </path>
+                    </svg>
+                    <span>Ver Tabla 3 completa — Longitudes equivalentes (Norma 68) con accesorios e imágenes</span>
+                </summary>
+                <div class="notes-body" style="padding-top: .8rem">
+                    <div class="t3-image-banner">
+                        <p class="t3-img-title">Esquema gráfico original de accesorios (Norma 68 · Tabla 3):</p>
+                        <img src="image.png" alt="Accesorios Tabla 3 Norma 68" class="t3-banner-img">
+                    </div>
+                    <div class="table-wrap" id="tabla3"></div>
+                </div>
+            </details>
+            <div class="formulas" data-formulas="j_pt,leq_s,leq_i,perd_s,perd_i"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Pérdidas y longitudes</span>
+                </summary>
+                <div class="notes-body">
+                    <div class="notes-block">
+                        <h4>Pérdidas localizadas</h4>
+                        <ul>
+                            <li>Se ven los <strong>accesorios</strong>.</li>
+                            <li>Se verifican las pérdidas en la <strong>Tabla 3 de la Norma 68</strong>.</li>
+                            <li><strong>Obs.:</strong> en la práctica no hay tubería de 125.</li>
+                            <li><strong>Válvula de cierre</strong> → el registro de globo abierto es el que más se usa
+                                para este caso.</li>
+                        </ul>
+                    </div>
+                    <div class="notes-block">
+                        <h4>Longitud de tubería</h4>
+                        <ul>
+                            <li><strong>Succión:</strong> en la estación de bombeo (toma de agua) → longitud vertical
+                                H<sub>s</sub> = 2 m (valor fijo).</li>
+                            <li><strong>Impulsión:</strong> es desde la toma de agua hasta la planta de tratamiento.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="card step" id="altura">
+            <div class="step-head">
+                <span class="step-num">6</span>
+                <div>
+                    <h2>Altura manométrica</h2>
+                    <p class="lede">Suma de altura topográfica, pérdidas (fricción + singulares) y altura de velocidad.
+                        Es la altura que debe vencer la bomba.</p>
+                </div>
+            </div>
+            <div class="grid-3" id="geom-form"></div>
+            <div id="altura-content"></div>
+            <div class="formulas" data-formulas="vel,hm_s,hm_i,hm_total"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Altura y velocidad</span>
+                </summary>
+                <div class="notes-body">
+                    <div class="notes-block">
+                        <h4>Altura topográfica de impulsión</h4>
+                        <p><strong>Cota P.T.A. – Cota T.A. + 4 m.</strong> Se le suman 4 m porque las cotas son solo
+                            desde el nivel del suelo, pero se tiene una altura en el gráfico.</p>
+                    </div>
+                    <div class="notes-block">
+                        <h4>Velocidad en la tubería</h4>
+                        <ul>
+                            <li>Se debe ir <strong>verificando la velocidad</strong> en las tuberías.</li>
+                            <li><strong>Presión de llegada al reservorio:</strong> es la presión del agua en el punto de
+                                llegada P<sub>s</sub>. Se le da 0,50 m para que el agua reciba una pequeña presión a más
+                                y llegue.</li>
+                        </ul>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="card step" id="potencia">
+            <div class="step-head">
+                <span class="step-num">7</span>
+                <div>
+                    <h2>Potencia de la bomba y del motor</h2>
+                    <p class="lede">Potencia hidráulica, al freno y al motor, con rendimientos de las Tablas 6 y 7 de la
+                        Norma 68, holgura y potencia comercial adoptada (Tabla 8).</p>
+                </div>
+            </div>
+            <div id="potencia-content"></div>
+            <div class="formulas" data-formulas="pb_cv,p_hp,pmb,holgura,phmb"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Potencia de la bomba</span>
+                </summary>
+                <div class="notes-body">
                     <ul>
-                        <li><strong>Succión:</strong> en la estación de bombeo (toma de agua) → longitud vertical H<sub>s</sub> = 2 m (valor fijo).</li>
-                        <li><strong>Impulsión:</strong> es desde la toma de agua hasta la planta de tratamiento.</li>
+                        <li>Para el cálculo de la bomba se usa la <strong>ecuación de potencia</strong> (ver fórmula en
+                            pantalla).</li>
+                        <li>Densidad del agua = <strong>1000 kg/m³</strong>.</li>
+                        <li><strong>Q</strong> = caudal de bombeo · <strong>H</strong> = pérdida manométrica.</li>
+                        <li><strong>η<sub>bomba</sub></strong> = pérdida en la bomba (Tabla VI).</li>
+                        <li><strong>η<sub>motor</sub></strong> = pérdida del motor (Tabla VII). <em>Si pasa de 100 →
+                                90%.</em></li>
+                        <li><strong>Holgura:</strong> valores muy altos son carísimos, debido a la longitud muy grande.
+                            En torno a 10 CV es normal.</li>
+                        <li><strong>Obs.:</strong> a veces conviene adoptar una velocidad menor a la que verifica, para
+                            tener una bomba de menor potencia, aunque eso implique que la tubería sea más costosa.</li>
                     </ul>
                 </div>
-            </div>
-        </details>
-    </section>
+            </details>
+        </section>
 
-    <section class="card step" id="altura">
-        <div class="step-head">
-            <span class="step-num">6</span>
-            <div>
-                <h2>Altura manométrica</h2>
-                <p class="lede">Suma de altura topográfica, pérdidas (fricción + singulares) y altura de velocidad. Es la altura que debe vencer la bomba.</p>
-            </div>
-        </div>
-        <div class="grid-3" id="geom-form"></div>
-        <div id="altura-content"></div>
-        <div class="formulas" data-formulas="vel,hm_s,hm_i,hm_total"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Altura y velocidad</span>
-            </summary>
-            <div class="notes-body">
-                <div class="notes-block">
-                    <h4>Altura topográfica de impulsión</h4>
-                    <p><strong>Cota P.T.A. – Cota T.A. + 4 m.</strong> Se le suman 4 m porque las cotas son solo desde el nivel del suelo, pero se tiene una altura en el gráfico.</p>
+        <section class="card step" id="pozo">
+            <div class="step-head">
+                <span class="step-num">8</span>
+                <div>
+                    <h2>Pozo de bombeo</h2>
+                    <p class="lede">Altura mínima del agua sobre la criba para evitar cavitación y garantizar seguridad
+                        de operación.</p>
                 </div>
-                <div class="notes-block">
-                    <h4>Velocidad en la tubería</h4>
+            </div>
+            <div id="pozo-content"></div>
+            <div class="formulas" data-formulas="cavitacion,pozo"></div>
+            <details class="notes">
+                <summary>
+                    <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor"
+                        aria-hidden="true">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
+                    </svg>
+                    <span>Notas de la cátedra — Pozo de bombeo</span>
+                </summary>
+                <div class="notes-body">
                     <ul>
-                        <li>Se debe ir <strong>verificando la velocidad</strong> en las tuberías.</li>
-                        <li><strong>Presión de llegada al reservorio:</strong> es la presión del agua en el punto de llegada P<sub>s</sub>. Se le da 0,50 m para que el agua reciba una pequeña presión a más y llegue.</li>
+                        <li>Se recomienda <strong>50 cm por seguridad</strong>.</li>
+                        <li>Se debe ver la <strong>tubería más barata</strong>. Considerar todos los costos que se
+                            mencionan.</li>
+                        <li>Bombas de <strong>5 a 25 HP</strong> son las más recomendadas en términos económicos.</li>
                     </ul>
                 </div>
-            </div>
-        </details>
-    </section>
+            </details>
+        </section>
 
-    <section class="card step" id="potencia">
-        <div class="step-head">
-            <span class="step-num">7</span>
-            <div>
-                <h2>Potencia de la bomba y del motor</h2>
-                <p class="lede">Potencia hidráulica, al freno y al motor, con rendimientos de las Tablas 6 y 7 de la Norma 68, holgura y potencia comercial adoptada (Tabla 8).</p>
+        <section class="card step" id="informe">
+            <div class="step-head">
+                <span class="step-num">▤</span>
+                <div>
+                    <h2>Informe técnico</h2>
+                    <p class="lede">Informe profesional con todos los datos calculados. Se genera automáticamente con
+                        los valores actuales de la hoja.</p>
+                </div>
             </div>
-        </div>
-        <div id="potencia-content"></div>
-        <div class="formulas" data-formulas="pb_cv,p_hp,pmb,holgura,phmb"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Potencia de la bomba</span>
-            </summary>
-            <div class="notes-body">
-                <ul>
-                    <li>Para el cálculo de la bomba se usa la <strong>ecuación de potencia</strong> (ver fórmula en pantalla).</li>
-                    <li>Densidad del agua = <strong>1000 kg/m³</strong>.</li>
-                    <li><strong>Q</strong> = caudal de bombeo · <strong>H</strong> = pérdida manométrica.</li>
-                    <li><strong>η<sub>bomba</sub></strong> = pérdida en la bomba (Tabla VI).</li>
-                    <li><strong>η<sub>motor</sub></strong> = pérdida del motor (Tabla VII). <em>Si pasa de 100 → 90%.</em></li>
-                    <li><strong>Holgura:</strong> valores muy altos son carísimos, debido a la longitud muy grande. En torno a 10 CV es normal.</li>
-                    <li><strong>Obs.:</strong> a veces conviene adoptar una velocidad menor a la que verifica, para tener una bomba de menor potencia, aunque eso implique que la tubería sea más costosa.</li>
-                </ul>
+            <div class="informe-toolbar">
+                <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
+                <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como
+                        PDF</strong> (se imprime solo el informe).</span>
             </div>
-        </details>
-    </section>
+            <div id="informe-content"></div>
+        </section>
+    </main>
 
-    <section class="card step" id="pozo">
-        <div class="step-head">
-            <span class="step-num">8</span>
-            <div>
-                <h2>Pozo de bombeo</h2>
-                <p class="lede">Altura mínima del agua sobre la criba para evitar cavitación y garantizar seguridad de operación.</p>
-            </div>
-        </div>
-        <div id="pozo-content"></div>
-        <div class="formulas" data-formulas="cavitacion,pozo"></div>
-        <details class="notes">
-            <summary>
-                <svg class="notes-icon" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
-                    <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"></path>
-                </svg>
-                <span>Notas de la cátedra — Pozo de bombeo</span>
-            </summary>
-            <div class="notes-body">
-                <ul>
-                    <li>Se recomienda <strong>50 cm por seguridad</strong>.</li>
-                    <li>Se debe ver la <strong>tubería más barata</strong>. Considerar todos los costos que se mencionan.</li>
-                    <li>Bombas de <strong>5 a 25 HP</strong> son las más recomendadas en términos económicos.</li>
-                </ul>
-            </div>
-        </details>
-    </section>
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+        <p class="footnote">Las fórmulas se renderizan en LaTeX (SVG) y pueden mostrarse u ocultarse desde la barra
+            superior.</p>
+    </footer>
 
-    <section class="card step" id="informe">
-        <div class="step-head">
-            <span class="step-num">▤</span>
-            <div>
-                <h2>Informe técnico</h2>
-                <p class="lede">Informe profesional con todos los datos calculados. Se genera automáticamente con los valores actuales de la hoja.</p>
-            </div>
-        </div>
-        <div class="informe-toolbar">
-            <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
-            <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como PDF</strong> (se imprime solo el informe).</span>
-        </div>
-        <div id="informe-content"></div>
-    </section>
-</main>
-
-<footer>
-    <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
-    <p class="footnote">Las fórmulas se renderizan en LaTeX (SVG) y pueden mostrarse u ocultarse desde la barra superior.</p>
-</footer>
-
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </body>
+
 </html>
