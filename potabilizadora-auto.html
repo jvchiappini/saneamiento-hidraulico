@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saneamiento Hidráulico · Potabilizadora (Auto)</title>
+    <meta name="description"
+        content="Cálculo automático de la hoja 'POTABILIZADORA' (Norma 68): ingresás los parámetros y todo se calcula y redondea solo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="potab-auto">
+
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Impulsión · Manual</a></li>
+            <li><a href="auto.html">Impulsión · Auto</a></li>
+            <li><a href="potabilizadora.html">Potabilizadora · Manual</a></li>
+            <li><a href="potabilizadora-auto.html" class="active">Potabilizadora · Auto</a></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+        <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento</p>
+            <h1>Potabilizadora <span class="accent-word">automática</span></h1>
+            <p class="hero-sub">
+                Ingresá los parámetros de base y el sistema <strong>resuelve toda la hoja POTABILIZADORA solo</strong>,
+                adoptando y redondeando los valores de diseño. Se muestra un resumen final de la planta.
+            </p>
+            <div class="hero-kpis" id="potab-hero-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
+        </svg>
+    </header>
+
+    <main>
+        <section class="banner-note">
+            <span class="badge-soft">Norma 68</span>
+            En esta página <strong>no se toman decisiones manuales</strong>: solo ingresás el caudal diario, los
+            coeficientes K1–K3 y los tanteos mínimos; el resto se calcula, adopta y redondea automáticamente. Para
+            decidir a mano, usá <a href="potabilizadora.html">Potabilizadora · Manual</a>.
+        </section>
+
+        <section class="card step" id="parametros">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <div>
+                    <h2>Parámetros de base</h2>
+                    <p class="lede">Todo lo que se necesita del proyecto. El resto de la hoja se calcula solo.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Caudal y coeficientes <span class="tag">editable</span></h3>
+                    <div id="potab-base-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Tanteos mínimos <span class="tag">editable</span></h3>
+                    <div id="potab-tanteo-form"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="resultados">
+            <div class="step-head">
+                <span class="step-num">2</span>
+                <div>
+                    <h2>Resultados automáticos</h2>
+                    <p class="lede">Todos los módulos de la hoja resueltos con valores adoptados automáticamente.</p>
+                </div>
+            </div>
+            <div id="potab-auto-results"></div>
+        </section>
+
+        <section class="card step" id="informe">
+            <div class="step-head">
+                <span class="step-num">▤</span>
+                <div>
+                    <h2>Informe técnico</h2>
+                    <p class="lede">Resumen profesional de la planta potabilizadora generado automáticamente.</p>
+                </div>
+            </div>
+            <div class="informe-toolbar">
+                <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
+                <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como
+                        PDF</strong>.</span>
+            </div>
+            <div id="informe-content"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+        <p class="footnote">Hoja POTABILIZADORA: captación, mezcla, floculación, sedimentación, filtración y cloración.
+        </p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saneamiento Hidráulico · Potabilizadora (Manual)</title>
+    <meta name="description"
+        content="Cálculo manual de la hoja 'POTABILIZADORA' (Norma 68): captación, mezcla rápida, floculación, sedimentación, filtración y cloración.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="potab">
+
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Impulsión · Manual</a></li>
+            <li><a href="auto.html">Impulsión · Auto</a></li>
+            <li><a href="potabilizadora.html" class="active">Potabilizadora · Manual</a></li>
+            <li><a href="potabilizadora-auto.html">Potabilizadora · Auto</a></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+        <button class="btn-toggle" id="toggle-formulas" type="button">Ver fórmulas</button>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento</p>
+            <h1>Planta <span class="accent-word">Potabilizadora</span></h1>
+            <p class="hero-sub">
+                Cálculo interactivo de la hoja <strong>“POTABILIZADORA”</strong>: desde la captación hasta el
+                reservorio de agua tratada, pasando por mezcla rápida, floculación, sedimentación, filtración y
+                cloración. En esta página <strong>vos decidís</strong> los valores adoptados y de tanteo.
+            </p>
+            <div class="hero-kpis" id="potab-hero-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path>
+        </svg>
+    </header>
+
+    <main>
+        <section class="banner-note">
+            <span class="badge-soft">Norma 68</span>
+            Cálculos según la guía de trabajo práctico de la cátedra. En esta página <strong>manual</strong> editás los
+            valores adoptados y de tanteo (celdas amarillas de la hoja) y todo lo demás se recalcula. Para que el
+            sistema elija solo, usá la página <a href="potabilizadora-auto.html">Potabilizadora · Auto</a>.
+        </section>
+
+        <section class="card step" id="captacion">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <div>
+                    <h2>Caudal de captación (Q<sub>cap</sub>)</h2>
+                    <p class="lede">A partir del caudal diario de la hoja de datos y de los coeficientes K1 y K3.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Parámetros <span class="tag">editable</span></h3>
+                    <div id="potab-cap-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-cap-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="aquietamiento">
+            <div class="step-head">
+                <span class="step-num">2</span>
+                <div>
+                    <h2>Cámara de aquietamiento</h2>
+                    <p class="lede">Área y lados a partir de la velocidad ascensional adoptada; profundidad según el
+                        tiempo de aquietamiento.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado / tanteo</span></h3>
+                    <div id="potab-aq-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-aq-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="parshall">
+            <div class="step-head">
+                <span class="step-num">3</span>
+                <div>
+                    <h2>Canal Parshall (aforador) — posible mezclador rápido</h2>
+                    <p class="lede">Dimensión del aforador y verificación de la velocidad para su uso como mezclador
+                        rápido (≥ 2 m/s).</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado</span></h3>
+                    <div id="potab-parshall-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-parshall-content"></div>
+                </div>
+            </div>
+            <details class="collapse collapse-inner" open>
+                <summary><span>Tabla de referencia del aforador Parshall (garganta y caudales)</span></summary>
+                <div class="collapse-body">
+                    <div class="table-wrap" id="potab-parshall-tabla"></div>
+                </div>
+            </details>
+        </section>
+
+        <section class="card step" id="vertedero">
+            <div class="step-head">
+                <span class="step-num">4</span>
+                <div>
+                    <h2>Vertedero triangular en “V”</h2>
+                    <p class="lede">Usado en caso de que no verifique el Parshall. Se calcula la lámina máxima, el
+                        resalto hidráulico y el gradiente de velocidad G (que debe superar a Gr).</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado</span></h3>
+                    <div id="potab-vertedero-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados del vertedero</h3>
+                    <div id="potab-vertedero-content"></div>
+                </div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Resalto hidráulico y gradiente de velocidad</h3>
+                <div id="potab-resalto-content"></div>
+            </div>
+        </section>
+
+        <section class="card step" id="estabilizacion">
+            <div class="step-head">
+                <span class="step-num">5</span>
+                <div>
+                    <h2>Canal de estabilización</h2>
+                    <p class="lede">Longitud necesaria a partir del tiempo de retención adoptado y la velocidad al final
+                        del resalto.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Dato <span class="tag">adoptado</span></h3>
+                    <div id="potab-estab-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-estab-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="mezclador">
+            <div class="step-head">
+                <span class="step-num">6</span>
+                <div>
+                    <h2>Mezclador rápido para coagulantes</h2>
+                    <p class="lede">En caso de no verificar el vertedero en V. Se dimensiona el tanque y la potencia del
+                        agitador.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado</span></h3>
+                    <div id="potab-mezclador-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-mezclador-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="floculador">
+            <div class="step-head">
+                <span class="step-num">7</span>
+                <div>
+                    <h2>Floculador / mezclador lento</h2>
+                    <p class="lede">Dimensionamiento de canales, bafles y gradiente de velocidad (debe verificar 30–60
+                        s⁻¹).</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado / tanteo</span></h3>
+                    <div id="potab-floculador-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-floculador-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="sedimentador">
+            <div class="step-head">
+                <span class="step-num">8</span>
+                <div>
+                    <h2>Sedimentador de escurrimiento horizontal</h2>
+                    <p class="lede">Dimensionamiento general, canaleta de agua floculada, dispositivos de entrada y
+                        salida, canaleta de agua sedimentada y drenaje.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos generales <span class="tag">adoptado</span></h3>
+                    <div id="potab-sed-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Dimensionamiento general</h3>
+                    <div id="potab-sed-content"></div>
+                </div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Canaleta de agua floculada y compuertas</h3>
+                <div id="potab-sed-canaleta-content"></div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Dispositivos de entrada al sedimentador</h3>
+                <div id="potab-sed-entrada-content"></div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Dispositivo de salida del sedimentador</h3>
+                <div id="potab-sed-salida-content"></div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Canaleta de agua sedimentada</h3>
+                <div id="potab-sed-sedimentada-content"></div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Dispositivo de drenaje del sedimentador</h3>
+                <div id="potab-sed-drenaje-content"></div>
+            </div>
+        </section>
+
+        <section class="card step" id="filtracion">
+            <div class="step-head">
+                <span class="step-num">9</span>
+                <div>
+                    <h2>Filtración</h2>
+                    <p class="lede">Filtro rápido con lecho de arena, tasa de lavado, canaletas colectoras y bomba de
+                        lavado con su tanque.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado</span></h3>
+                    <div id="potab-filtracion-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-filtracion-content"></div>
+                </div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Bomba de lavado y tanque de lavado</h3>
+                <div id="potab-filtracion-bomba-content"></div>
+            </div>
+        </section>
+
+        <section class="card step" id="cloracion">
+            <div class="step-head">
+                <span class="step-num">10</span>
+                <div>
+                    <h2>Sistema de cloración</h2>
+                    <p class="lede">Reservorio de contacto, consumo de cloro e hipoclorito de sodio y bomba dosadora.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Datos <span class="tag">adoptado</span></h3>
+                    <div id="potab-cloracion-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-cloracion-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="reservorio">
+            <div class="step-head">
+                <span class="step-num">11</span>
+                <div>
+                    <h2>Reservorio de acumulación de agua tratada</h2>
+                    <p class="lede">Volumen, diámetro y altura de construcción del reservorio final.</p>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="panel">
+                    <h3>Dato <span class="tag">adoptado</span></h3>
+                    <div id="potab-reservorio-form"></div>
+                </div>
+                <div class="panel">
+                    <h3>Resultados</h3>
+                    <div id="potab-reservorio-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card step" id="informe">
+            <div class="step-head">
+                <span class="step-num">▤</span>
+                <div>
+                    <h2>Informe técnico</h2>
+                    <p class="lede">Resumen profesional de la planta potabilizadora con todos los valores calculados.
+                    </p>
+                </div>
+            </div>
+            <div class="informe-toolbar">
+                <button class="btn-pdf" id="pdf-btn" type="button">Descargar PDF</button>
+                <span class="footnote">Si el botón no responde, usá el navegador: <strong>Ctrl + P → Guardar como
+                        PDF</strong>.</span>
+            </div>
+            <div id="informe-content"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de la cátedra · Cálculos conforme a la Norma 68</p>
+        <p class="footnote">Hoja POTABILIZADORA: captación, mezcla, floculación, sedimentación, filtración y cloración.
+        </p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</body>
+
+</html>
