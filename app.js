@@ -6,7 +6,7 @@ const PAGE = document.body.dataset.page || "index";
 /* ================= Estado de entrada ================= */
 const S = {
     manzanas: 12, lotes: 6, pisos: 22, deptos: 6, dorm: 3, persDorm: 2, persServ: 1, pctLog: 10,
-    qDept: 200, qLog: 50, caudalTipo: "",
+    qDept: 200, qLog: 50, caudalTipoDept: "", caudalTipoLog: "",
     k1: 1.2, k2: 1.5, k3: 1.05,
     horasOp: 12,
     lSucc: 2, lImp: 669.35,
@@ -20,7 +20,8 @@ const S = {
 
 // Parametros economicos del algoritmo de minimo costo
 const Sopt = {
-    pipeA: 40, pipeB: 0.4, kwh: 0.06, pumpCost: 300, rate: 8, maint: 2,
+    pipeCost: { ...PIPE_COST_DEFAULT },
+    kwh: 0.06, pumpCost: 300, rate: 8, maint: 2,
 };
 
 // Diametros comerciales considerados por el algoritmo (disponibles en Tabla 3)
@@ -217,7 +218,8 @@ function optimalRows(b) {
 
         if (!m.sState.ok || !m.iState.ok) continue;
 
-        const pipeCost = (Sopt.pipeA + Sopt.pipeB * dn) * (S.lImp + S.lSucc);
+        const perMeter = Sopt.pipeCost[dn] != null ? Sopt.pipeCost[dn] : 0;
+        const pipeCost = perMeter * (S.lImp + S.lSucc);
         const pumpInv = Sopt.pumpCost * m.Padop;
         const energyKWh = m.Pmb * 0.7457 * S.horasOp * 365;
         const energy = energyKWh * Sopt.kwh;
@@ -251,8 +253,6 @@ const BOMBEO_FIELDS = [
 ];
 
 const OPT_FIELDS = [
-    { id: "pipeA", label: "Costo base de tubería", unit: "$/m" },
-    { id: "pipeB", label: "Costo por mm de diámetro", unit: "$/m·mm" },
     { id: "kwh", label: "Costo de la energía", unit: "$/kWh" },
     { id: "pumpCost", label: "Costo de la bomba", unit: "$/HP" },
     { id: "rate", label: "Tasa de descuento", unit: "%/año" },
@@ -296,13 +296,15 @@ function renderDatos() {
 function renderCaudalUnitario() {
     const host = $("caudales-unitarios-form");
     if (!host) return;
+    const tipoOptions = TABLE1.map((row) =>
+        `<option value="${esc(row.tipo)}">${esc(row.tipo)}</option>`).join("");
     host.innerHTML = `
         <div class="field">
-            <label>Tipo de inmueble (Norma 68 · Tabla 1)</label>
+            <label>Tipo de inmueble — departamentos (Norma 68 · Tabla 1)</label>
             <div class="input-row">
-                <select id="in-caudalTipo">
+                <select id="in-caudalTipoDept">
                     <option value="">— Seleccionar de la tabla —</option>
-                    ${TABLE1.map((row) => `<option value="${esc(row.tipo)}">${esc(row.tipo)}</option>`).join("")}
+                    ${tipoOptions}
                 </select>
             </div>
         </div>
@@ -314,27 +316,47 @@ function renderCaudalUnitario() {
             </div>
         </div>
         <div class="field">
+            <label>Tipo de inmueble — logística (Norma 68 · Tabla 1)</label>
+            <div class="input-row">
+                <select id="in-caudalTipoLog">
+                    <option value="">— Seleccionar de la tabla —</option>
+                    ${tipoOptions}
+                </select>
+            </div>
+        </div>
+        <div class="field">
             <label>Caudal unitario logística</label>
             <div class="input-row">
                 <input type="number" inputmode="decimal" id="in-qLog" value="${S.qLog}" step="any" min="0">
                 <span class="unit">l/pers/d</span>
             </div>
         </div>`;
-    const tipo = $("in-caudalTipo");
-    tipo.value = S.caudalTipo || "";
-    tipo.addEventListener("change", () => {
-        S.caudalTipo = tipo.value;
-        const row = TABLE1.find((x) => x.tipo === tipo.value);
+    const tipoDept = $("in-caudalTipoDept");
+    tipoDept.value = S.caudalTipoDept || "";
+    tipoDept.addEventListener("change", () => {
+        S.caudalTipoDept = tipoDept.value;
+        const row = TABLE1.find((x) => x.tipo === tipoDept.value);
         if (row) {
             S.qDept = row.consumo;
-            const inp = $("in-qDept");
-            inp.value = row.consumo;
+            $("in-qDept").value = row.consumo;
             saveState();
             scheduleRecompute();
         }
     });
-    bind("qDept", (v) => { S.qDept = v; S.caudalTipo = ""; });
-    bind("qLog", (v) => S.qLog = v);
+    const tipoLog = $("in-caudalTipoLog");
+    tipoLog.value = S.caudalTipoLog || "";
+    tipoLog.addEventListener("change", () => {
+        S.caudalTipoLog = tipoLog.value;
+        const row = TABLE1.find((x) => x.tipo === tipoLog.value);
+        if (row) {
+            S.qLog = row.consumo;
+            $("in-qLog").value = row.consumo;
+            saveState();
+            scheduleRecompute();
+        }
+    });
+    bind("qDept", (v) => { S.qDept = v; S.caudalTipoDept = ""; });
+    bind("qLog", (v) => { S.qLog = v; S.caudalTipoLog = ""; });
 }
 
 function renderBombeoForm() {
@@ -346,9 +368,35 @@ function renderBombeoForm() {
 
 function renderOptForm() {
     const host = $("opt-form");
-    if (!host) return;
-    host.innerHTML = OPT_FIELDS.map((fd) => renderField(fd, Sopt)).join("");
-    OPT_FIELDS.forEach((fd) => bind(fd.id, (v) => Sopt[fd.id] = v));
+    if (host) {
+        host.innerHTML = OPT_FIELDS.map((fd) => renderField(fd, Sopt)).join("");
+        OPT_FIELDS.forEach((fd) => bind(fd.id, (v) => Sopt[fd.id] = v));
+    }
+    const pc = $("pipe-cost-form");
+    if (!pc) return;
+    const dns = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b);
+    pc.innerHTML = `
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Diámetro nominal (mm)</th><th>Costo ($/m)</th></tr></thead>
+                <tbody>
+                ${dns.map((dn) => `
+                    <tr>
+                        <td><strong>${dn}</strong></td>
+                        <td><input type="number" id="in-pipeCost-${dn}" value="${Sopt.pipeCost[dn]}" step="any" min="0" inputmode="decimal" class="pipe-cost-input"></td>
+                    </tr>`).join("")}
+                </tbody>
+            </table>
+        </div>`;
+    dns.forEach((dn) => {
+        const el = $("in-pipeCost-" + dn);
+        if (!el) return;
+        el.addEventListener("input", () => {
+            Sopt.pipeCost[dn] = nf(el);
+            saveState();
+            scheduleRecompute();
+        });
+    });
 }
 
 function renderGeomForm() {
@@ -619,7 +667,7 @@ function renderOptResult(r) {
         </div>
         <p class="footnote">
             Se adopta <strong>impulsión DN ${best.dn} mm</strong> con <strong>succión DN ${best.succ} mm</strong>.
-            Costo de tubería = ${Sopt.pipeA}+${Sopt.pipeB}·DN $/m · energía ${Sopt.kwh} $/kWh · tasa ${Sopt.rate}% ·
+            Costo de tubería = ${f0(Sopt.pipeCost[best.dn] != null ? Sopt.pipeCost[best.dn] : 0)} $/m · energía ${Sopt.kwh} $/kWh · tasa ${Sopt.rate}% ·
             mantenimiento ${Sopt.maint}% · η<sub>bomba</sub> ${f(best.etaB * 100, 0)}% (Tabla 6) · η<sub>motor</sub> ${f(best.etaM * 100, 1)}% (Tabla 7).
             Vida útil: tubería 50 años, bomba 7 años.
         </p>`;
@@ -627,8 +675,8 @@ function renderOptResult(r) {
     const optEl = $("opt-chart");
     if (optEl) {
         optEl.innerHTML = paretoSVG(
-            "Costo anual por diámetro ($/año)",
-            rows.map((row) => ({ label: row.dn, value: row.annual, hl: row === best })),
+            "Costo anual por combinación tubería × motor ($/año)",
+            rows.map((row) => ({ label: `${row.dn} mm · ${f(row.m.Padop, 0)} HP`, value: row.annual, hl: row === best })),
             "Mínimo (óptimo)"
         );
     }
@@ -950,9 +998,10 @@ function collectReportData(r) {
     ];
     const inputsRend = r.alts.map((a, i) =>
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
+        .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
     const inputsEco = [
-        kv("Costo base de tubería", "$ " + Sopt.pipeA, "$/m"),
-        kv("Costo por mm de diámetro", "$ " + Sopt.pipeB, "$/m·mm"),
+        ...pipeCostRows,
         kv("Costo de la energía", "$ " + Sopt.kwh, "$/kWh"),
         kv("Costo de la bomba", "$ " + Sopt.pumpCost, "$/HP"),
         kv("Tasa de descuento", Sopt.rate, "%/año"),

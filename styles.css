@@ -316,6 +316,24 @@ main {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(15, 118, 110, .15);
 }
+.pipe-cost-input {
+    width: 90px;
+    padding: .35rem .5rem;
+    font-size: .9rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--mono);
+    text-align: right;
+}
+.pipe-cost-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, .15);
+}
 
 /* ---------- Results ---------- */
 .results { display: flex; flex-direction: column; gap: .55rem; }

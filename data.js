@@ -94,6 +94,13 @@ const TABLE7 = [
 // Potencias comerciales de motores (Tabla 8) usadas para la potencia adoptada
 const MOTOR_STD = [1, 1.5, 2, 3, 5, 7.5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 100, 125, 150, 200, 300];
 
+// Costo de tubería por diámetro nominal ($/m) — editable en la web
+// Valores de referencia por DN, modificables en la sección de alternativas.
+const PIPE_COST_DEFAULT = {
+    100: 35, 125: 45, 150: 55, 200: 75, 250: 95, 300: 115,
+    350: 140, 400: 165, 450: 190, 500: 220, 550: 250,
+};
+
 // Metadatos de las formulas (SVG en /formulas/<id>.svg) con explicacion de variables
 const FORMULAS = [
     { id: "personas", name: "Total de personas de los departamentos", vars: [
