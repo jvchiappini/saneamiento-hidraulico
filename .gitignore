@@ -3,6 +3,7 @@
 *.temp
 *.log
 _dump.txt
+_potab.txt
 
 # ===== Archivos temporales / de bloqueo de Excel =====
 ~$*

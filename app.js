@@ -30,6 +30,7 @@ const CAND_DN = [100, 125, 150, 200, 250, 300, 350, 400, 450, 500];
 
 /* ================= Persistencia ================= */
 const LS_KEY = "sh-state-v1";
+const LS_KEY_POTAB = "sh-potab-state-v1";
 function loadState() {
     try {
         const raw = localStorage.getItem(LS_KEY);
@@ -42,6 +43,19 @@ function loadState() {
 }
 function saveState() {
     try { localStorage.setItem(LS_KEY, JSON.stringify({ S, Sopt })); } catch (e) { /* noop */ }
+    try { localStorage.setItem(LS_KEY_POTAB, JSON.stringify({ SP })); } catch (e) { /* noop */ }
+}
+function loadPotabState() {
+    try {
+        const raw = localStorage.getItem(LS_KEY_POTAB);
+        if (raw) {
+            const o = JSON.parse(raw);
+            Object.assign(SP, o.SP || {});
+        }
+    } catch (e) { /* noop */ }
+}
+function savePotabState() {
+    try { localStorage.setItem(LS_KEY_POTAB, JSON.stringify({ SP })); } catch (e) { /* noop */ }
 }
 
 /* ================= Utilidades ================= */
@@ -445,6 +459,14 @@ function renderAll() {
         renderAutoResults();
         renderInforme(calc());
         renderFormulas();
+        return;
+    }
+    if (PAGE === "potab") {
+        renderPotabAll(false);
+        return;
+    }
+    if (PAGE === "potab-auto") {
+        renderPotabAll(true);
         return;
     }
     const r = calc();
@@ -1478,7 +1500,11 @@ function setupPdf() {
         const done = () => { btn.disabled = false; btn.textContent = "Descargar PDF"; };
         if (window.jspdf && window.jspdf.jsPDF) {
             try {
-                buildPDF(PAGE === "auto" ? collectAutoReportData(calc()) : collectReportData(calc()));
+                if (PAGE === "potab" || PAGE === "potab-auto") {
+                    buildPotabPDF(collectPotabReportData(potabCalc()));
+                } else {
+                    buildPDF(PAGE === "auto" ? collectAutoReportData(calc()) : collectReportData(calc()));
+                }
             } catch (e) {
                 done();
                 window.print();
@@ -1491,13 +1517,1238 @@ function setupPdf() {
     });
 }
 
+/* ================= POTABILIZADORA ================= */
+/* Estado de entrada de la hoja POTABILIZADORA. Todos los valores
+   "adoptado"/"tanteo" de la planilla, con los valores de referencia. */
+const SP = {
+    caudalDiario: 13353.12, k1: 1.2, k2: 1.5, k3: 1.05,
+    vAsc: 8.6, tAq: 31.6,
+    parshallW: 0.305, parshallN: 0.229, parshallK: 0.076, parshallA: 1.372,
+    cd: 0.6, phi: 90, hadoptado: 0.3, b2hmaxAdopt: 0.3, altParedExt: 0.2,
+    kPaletas: 2.3, rpm: 105,
+    tCanal: 10,
+    mzTiempo: 2.35, mzVolAdopt: 2500, mzAltura: 1.85, mzEfic: 0.7, mzCoef: 1.45, mzPadop: 7.5,
+    flocTemp: 23, flocProf: 1.7, flocV1: 0.175, flocV2: 0.425, flocBAdopt: 0.7, flocX: 22, flocE: 0.002, flocK: 2, flocN: 0.01,
+    sedTr: 3, sedCsup: 0.1853, sedLb: 3.98, sedNfAdopt: 6,
+    sedBaf: 0.234, sedNComp: 4, sedSepPct: 3.6, sedSepFondo: 0.8, sedVorif: 0.3, sedDorif: 0.1,
+    sedTasaAdopt: 3.1, sedGrosor: 0.1, sedVCan: 1.2,
+    sedCd: 0.61, sedTVaciado: 0.53,
+    filTasa: 120, filExp: 30, filArena: 0.7, filVasc: 0.72, filNCan: 3, filACan: 0.2, filSepBorde: 0.665,
+    filTLavado: 10, filHoras: 4, filFseg: 2.5, filFrec: 1.5, filTLlenado: 90, filPadop: 20,
+    clTContacto: 20, clDosis: 10, clTanque: 750,
+    resProf: 3.6,
+};
+
+// Tabla de referencia del aforador Parshall (columnas L..P de la hoja)
+const PARSHALL_TABLA = [
+    { ref: "1''", w: 0.025, min: null, max: null },
+    { ref: '3"', w: 0.076, min: 0.85, max: 53.8 },
+    { ref: '6"', w: 0.152, min: 1.52, max: 110.4 },
+    { ref: '9"', w: 0.229, min: 2.55, max: 251.9 },
+    { ref: "1'", w: 0.305, min: 3.11, max: 455.6 },
+    { ref: "1 1/2'", w: 0.457, min: 4.25, max: 696.2 },
+    { ref: "2'", w: 0.61, min: 11.89, max: 936.7 },
+    { ref: "3'", w: 0.915, min: 17.26, max: 1426.3 },
+    { ref: "4'", w: 1.22, min: 36.79, max: 1921.5 },
+    { ref: "5'", w: 1.525, min: 62.8, max: 2422 },
+    { ref: "6'", w: 1.83, min: 74.4, max: 2929 },
+    { ref: "7'", w: 2.135, min: 115.4, max: 3440 },
+    { ref: "8'", w: 2.44, min: 130.7, max: 3950 },
+    { ref: "10'", w: 3.05, min: 200, max: 5660 },
+];
+
+const G = 9.81;
+const ru = (n, d) => Math.ceil(n * Math.pow(10, d)) / Math.pow(10, d);
+const rd = (n, d) => Math.floor(n * Math.pow(10, d)) / Math.pow(10, d);
+
+function potabCalc() {
+    const r = {};
+
+    // 1. Caudal de captación
+    r.qd = SP.caudalDiario;                       // m3/d
+    r.qcapLps = r.qd * SP.k1 * SP.k3 * 1000 / 86400;   // l/s
+    r.qcap = r.qcapLps / 1000;                    // m3/s
+
+    // 2. Cámara de aquietamiento
+    r.vAscMs = SP.vAsc / 100;                     // m/s
+    r.aqArea = r.qcap / r.vAscMs;                 // m2
+    r.aqLado = Math.sqrt(r.aqArea);               // m
+    r.aqProf = (r.qcap * SP.tAq) / r.aqArea;      // m (B15)
+    r.aqTiempo = SP.tAq;
+
+    // 3. Parshall
+    r.phW = SP.parshallW;
+    r.phH = Math.pow(r.qcap / (2.2 * r.phW), 2 / 3);
+    r.phN = SP.parshallN;
+    r.phK = SP.parshallK;
+    r.phH2 = 0.6 * r.phH;
+    r.phH3 = 0.7 * r.phH;
+    r.phH1 = r.phH - r.phH3 - r.phK;
+    r.phV = r.qcap / (r.phW * r.phH2);
+    r.phVerif = r.phV >= 2;
+    r.phA = SP.parshallA;
+    r.ph2_3A = (2 / 3) * r.phA;
+
+    // 4. Vertedero "V"
+    r.vQ = r.qcap;
+    r.vCd = SP.cd;
+    r.vPhi = SP.phi;
+    r.vTan = Math.tan(SP.phi / 2);
+    r.vHmax = ru(Math.pow(r.vQ / ((8 / 15) * SP.cd * Math.sqrt(2 * G) * r.vTan), 2 / 5), 4);
+    r.vHadopt = SP.hadoptado;
+    r.v2Hmax = r.vHmax * 2;
+    r.v2HmaxAdopt = SP.b2hmaxAdopt;
+    r.vB = r.vHmax * 2;
+    r.vPisoInt = ru(r.vB + r.v2Hmax, 3);
+    r.vParedExt = SP.altParedExt;
+    r.vAnchoPiso = ru(2 * SP.b2hmaxAdopt + SP.hadoptado * 2, 2);
+
+    // Resalto
+    r.vQuni = ru(r.vQ / r.vB, 4);
+    r.vHc = Math.pow(Math.pow(r.vQuni, 2) / G, 1 / 3);
+    r.vH1 = (r.vHc * Math.sqrt(2)) / (1.06 + Math.sqrt((r.vHmax / r.vHc) + 1.5));
+    r.vV1 = r.vQuni / r.vH1;
+    r.vF = rd(r.vV1 / Math.sqrt(G * r.vH1), 2);
+    r.vH2 = (r.vH1 / 2) * Math.sqrt(1 + 8 * Math.pow(r.vF, 2));
+    r.vV2 = ru(r.vQuni / r.vH2, 4);
+    r.vHp = Math.pow(r.vH2 - r.vH1, 3) / (4 * r.vH1 * r.vH2);
+    r.vLm = 6 * (r.vH2 - r.vH1);
+    r.vLj = (4.3 * r.vB) * Math.pow(r.vHc / r.vB, 0.9);
+    r.vVm = (r.vV1 + r.vV2) / 2;
+    r.vT = r.vLm / r.vVm;
+
+    // Gradiente de velocidad
+    r.gamma = 1000;
+    r.nu = 0.00000131 * (33.3 / (SP.flocTemp + 23.3));   // m2/s
+    r.mu = r.nu * r.gamma;
+    r.kPaletas = SP.kPaletas;
+    r.nRps = SP.rpm / 60;
+    r.mzDiam = Math.pow(((SP.mzVolAdopt / 1000) / SP.mzAltura) * 4 / Math.PI, 1 / 3);
+    r.paletaD = r.mzDiam * 0.7;
+    r.mzVol = SP.mzVolAdopt;   // usada como en la hoja
+    r.gr = Math.sqrt((SP.kPaletas * r.gamma * Math.pow(r.nRps, 3) * Math.pow(r.paletaD, 5)) / (r.mu * r.mzVol));
+    r.gVert = Math.sqrt((r.gamma * r.vHp) / (r.mu * r.vT));
+    r.gVertVerif = r.gVert > r.gr;
+
+    // 5. Canal de estabilización
+    r.estT = SP.tCanal;
+    r.estV2 = r.vV2;
+    r.estL = r.estT * r.estV2;
+
+    // 6. Mezclador rápido para coagulantes
+    r.mzQCaudal = r.qcapLps * 3.6;          // m3/h
+    r.mzTiempo = SP.mzTiempo;
+    r.mzVtanque = ru(r.mzQCaudal * r.mzTiempo / 60, 2);  // m3
+    r.mzVAdoptL = SP.mzVolAdopt;
+    r.mzVAdopt = SP.mzVolAdopt / 1000;
+    r.mzAltura = SP.mzAltura;
+    r.mzEfic = SP.mzEfic;
+    r.mzCoef = SP.mzCoef;
+    r.mzP = SP.mzCoef * (0.0001029 * (SP.mzVolAdopt / 1000) * 1000 * 1000 / 76) / SP.mzEfic;
+    r.mzPadop = SP.mzPadop;
+    r.mzBrazo = (2 / 3) * SP.mzAltura;
+
+    // 7. Floculador / mezclador lento
+    r.flTemp = SP.flocTemp;
+    r.flProf = SP.flocProf;
+    r.flV1 = SP.flocV1;
+    r.flV2 = SP.flocV2;
+    r.flB = r.qcap / (SP.flocV1 * SP.flocProf);
+    r.flBAdopt = SP.flocBAdopt;
+    r.flV1rec = r.qcap / (SP.flocBAdopt * SP.flocProf);
+    r.flBp = SP.flocBAdopt * 1.5;
+    r.flV = r.qcap * 1800;
+    r.flA = r.flV / SP.flocProf;
+    r.flX = SP.flocX;
+    r.flN = Math.ceil((r.flA / SP.flocX) / SP.flocBAdopt);
+    r.flN1 = r.flN - 1;
+    r.flE = SP.flocE;
+    r.flY = (SP.flocBAdopt * r.flN) + (r.flN1 * SP.flocE);
+    r.flL = SP.flocX - 2 * r.flBp;
+    r.flLt = r.flL * r.flN;
+    r.flHcanales = r.flN * Math.pow(r.flV1rec, 2) / (2 * G);
+    r.flK = SP.flocK;
+    r.flHvueltas = SP.flocK * r.flN1 * Math.pow(SP.flocV2, 2) / (2 * G);
+    r.flAm = SP.flocProf * SP.flocBAdopt;
+    r.flPm = 2 * SP.flocProf + SP.flocBAdopt;
+    r.flRH = r.flAm / r.flPm;
+    r.flNman = SP.flocN;
+    r.flJ1 = Math.pow((SP.flocN * r.flV1rec) / Math.pow(r.flRH, 2 / 3), 2);
+    r.flH1 = r.flJ1 * r.flLt;
+    r.flHftotal = r.flH1 + r.flHvueltas + r.flHcanales;
+    r.flI = r.flHftotal / SP.flocX;
+    r.flG = Math.sqrt((G * r.flHftotal) / (r.nu * 1800));
+    r.flGVerif = r.flG >= 30 && r.flG <= 60;
+
+    // 8. Sedimentador de escurrimiento horizontal
+    r.sedTr = SP.sedTr;
+    r.sedQ = r.qcapLps / 1000 * 86400;         // m3/d
+    r.sedNfCalc = 0.044 * Math.sqrt(r.sedQ);
+    r.sedNf = SP.sedNfAdopt;
+    r.sedNs = r.sedNf / 2;
+    r.sedV = r.sedQ / 24 * SP.sedTr;
+    r.sedVs = r.sedV / r.sedNs;
+    r.sedCsup = SP.sedCsup;
+    r.sedCsupM3 = SP.sedCsup / 1000 * 86400;
+    r.sedAs = r.sedQ / r.sedCsupM3;
+    r.sedAsNs = r.sedAs / r.sedNs;
+    r.sedH = r.sedVs / r.sedAsNs;
+    r.sedLb = SP.sedLb;
+    r.sedL = Math.sqrt(r.sedAsNs * SP.sedLb);
+    r.sedLext = r.sedL + 0.4;
+    r.sedB = r.sedL / SP.sedLb;
+    r.flLadoAprox = r.flA / r.sedB;
+    r.sedBext = (r.sedB + 0.2) * r.sedNs + 0.2;
+    r.sedLH = r.sedL / r.sedH;
+    r.sedLHVerif = r.sedLH >= 7 && r.sedLH <= 30;
+
+    // Canaleta de agua floculada
+    r.scQsMax = r.sedQ * 1000 / 86400 / r.sedNs;   // l/s
+    r.scNComp = SP.sedNComp;
+    r.scQsMin = r.scQsMax / SP.sedNComp;
+    r.scV = r.flV1rec;
+    r.scSafMax = r.scQsMax / 1000 / r.scV;
+    r.scSafMin = r.scQsMin / 1000 / r.scV;
+    r.scBaf = SP.sedBaf;
+    r.scHafMax = ru(r.scSafMax / SP.sedBaf, 2);
+    r.scHafMin = r.scSafMin / SP.sedBaf;
+    r.scVerif = r.scHafMax === SP.flocProf;
+
+    // Dispositivos de entrada
+    r.deV = r.scV;
+    r.deScomp = r.scQsMin / 1000 / r.deV;
+    r.deBcomp = r.deScomp / r.scHafMin;
+    r.deHf = Math.pow(r.deV, 2) / (2 * G);
+    r.deSepPct = SP.sedSepPct;
+    r.deSepTab = (SP.sedSepPct / 100) * r.sedL;
+    r.deSepFondo = SP.sedSepFondo;
+    r.deVorif = SP.sedVorif;
+    r.deAorif = r.scQsMax / 1000 / SP.sedVorif;
+    r.deDorif = SP.sedDorif;
+    r.deSorif = Math.PI * Math.pow(SP.sedDorif, 2) / 4;
+    r.deNorif = Math.ceil(r.deAorif / r.deSorif);
+    r.deVverif = r.scQsMax / 1000 / (r.deSorif * r.deNorif);
+    r.deVverifOk = r.deVverif > 0.125;
+    r.deHf2 = Math.pow(SP.sedVorif, 2) / (2 * G);
+
+    // Dispositivo de salida
+    r.dsTasa = r.scQsMax / r.sedB;
+    r.dsTasaOk = r.dsTasa >= 2 && r.dsTasa <= 7;
+    r.dsTasaAdopt = SP.sedTasaAdopt;
+    r.dsL = r.scQsMax / SP.sedTasaAdopt;
+    r.dsGrosor = SP.sedGrosor;
+    r.dsLamina = Math.pow(r.scQsMax / 1000 / SP.sedGrosor / r.dsL, 2 / 3);
+
+    // Canaleta de agua sedimentada
+    r.cssV = SP.sedVCan;
+    r.cssSeccion = r.sedQ / 86400 / SP.sedVCan;
+    r.cssAncho = SP.sedGrosor;
+    r.cssH = r.cssSeccion / r.cssAncho;
+
+    // Drenaje
+    r.drA = r.sedAsNs;
+    r.drHLodos = (r.sedH + 0.031 * (r.sedL / 2)) * 0.1;
+    r.drCd = SP.sedCd;
+    r.drTVaciado = SP.sedTVaciado;
+    r.drD = Math.pow((4 / Math.PI) * ((2 * r.sedAsNs * Math.sqrt(r.drHLodos)) / (SP.sedCd * SP.sedTVaciado * 3600 * Math.sqrt(2 * G))), 0.5);
+    r.drDmm = 300;
+
+    // 9. Filtración
+    r.filNf = r.sedNf;
+    r.filTasa = SP.filTasa;
+    r.filA = r.sedQ / r.filNf / SP.filTasa;
+    r.filL1 = (r.sedB - 0.2) / 2;
+    r.filL2 = r.filA / r.filL1;
+    r.filExp = SP.filExp;
+    r.filArena = SP.filArena;
+    r.filVasc = SP.filVasc;
+    r.filQlav = r.filA * SP.filVasc * 1000 / 60;
+    r.filNCan = SP.filNCan;
+    r.filACan = SP.filACan;
+    r.filQcan = r.filQlav / 1000 / SP.filNCan * 60;
+    r.filY = 0.05276 * Math.pow(r.filQcan / SP.filACan, 2 / 3);
+    r.filBorde = 0.05;
+    r.filAltTot = r.filBorde + r.filY;
+    r.filSepBorde = SP.filSepBorde;
+    r.filSepCan = (r.filL1 - SP.filNCan * SP.filACan - SP.filSepBorde * 2) / (SP.filNCan - 1);
+    // Bomba de lavado y tanque
+    r.filTLavado = SP.filTLavado;
+    r.filTasaLav = SP.filVasc;
+    r.filVtanque = r.filA * (SP.filTLavado * SP.filVasc) * Math.pow(SP.filNCan, 1 / 3);
+    r.filVdisp = r.qd * 0.05 * SP.k1;
+    r.filVtanqueVerif = r.filVdisp > r.filVtanque;
+    r.filHoras = SP.filHoras;
+    r.filFseg = SP.filFseg;
+    r.filFrec = SP.filFrec;
+    r.filTLlenado = SP.filTLlenado;
+    r.filQb = r.filVtanque * 1000 / (SP.filTLlenado * 60);
+    r.filP = 1000 * (r.filQb / 1000) * 12 / 75 / 0.5 * 1.2;
+    r.filPadop = SP.filPadop;
+
+    // 10. Cloración
+    r.clTContacto = SP.clTContacto;
+    r.clV = 1.3 * r.qd / 24 * (SP.clTContacto / 60);
+    r.clLb = 2;
+    r.clProf = 0.3;
+    r.clSup = r.clV / 0.3;
+    r.clAncho = Math.sqrt(r.clSup / 2);
+    r.clLargo = r.clAncho * 2;
+    r.clDosis = SP.clDosis;
+    r.clConsumo = r.qd * 1000 * SP.clDosis / 1000000;
+    r.clHipo = r.clConsumo / 0.08;
+    r.clHipoMes = r.clHipo * 30 * 1.3;
+    r.clRel = 0.25;
+    r.clDisol = r.clHipo / 0.25;
+    r.clTanque = SP.clTanque;
+    r.clNecesidad = SP.clTanque * 0.25;
+    r.clFrec = SP.clTanque / r.clDisol;
+    r.clBomba = r.clDisol / 24;
+
+    // 11. Reservorio de acumulación de agua tratada
+    r.resV = r.qd / 24 * SP.k1 * SP.k2 * 2 * 1.5;
+    r.resProf = SP.resProf;
+    r.resD = Math.sqrt((r.resV / SP.resProf) * 4 / Math.PI);
+    r.resH = 0.3 + SP.resProf;
+
+    return r;
+}
+
+/* ================= POTAB: formularios ================= */
+const POTAB_CAP_FIELDS = [
+    { id: "caudalDiario", label: "Caudal diario (hoja de datos)", unit: "m³/d" },
+    { id: "k1", label: "K1 — Consumo máx. diario", unit: "" },
+    { id: "k2", label: "K2 — Consumo máx. horario", unit: "" },
+    { id: "k3", label: "K3 — Planta de tratamiento", unit: "" },
+];
+const POTAB_AQ_FIELDS = [
+    { id: "vAsc", label: "Velocidad ascensional (4 a 10)", unit: "cm/s" },
+    { id: "tAq", label: "Tiempo de aquietamiento (30 a 60)", unit: "s" },
+];
+const POTAB_PARSHALL_FIELDS = [
+    { id: "parshallW", label: "Ancho de garganta W", unit: "m" },
+    { id: "parshallN", label: "Altura del escalón del resalto N", unit: "m" },
+    { id: "parshallK", label: "Diferencia piso llegada–salida K", unit: "m" },
+    { id: "parshallA", label: "A (dimensiones del canal)", unit: "m" },
+];
+const POTAB_VERTEDERO_FIELDS = [
+    { id: "cd", label: "Cd — coeficiente de descarga", unit: "" },
+    { id: "phi", label: "φ — ángulo del vertedero", unit: "°" },
+    { id: "hadoptado", label: "H adoptado para el triángulo", unit: "m" },
+    { id: "b2hmaxAdopt", label: "2Hmax adoptado", unit: "m" },
+    { id: "altParedExt", label: "Altura de las paredes exteriores", unit: "m" },
+];
+const POTAB_GRADIENTE_FIELDS = [
+    { id: "kPaletas", label: "Factor de forma de paletas K (2 a 7)", unit: "" },
+    { id: "rpm", label: "Revoluciones por minuto", unit: "rpm" },
+];
+const POTAB_ESTAB_FIELDS = [
+    { id: "tCanal", label: "Tiempo de retención", unit: "s" },
+];
+const POTAB_MEZCLADOR_FIELDS = [
+    { id: "mzTiempo", label: "Tiempo de retención (1 a 3)", unit: "min" },
+    { id: "mzVolAdopt", label: "Volumen adoptado", unit: "L" },
+    { id: "mzAltura", label: "Altura del tanque", unit: "m" },
+    { id: "mzEfic", label: "Eficiencia motor (0,6 a 0,8)", unit: "" },
+    { id: "mzCoef", label: "Coef. de seguridad (1,4 a 1,5)", unit: "" },
+    { id: "mzPadop", label: "Potencia adoptada del mezclador", unit: "HP" },
+];
+const POTAB_FLOCULADOR_FIELDS = [
+    { id: "flocTemp", label: "Temperatura", unit: "°C" },
+    { id: "flocProf", label: "Profundidad h (tanteo)", unit: "m" },
+    { id: "flocV1", label: "Velocidad en canales v1 (0,15–0,20)", unit: "m/s" },
+    { id: "flocV2", label: "Velocidad en pasos v2 (0,40–0,45)", unit: "m/s" },
+    { id: "flocBAdopt", label: "Separación de canales adoptada b", unit: "m" },
+    { id: "flocX", label: "Lado X", unit: "m" },
+    { id: "flocE", label: "Grosor de bafles e", unit: "m" },
+    { id: "flocK", label: "Constante K (2 a 3,5)", unit: "" },
+    { id: "flocN", label: "Coef. Manning n", unit: "" },
+];
+const POTAB_SED_FIELDS = [
+    { id: "sedTr", label: "Tiempo de retención tr (2,0 a 3,5)", unit: "h" },
+    { id: "sedCsup", label: "Carga superficial Csup (0,13 a 0,26)", unit: "l/s/m²" },
+    { id: "sedLb", label: "Relación Largo/Ancho (3 a 5)", unit: "" },
+    { id: "sedNfAdopt", label: "Número de filtros adoptado (par)", unit: "unid" },
+];
+const POTAB_SED_CANALETA_FIELDS = [
+    { id: "sedBaf", label: "Ancho del canal de agua floculada", unit: "m" },
+    { id: "sedNComp", label: "Compuertas por sedimentador", unit: "unid" },
+];
+const POTAB_SED_ENTRADA_FIELDS = [
+    { id: "sedSepPct", label: "Separación cortina (3 a 7)", unit: "%" },
+    { id: "sedSepFondo", label: "Separación del fondo (0,6 a 0,9)", unit: "m" },
+    { id: "sedVorif", label: "Velocidad por orificios (0,125 a 0,6)", unit: "m/s" },
+    { id: "sedDorif", label: "Diámetro de cada orificio", unit: "m" },
+];
+const POTAB_SED_SALIDA_FIELDS = [
+    { id: "sedTasaAdopt", label: "Tasa de salida adoptada", unit: "l/s/m" },
+    { id: "sedGrosor", label: "Grosor del canal de salida", unit: "m" },
+];
+const POTAB_SED_SEDIMENTADA_FIELDS = [
+    { id: "sedVCan", label: "Velocidad adoptada (> 0,5)", unit: "m/s" },
+];
+const POTAB_SED_DRENAJE_FIELDS = [
+    { id: "sedCd", label: "Cd — coef. de salida del orificio", unit: "" },
+    { id: "sedTVaciado", label: "Tiempo de vaciado", unit: "h" },
+];
+const POTAB_FILTRACION_FIELDS = [
+    { id: "filTasa", label: "Tasa de filtración", unit: "m³/m²/d" },
+    { id: "filExp", label: "Expansión del lecho (20 a 50)", unit: "%" },
+    { id: "filArena", label: "Tamaño efectivo de la arena", unit: "mm" },
+    { id: "filVasc", label: "Velocidad ascensional", unit: "m/min" },
+    { id: "filNCan", label: "Canaletas de lavado", unit: "unid" },
+    { id: "filACan", label: "Ancho de la canaleta", unit: "m" },
+    { id: "filSepBorde", label: "Separación canaleta–borde", unit: "m" },
+];
+const POTAB_FILTRACION_BOMBA_FIELDS = [
+    { id: "filTLavado", label: "Tiempo de lavado ascensional", unit: "min" },
+    { id: "filHoras", label: "Horas de lavado en 24 hs", unit: "h" },
+    { id: "filFseg", label: "Factor de seguridad", unit: "" },
+    { id: "filFrec", label: "Frecuencia de lavado", unit: "h" },
+    { id: "filTLlenado", label: "Tiempo de llenado", unit: "min" },
+    { id: "filPadop", label: "Potencia adoptada de la bomba", unit: "cv" },
+];
+const POTAB_CLORACION_FIELDS = [
+    { id: "clTContacto", label: "Tiempo de contacto (20 a 30)", unit: "min" },
+    { id: "clDosis", label: "Dosis aproximada (10)", unit: "ppm" },
+    { id: "clTanque", label: "Tanque de disolución", unit: "L" },
+];
+const POTAB_RESERVORIO_FIELDS = [
+    { id: "resProf", label: "Profundidad adoptada (1 a 4)", unit: "m" },
+];
+
+function potabField(field, src = SP) {
+    const val = src[field.id];
+    return `
+    <div class="field">
+        <label>${esc(field.label)}</label>
+        <div class="input-row">
+            <input type="number" inputmode="decimal" id="in-${field.id}" value="${val}" step="any" min="0">
+            ${field.unit ? `<span class="unit">${esc(field.unit)}</span>` : ""}
+        </div>
+    </div>`;
+}
+
+function potabBind(id) {
+    const el = $("in-" + id);
+    if (!el) return;
+    el.addEventListener("input", () => { SP[id] = nf(el); savePotabState(); scheduleRecompute(); });
+}
+
+function potabForm(hostId, fields) {
+    const host = $(hostId);
+    if (!host) return;
+    host.innerHTML = fields.map((fd) => potabField(fd)).join("");
+    fields.forEach((fd) => potabBind(fd.id));
+}
+
+function renderPotabForms() {
+    if (PAGE === "potab") {
+        potabForm("potab-cap-form", POTAB_CAP_FIELDS);
+        potabForm("potab-aq-form", POTAB_AQ_FIELDS);
+        potabForm("potab-parshall-form", POTAB_PARSHALL_FIELDS);
+        potabForm("potab-vertedero-form", POTAB_VERTEDERO_FIELDS);
+        potabForm("potab-estab-form", POTAB_ESTAB_FIELDS);
+        potabForm("potab-mezclador-form", POTAB_MEZCLADOR_FIELDS);
+        potabForm("potab-floculador-form", POTAB_FLOCULADOR_FIELDS);
+        potabForm("potab-sed-form", POTAB_SED_FIELDS);
+        potabForm("potab-sed-canaleta-form", POTAB_SED_CANALETA_FIELDS);
+        potabForm("potab-sed-entrada-form", POTAB_SED_ENTRADA_FIELDS);
+        potabForm("potab-sed-salida-form", POTAB_SED_SALIDA_FIELDS);
+        potabForm("potab-sed-sedimentada-form", POTAB_SED_SEDIMENTADA_FIELDS);
+        potabForm("potab-sed-drenaje-form", POTAB_SED_DRENAJE_FIELDS);
+        potabForm("potab-filtracion-form", POTAB_FILTRACION_FIELDS);
+        potabForm("potab-filtracion-bomba-form", POTAB_FILTRACION_BOMBA_FIELDS);
+        potabForm("potab-cloracion-form", POTAB_CLORACION_FIELDS);
+        potabForm("potab-reservorio-form", POTAB_RESERVORIO_FIELDS);
+    } else if (PAGE === "potab-auto") {
+        potabForm("potab-base-form", [
+            { id: "caudalDiario", label: "Caudal diario (hoja de datos)", unit: "m³/d" },
+            { id: "k1", label: "K1 — Consumo máx. diario", unit: "" },
+            { id: "k2", label: "K2 — Consumo máx. horario", unit: "" },
+            { id: "k3", label: "K3 — Planta de tratamiento", unit: "" },
+        ]);
+        potabForm("potab-tanteo-form", [
+            { id: "flocTemp", label: "Temperatura", unit: "°C" },
+            { id: "flocProf", label: "Profundidad del floculador (tanteo)", unit: "m" },
+            { id: "flocV1", label: "Velocidad en canales (tanteo)", unit: "m/s" },
+            { id: "flocV2", label: "Velocidad en pasos (tanteo)", unit: "m/s" },
+            { id: "sedTr", label: "Tiempo de retención sedimentador (tanteo)", unit: "h" },
+            { id: "sedCsup", label: "Carga superficial (tanteo)", unit: "l/s/m²" },
+        ]);
+    }
+}
+
+/* ================= POTAB: helpers de render ================= */
+function potabRow(label, value, unit, badgeHtml) {
+    return `<div class="result-row"><span class="r-label">${label}</span>
+        <span class="r-value">${value}${unit ? ` <small>${esc(unit)}</small>` : ""}${badgeHtml || ""}</span></div>`;
+}
+
+function potabHl(label, value, unit) {
+    return `<div class="result-row highlight"><span class="r-label">${label}</span>
+        <span class="r-value">${value}${unit ? ` <small>${esc(unit)}</small>` : ""}</span></div>`;
+}
+
+/* ================= POTAB: renders ================= */
+function renderPotabCaptacion(r) {
+    const host = $("potab-cap-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabHl("Caudal de captación Q<sub>cap</sub>", f(r.qcapLps, 2), "l/s")}
+            ${potabRow("Q<sub>cap</sub> en m³/s", f(r.qcap, 6), "m³/s")}
+            ${potabRow("Caudal diario", f(r.qd, 2), "m³/d")}
+            ${potabRow("K1 × K3 aplicados", f(SP.k1 * SP.k3, 3), "")}
+        </div>
+        <p class="footnote">Q<sub>cap</sub> = Caudal diario · K1 · K3 · 1000 / 86400. (K2 afecta solo a la red de distribución, no a la captación.)</p>`;
+}
+
+function renderPotabAquietamiento(r) {
+    const host = $("potab-aq-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Velocidad ascensional v", f(SP.vAsc, 1), "cm/s")}
+            ${potabHl("Área de la sección transversal A", f(r.aqArea, 3), "m²")}
+            ${potabRow("Lados del aquietador", f(r.aqLado, 3), "m")}
+            ${potabRow("Tiempo de aquietamiento t", f(r.aqTiempo, 1), "s")}
+            ${potabHl("Profundidad de la cámara", f(r.aqProf, 3), "m")}
+        </div>
+        <p class="footnote">A = Q / v · Profundidad = (Q · t) / A. La velocidad debe estar en 4–10 cm/s.</p>`;
+}
+
+function renderPotabParshall(r) {
+    const host = $("potab-parshall-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Ancho de garganta W", f(r.phW, 3), "m")}
+            ${potabRow("Altura del agua a la llegada H", f(r.phH, 3), "m")}
+            ${potabRow("Altura del escalón del resalto N", f(r.phN, 3), "m")}
+            ${potabRow("Diferencia piso llegada–salida K", f(r.phK, 3), "m")}
+            ${potabRow("h2 = 0,6·H", f(r.phH2, 3), "m")}
+            ${potabRow("H3 = 0,7·H", f(r.phH3, 3), "m")}
+            ${potabRow("Pérdida de carga h1 = H − H3 − K", f(r.phH1, 3), "m")}
+            ${potabRow("A", f(r.phA, 3), "m")}
+            ${potabRow("2/3 · A", f(r.ph2_3A, 3), "m")}
+            ${potabRow("Velocidad v = Q/(W·h2)", f(r.phV, 2), "m/s",
+                r.phVerif ? `<span class="badge-state ok">✓ Verifica (≥ 2 m/s) — mezclador rápido</span>`
+                           : `<span class="badge-state fail">✕ No verifica (&lt; 2 m/s)</span>`)}
+        </div>
+        <p class="footnote">Para usarse como mezclador rápido la velocidad debe ser ≥ 2 m/s. Si no verifica, se usa el vertedero en “V”.</p>`;
+}
+
+function renderPotabParshallTabla(r) {
+    const host = $("potab-parshall-tabla");
+    if (!host) return;
+    host.innerHTML = `
+        <table>
+            <thead><tr><th>Garganta W</th><th>Ancho (m)</th><th>Caudal mín (l/s)</th><th>Caudal máx (l/s)</th><th>Caudal medio (l/s)</th></tr></thead>
+            <tbody>
+            ${PARSHALL_TABLA.map((row) => `
+                <tr class="${Math.abs(row.w - r.phW) < 1e-9 ? "selected-row" : ""}">
+                    <td><strong>${esc(row.ref)}</strong></td>
+                    <td>${f(row.w, 3)}</td>
+                    <td>${row.min != null ? f(row.min, 2) : "—"}</td>
+                    <td>${row.max != null ? f(row.max, 2) : "—"}</td>
+                    <td>${row.min != null && row.max != null ? f((row.min + row.max) / 2, 2) : "—"}</td>
+                </tr>`).join("")}
+            </tbody>
+        </table>`;
+}
+
+function renderPotabVertedero(r) {
+    const host = $("potab-vertedero-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Q", f(r.vQ, 6), "m³/s")}
+            ${potabRow("Cd", f(r.vCd, 2), "")}
+            ${potabRow("φ", f(r.vPhi, 0), "°")}
+            ${potabHl("Hmax (lámina sobre el vertedero)", f(r.vHmax, 4), "m")}
+            ${potabRow("H adoptado para el triángulo", f(r.vHadopt, 2), "m")}
+            ${potabRow("2·Hmax (B)", f(r.v2Hmax, 3), "m")}
+            ${potabRow("2·Hmax adoptado", f(r.v2HmaxAdopt, 2), "m")}
+            ${potabRow("Altura del piso interior", f(r.vPisoInt, 3), "m")}
+            ${potabRow("Altura de las paredes exteriores", f(r.vParedExt, 2), "m")}
+            ${potabRow("Ancho del piso", f(r.vAnchoPiso, 2), "m")}
+        </div>
+        <p class="footnote">Hmax = (Q / (8/15 · Cd · tan(φ/2) · √(2g)))^(2/5).</p>`;
+}
+
+function renderPotabResalto(r) {
+    const host = $("potab-resalto-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Caudal unitario q", f(r.vQuni, 4), "m³/s·m")}
+            ${potabRow("Altura crítica hc", f(r.vHc, 4), "m")}
+            ${potabRow("Profundidad después del vertedero h1", f(r.vH1, 4), "m")}
+            ${potabRow("Velocidad al inicio del resalto V1", f(r.vV1, 2), "m/s")}
+            ${potabRow("Número de Froude F", f(r.vF, 2), "")}
+            ${potabRow("Altura después del resalto h2", f(r.vH2, 3), "m")}
+            ${potabRow("Velocidad al final del resalto V2", f(r.vV2, 3), "m/s")}
+            ${potabRow("Energía disipada en el resalto hp", f(r.vHp, 3), "m")}
+            ${potabRow("Longitud del resalto Lm", f(r.vLm, 3), "m")}
+            ${potabRow("Distancia a la sección estable Lj", f(r.vLj, 3), "m")}
+            ${potabRow("Velocidad promedio Vm", f(r.vVm, 3), "m/s")}
+            ${potabRow("Tiempo de mezcla T", f(r.vT, 3), "s")}
+        </div>
+        <h3 style="margin-top:1rem;font-size:.95rem;font-weight:700">Gradiente de velocidad G</h3>
+        <div class="results">
+            ${potabRow("Peso específico del agua", f(r.gamma, 0), "kgf/m³")}
+            ${potabRow("Viscosidad cinemática ϑ", r.nu.toExponential(3), "m²/s")}
+            ${potabRow("Viscosidad dinámica μ", r.mu.toExponential(3), "kg/m·s")}
+            ${potabRow("Factor de forma K", f(SP.kPaletas, 1), "")}
+            ${potabRow("Revoluciones por segundo", f(r.nRps, 2), "rps")}
+            ${potabRow("Diámetro de las paletas", f(r.paletaD, 3), "m")}
+            ${potabRow("Volumen del mezclador", f(r.mzVol, 0), "L")}
+            ${potabRow("Gradiente de mezcla rápida Gr", f(r.gr, 2), "s⁻¹")}
+            ${potabHl("Gradiente del vertedor en V G", f(r.gVert, 2), "s⁻¹",
+                r.gVertVerif ? `<span class="badge-state ok">✓ VERIFICA (G &gt; Gr)</span>`
+                              : `<span class="badge-state fail">✕ NO VERIFICA (G ≤ Gr)</span>`)}
+        </div>
+        <p class="footnote">Debe verificar G &gt; Gr para que el vertedero en V pueda usarse como mezclador rápido.</p>`;
+}
+
+function renderPotabEstabilizacion(r) {
+    const host = $("potab-estab-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Tiempo de retención t", f(r.estT, 1), "s")}
+            ${potabRow("Velocidad al final del resalto V2", f(r.estV2, 3), "m/s")}
+            ${potabHl("Longitud del canal L", f(r.estL, 2), "m")}
+        </div>
+        <p class="footnote">L = t · V2.</p>`;
+}
+
+function renderPotabMezclador(r) {
+    const host = $("potab-mezclador-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Caudal de proyecto", f(r.mzQCaudal, 2), "m³/h")}
+            ${potabRow("Tiempo de retención", f(r.mzTiempo, 2), "min")}
+            ${potabRow("Volumen del tanque", f(r.mzVtanque, 2), "m³")}
+            ${potabRow("Volumen adoptado", f(r.mzVAdoptL, 0), "L")}
+            ${potabRow("Altura del tanque", f(r.mzAltura, 2), "m")}
+            ${potabHl("Diámetro del tanque", f(r.mzDiam, 3), "m")}
+            ${potabRow("Eficiencia del motor", f(r.mzEfic, 2), "")}
+            ${potabRow("Coeficiente de seguridad", f(r.mzCoef, 2), "")}
+            ${potabRow("Potencia del mezclador", f(r.mzP, 2), "HP")}
+            ${potabHl("Potencia adoptada", f(r.mzPadop, 1), "HP")}
+            ${potabRow("Longitud del brazo", f(r.mzBrazo, 3), "m")}
+            ${potabRow("Diámetro de la paleta", f(r.paletaD, 3), "m")}
+        </div>
+        <p class="footnote">En caso de no verificar el vertedero en V. Potencia = Coef · (0,0001029 · V · ρ²/76) / η.</p>`;
+}
+
+function renderPotabFloculador(r) {
+    const host = $("potab-floculador-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Temperatura", f(r.flTemp, 0), "°C")}
+            ${potabRow("Viscosidad cinemática ϑ", r.nu.toExponential(3), "m²/s")}
+            ${potabRow("Periodo de retención", f(1800, 0), "s")}
+            ${potabRow("Profundidad h", f(r.flProf, 2), "m")}
+            ${potabRow("Velocidad en canales v1 (tanteo)", f(SP.flocV1, 3), "m/s")}
+            ${potabRow("Separación de canales b", f(r.flB, 3), "m")}
+            ${potabRow("Separación adoptada b", f(r.flBAdopt, 2), "m")}
+            ${potabHl("Velocidad recalculada v1", f(r.flV1rec, 3), "m/s",
+                (r.flV1rec >= 0.15 && r.flV1rec <= 0.20) ? `<span class="badge-state ok">✓ En rango</span>`
+                    : (r.flV1rec < 0.15 ? `<span class="badge-state warn">⚠ Bajo el mínimo</span>`
+                                         : `<span class="badge-state fail">✕ Sobre el máximo</span>`))}
+            ${potabRow("Ancho del paso de bafles b'", f(r.flBp, 3), "m")}
+            ${potabRow("Volumen de retención V", f(r.flV, 2), "m³")}
+            ${potabRow("Área superficial A", f(r.flA, 2), "m²")}
+            ${potabRow("Lado X adoptado", f(r.flX, 0), "m")}
+            ${potabRow("Número de canales N", f(r.flN, 0), "unid")}
+            ${potabRow("Número de bafles N1", f(r.flN1, 0), "unid")}
+            ${potabRow("Grosor de bafles e", f(r.flE, 3), "m")}
+            ${potabRow("Lado Y", f(r.flY, 3), "m")}
+            ${potabRow("Longitud recta de un canal L", f(r.flL, 2), "m")}
+            ${potabRow("Longitud total Lt", f(r.flLt, 2), "m")}
+            ${potabRow("Pérdida en canales Hcanales", f(r.flHcanales, 4), "m")}
+            ${potabRow("Constante K", f(r.flK, 1), "")}
+            ${potabRow("Pérdida en pasos Hvueltas", f(r.flHvueltas, 4), "m")}
+            ${potabRow("Área mojada Am", f(r.flAm, 2), "m²")}
+            ${potabRow("Perímetro mojado Pm", f(r.flPm, 2), "m")}
+            ${potabRow("Radio hidráulico RH", f(r.flRH, 3), "m")}
+            ${potabRow("Coef. Manning n", f(r.flNman, 3), "")}
+            ${potabRow("Pérdida por fricción j1", r.flJ1.toExponential(3), "m/m")}
+            ${potabRow("Pérdida a lo largo h1", f(r.flH1, 4), "m")}
+            ${potabHl("Pérdida total Hftotal", f(r.flHftotal, 4), "m")}
+            ${potabRow("Pendiente i", f(r.flI, 4), "")}
+            ${potabHl("Gradiente de velocidad G", f(r.flG, 2), "s⁻¹",
+                r.flGVerif ? `<span class="badge-state ok">✓ VERIFICA (30–60)</span>`
+                            : `<span class="badge-state fail">✕ NO VERIFICA</span>`)}
+        </div>
+        <p class="footnote">Gradiente de velocidad del floculador debe verificar 30 ≤ G ≤ 60 s⁻¹.</p>`;
+}
+
+function renderPotabSed(r) {
+    const host = $("potab-sed-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Tiempo de retención tr", f(r.sedTr, 1), "h")}
+            ${potabRow("Caudal Qcap", f(r.sedQ, 2), "m³/d")}
+            ${potabRow("Nº filtros (Morril y Wallace)", f(r.sedNfCalc, 2), "unid")}
+            ${potabRow("Nº filtros adoptado", f(r.sedNf, 0), "unid")}
+            ${potabRow("Nº sedimentadores Ns = Nf/2", f(r.sedNs, 0), "unid")}
+            ${potabRow("Volumen total V", f(r.sedV, 2), "m³")}
+            ${potabRow("Volumen del sedimentador Vs", f(r.sedVs, 2), "m³")}
+            ${potabRow("Carga superficial Csup", f(r.sedCsup, 4), "l/s/m²")}
+            ${potabRow("Csup en m³/d/m²", f(r.sedCsupM3, 2), "")}
+            ${potabRow("Área total As", f(r.sedAs, 2), "m²")}
+            ${potabRow("Área por unidad AsNs", f(r.sedAsNs, 2), "m²")}
+            ${potabRow("Altura útil H", f(r.sedH, 3), "m")}
+            ${potabRow("Relación Largo/Ancho", f(r.sedLb, 2), "")}
+            ${potabRow("Largo L", f(r.sedL, 3), "m")}
+            ${potabRow("Largo total externo", f(r.sedLext, 3), "m")}
+            ${potabRow("Ancho b", f(r.sedB, 3), "m")}
+            ${potabRow("Ancho total exterior", f(r.sedBext, 3), "m")}
+            ${potabRow("Verificación L/H", f(r.sedLH, 2),
+                r.sedLHVerif ? `<span class="badge-state ok">✓ Verifica (7–30)</span>`
+                              : `<span class="badge-state fail">✕ No verifica</span>`)}
+        </div>
+        <p class="footnote">La relación Largo/Profundidad debe estar entre 7 y 30.</p>`;
+}
+
+function renderPotabSedCanaleta(r) {
+    const host = $("potab-sed-canaleta-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Caudal máx por sedimentador Qs max", f(r.scQsMax, 2), "l/s")}
+            ${potabRow("Compuertas por sedimentador", f(r.scNComp, 0), "unid")}
+            ${potabRow("Caudal a la última compuerta Qs min", f(r.scQsMin, 2), "l/s")}
+            ${potabRow("Velocidad de agua floculada", f(r.scV, 3), "m/s")}
+            ${potabRow("Sección a caudal máximo Saf max", f(r.scSafMax, 3), "m²")}
+            ${potabRow("Sección a caudal mínimo Saf min", f(r.scSafMin, 3), "m²")}
+            ${potabRow("Ancho adoptado baf", f(r.scBaf, 3), "m")}
+            ${potabRow("Altura máxima haf", f(r.scHafMax, 2), "m",
+                r.scVerif ? `<span class="badge-state ok">✓ Verifica</span>`
+                           : `<span class="badge-state fail">✕ Cambiar ancho</span>`)}
+            ${potabRow("Altura mínima haf", f(r.scHafMin, 3), "m")}
+        </div>
+        <p class="footnote">La altura máxima debe coincidir con la profundidad del floculador.</p>`;
+}
+
+function renderPotabSedEntrada(r) {
+    const host = $("potab-sed-entrada-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Velocidad adoptada V", f(r.deV, 3), "m/s")}
+            ${potabRow("Sección por compuerta Scomp", f(r.deScomp, 3), "m²")}
+            ${potabRow("Ancho de la compuerta bcomp", f(r.deBcomp, 3), "m")}
+            ${potabRow("Pérdida en la compuerta hf", f(r.deHf, 4), "m")}
+            ${potabRow("Separación de la cortina", f(r.deSepPct, 1), "%")}
+            ${potabRow("Separación del tabique", f(r.deSepTab, 3), "m")}
+            ${potabRow("Separación del fondo", f(r.deSepFondo, 2), "m")}
+            ${potabRow("Velocidad por orificios", f(r.deVorif, 2), "m/s")}
+            ${potabRow("Área total de orificios Aorif", f(r.deAorif, 3), "m²")}
+            ${potabRow("Diámetro de cada orificio", f(r.deDorif, 2), "m")}
+            ${potabRow("Sección por orificio", f(r.deSorif, 4), "m²")}
+            ${potabRow("Número de orificios", f(r.deNorif, 0), "unid")}
+            ${potabRow("Verificación de velocidad", f(r.deVverif, 3), "m/s",
+                r.deVverifOk ? `<span class="badge-state ok">✓ Verifica (&gt; 0,125)</span>`
+                              : `<span class="badge-state fail">✕ No verifica</span>`)}
+            ${potabRow("Pérdida en la compuerta hf", f(r.deHf2, 4), "m")}
+        </div>`;
+}
+
+function renderPotabSedSalida(r) {
+    const host = $("potab-sed-salida-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Verificación de la tasa (2 a 7 l/s/m)", f(r.dsTasa, 2), "l/s/m",
+                r.dsTasaOk ? `<span class="badge-state ok">✓ Verifica</span>`
+                            : `<span class="badge-state fail">✕ No verifica</span>`)}
+            ${potabRow("Tasa adoptada", f(r.dsTasaAdopt, 2), "l/s/m")}
+            ${potabRow("Longitud de salida", f(r.dsL, 3), "m")}
+            ${potabRow("Grosor del canal de salida", f(r.dsGrosor, 2), "m")}
+            ${potabRow("Altura de la lámina sobre el vertedor", f(r.dsLamina, 3), "m")}
+        </div>`;
+}
+
+function renderPotabSedSedimentada(r) {
+    const host = $("potab-sed-sedimentada-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Velocidad adoptada", f(r.cssV, 2), "m/s")}
+            ${potabRow("Sección mojada", f(r.cssSeccion, 3), "m²")}
+            ${potabRow("Ancho de la canaleta", f(r.cssAncho, 2), "m")}
+            ${potabRow("Altura de la lámina", f(r.cssH, 3), "m")}
+        </div>`;
+}
+
+function renderPotabSedDrenaje(r) {
+    const host = $("potab-sed-drenaje-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Área de cada sedimentador", f(r.drA, 2), "m²")}
+            ${potabRow("Altura total de lodos a purgar", f(r.drHLodos, 3), "m")}
+            ${potabRow("Cd adoptado", f(r.drCd, 2), "")}
+            ${potabRow("Tiempo de vaciado", f(r.drTVaciado, 2), "h")}
+            ${potabRow("Diámetro de la tubería de drenaje", f(r.drD, 3), "m")}
+            ${potabHl("Diámetro adoptado", f(r.drDmm, 0), "mm")}
+        </div>`;
+}
+
+function renderPotabFiltracion(r) {
+    const host = $("potab-filtracion-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Nº de filtros Nf", f(r.filNf, 0), "unid")}
+            ${potabRow("Tasa de filtración", f(r.filTasa, 0), "m³/m²/d")}
+            ${potabHl("Área de cada filtro", f(r.filA, 3), "m²")}
+            ${potabRow("Lado 1", f(r.filL1, 3), "m")}
+            ${potabRow("Lado 2", f(r.filL2, 3), "m")}
+            ${potabRow("Expansión del lecho", f(r.filExp, 0), "%")}
+            ${potabRow("Tamaño efectivo de la arena", f(r.filArena, 1), "mm")}
+            ${potabRow("Velocidad ascensional", f(r.filVasc, 2), "m/min")}
+            ${potabHl("Caudal de lavado por unidad", f(r.filQlav, 2), "l/s")}
+        </div>
+        <h3 style="margin-top:1rem;font-size:.95rem;font-weight:700">Canaleta colectora de agua de lavado</h3>
+        <div class="results">
+            ${potabRow("Nº de canaletas", f(r.filNCan, 0), "unid")}
+            ${potabRow("Ancho de la canaleta", f(r.filACan, 2), "m")}
+            ${potabRow("Caudal por canaleta", f(r.filQcan, 3), "m³/min")}
+            ${potabRow("Altura del agua Y", f(r.filY, 3), "m")}
+            ${potabRow("Borde libre y'", f(r.filBorde, 2), "m")}
+            ${potabRow("Altura total de la canaleta", f(r.filAltTot, 3), "m")}
+            ${potabRow("Separación canaleta–borde", f(r.filSepBorde, 3), "m",
+                r.filSepBorde <= 0.9 ? `<span class="badge-state ok">✓ Verifica (≤ 0,9)</span>`
+                                     : `<span class="badge-state fail">✕ No verifica</span>`)}
+            ${potabRow("Separación entre canaletas", f(r.filSepCan, 3), "m",
+                r.filSepCan <= 1.8 ? `<span class="badge-state ok">✓ Verifica (≤ 1,8)</span>`
+                                   : `<span class="badge-state fail">✕ No verifica</span>`)}
+        </div>`;
+}
+
+function renderPotabFiltracionBomba(r) {
+    const host = $("potab-filtracion-bomba-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Tiempo de lavado ascensional", f(r.filTLavado, 0), "min")}
+            ${potabRow("Tasa de flujo de lavado", f(r.filTasaLav, 2), "m³/m²/min")}
+            ${potabHl("Volumen del tanque de lavado", f(r.filVtanque, 2), "m³")}
+            ${potabRow("Volumen disponible", f(r.filVdisp, 2), "m³",
+                r.filVtanqueVerif ? `<span class="badge-state ok">✓ Verifica</span>`
+                                  : `<span class="badge-state fail">✕ No verifica</span>`)}
+            ${potabRow("Horas de lavado en 24 hs", f(r.filHoras, 0), "h")}
+            ${potabRow("Factor de seguridad", f(r.filFseg, 1), "")}
+            ${potabRow("Frecuencia de lavado", f(r.filFrec, 1), "h")}
+            ${potabRow("Tiempo de llenado", f(r.filTLlenado, 0), "min")}
+            ${potabRow("Caudal de bombeo", f(r.filQb, 2), "l/s")}
+            ${potabRow("Potencia", f(r.filP, 2), "cv")}
+            ${potabHl("Potencia adoptada para la bomba", f(r.filPadop, 0), "cv")}
+        </div>`;
+}
+
+function renderPotabCloracion(r) {
+    const host = $("potab-cloracion-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabRow("Tiempo de contacto", f(r.clTContacto, 0), "min")}
+            ${potabHl("Volumen de reservorio de contacto", f(r.clV, 2), "m³")}
+            ${potabRow("Relación largo/ancho", f(r.clLb, 0), "")}
+            ${potabRow("Profundidad", f(r.clProf, 2), "m")}
+            ${potabRow("Superficie", f(r.clSup, 2), "m²")}
+            ${potabRow("Ancho", f(r.clAncho, 3), "m")}
+            ${potabRow("Largo", f(r.clLargo, 3), "m")}
+            ${potabRow("Dosis aproximada", f(r.clDosis, 0), "ppm")}
+            ${potabRow("Consumo diario", f(r.clConsumo, 2), "Kg Cl2")}
+            ${potabRow("Consumo diario Hipoclorito de Sodio (8%)", f(r.clHipo, 2), "l/d")}
+            ${potabRow("Consumo mensual (30% reserva)", f(r.clHipoMes, 2), "l/mes")}
+            ${potabRow("Relación de disolución (1/4)", f(r.clRel, 2), "")}
+            ${potabRow("Consumo en disolución", f(r.clDisol, 2), "L/d")}
+            ${potabRow("Tanque de disolución", f(r.clTanque, 0), "L")}
+            ${potabRow("Necesidad por tanque", f(r.clNecesidad, 2), "L")}
+            ${potabRow("Frecuencia de mantenimiento", f(r.clFrec, 3), "d")}
+            ${potabHl("Bomba dosadora", f(r.clBomba, 2), "L/h")}
+        </div>
+        <p class="footnote">El volumen de contacto se afecta con +30% de seguridad.</p>`;
+}
+
+function renderPotabReservorio(r) {
+    const host = $("potab-reservorio-content");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="results">
+            ${potabHl("Volumen", f(r.resV, 2), "m³")}
+            ${potabRow("Profundidad adoptada", f(r.resProf, 2), "m")}
+            ${potabHl("Diámetro", f(r.resD, 3), "m")}
+            ${potabRow("Altura de construcción", f(r.resH, 2), "m")}
+        </div>
+        <p class="footnote">Altura de construcción = profundidad + 30 cm.</p>`;
+}
+
+function renderPotabHero(r) {
+    const host = $("potab-hero-kpis");
+    if (!host) return;
+    host.innerHTML =
+        kpi("Caudal de captación", f(r.qcapLps, 2), "l/s") +
+        kpi("Nº filtros", f(r.sedNf, 0), "unid") +
+        kpi("Nº sedimentadores", f(r.sedNs, 0), "unid") +
+        kpi("Vol. reservorio", f(r.resV, 0), "m³");
+}
+
+function renderPotabAutoResults(r) {
+    const host = $("potab-auto-results");
+    if (!host) return;
+    host.innerHTML = `
+        <div class="panel">
+            <h3>1 · Captación y cámara de aquietamiento</h3>
+            <div class="results">
+                ${potabHl("Caudal de captación Qcap", f(r.qcapLps, 2), "l/s")}
+                ${potabRow("Área de aquietamiento", f(r.aqArea, 3), "m²")}
+                ${potabRow("Lados del aquietador", f(r.aqLado, 3), "m")}
+                ${potabRow("Profundidad de la cámara", f(r.aqProf, 3), "m")}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>2 · Parshall — mezclador rápido</h3>
+            <div class="results">
+                ${potabRow("Velocidad v", f(r.phV, 2), "m/s",
+                    r.phVerif ? `<span class="badge-state ok">✓ Verifica</span>` : `<span class="badge-state fail">✕ No verifica</span>`)}
+                ${potabRow("Pérdida h1", f(r.phH1, 3), "m")}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>3 · Vertedero en “V” y gradiente</h3>
+            <div class="results">
+                ${potabRow("Hmax", f(r.vHmax, 3), "m")}
+                ${potabRow("Gradiente del vertedor G", f(r.gVert, 1), "s⁻¹",
+                    r.gVertVerif ? `<span class="badge-state ok">✓ G &gt; Gr</span>` : `<span class="badge-state fail">✕ No verifica</span>`)}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>4 · Floculador / mezclador lento</h3>
+            <div class="results">
+                ${potabRow("Separación de canales b", f(r.flBAdopt, 2), "m")}
+                ${potabRow("Velocidad recalculada v1", f(r.flV1rec, 3), "m/s")}
+                ${potabRow("Nº de canales N", f(r.flN, 0), "unid")}
+                ${potabRow("Gradiente G", f(r.flG, 1), "s⁻¹",
+                    r.flGVerif ? `<span class="badge-state ok">✓ Verifica</span>` : `<span class="badge-state fail">✕ No verifica</span>`)}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>5 · Sedimentador</h3>
+            <div class="results">
+                ${potabRow("Nº filtros / sedimentadores", f(r.sedNf, 0) + " / " + f(r.sedNs, 0), "unid")}
+                ${potabRow("Largo / Ancho / Altura", f(r.sedL, 1) + " / " + f(r.sedB, 1) + " / " + f(r.sedH, 2), "m")}
+                ${potabRow("Verificación L/H", f(r.sedLH, 1),
+                    r.sedLHVerif ? `<span class="badge-state ok">✓ Verifica</span>` : `<span class="badge-state fail">✕ No verifica</span>`)}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>6 · Filtración</h3>
+            <div class="results">
+                ${potabRow("Área de cada filtro", f(r.filA, 2), "m²")}
+                ${potabRow("Caudal de lavado", f(r.filQlav, 1), "l/s")}
+                ${potabRow("Volumen del tanque de lavado", f(r.filVtanque, 1), "m³",
+                    r.filVtanqueVerif ? `<span class="badge-state ok">✓ Verifica</span>` : `<span class="badge-state fail">✕ No verifica</span>`)}
+                ${potabRow("Potencia adoptada de la bomba", f(r.filPadop, 0), "cv")}
+            </div>
+        </div>
+        <div class="panel" style="margin-top:1.2rem">
+            <h3>7 · Cloración y reservorio</h3>
+            <div class="results">
+                ${potabRow("Volumen de contacto", f(r.clV, 1), "m³")}
+                ${potabRow("Consumo diario de cloro", f(r.clConsumo, 1), "Kg Cl2")}
+                ${potabRow("Hipoclorito de sodio (8%)", f(r.clHipo, 0), "l/d")}
+                ${potabRow("Bomba dosadora", f(r.clBomba, 1), "L/h")}
+                ${potabHl("Reservorio de agua tratada", f(r.resV, 0), "m³")}
+                ${potabRow("Diámetro del reservorio", f(r.resD, 1), "m")}
+            </div>
+        </div>`;
+}
+
+function renderPotabAll(auto) {
+    const r = potabCalc();
+    renderPotabHero(r);
+    renderPotabCaptacion(r);
+    renderPotabAquietamiento(r);
+    renderPotabParshall(r);
+    renderPotabParshallTabla(r);
+    renderPotabVertedero(r);
+    renderPotabResalto(r);
+    renderPotabEstabilizacion(r);
+    renderPotabMezclador(r);
+    renderPotabFloculador(r);
+    renderPotabSed(r);
+    renderPotabSedCanaleta(r);
+    renderPotabSedEntrada(r);
+    renderPotabSedSalida(r);
+    renderPotabSedSedimentada(r);
+    renderPotabSedDrenaje(r);
+    renderPotabFiltracion(r);
+    renderPotabFiltracionBomba(r);
+    renderPotabCloracion(r);
+    renderPotabReservorio(r);
+    if (auto) renderPotabAutoResults(r);
+    renderInformePotab(r);
+    renderFormulas();
+}
+
+/* ================= POTAB: informe ================= */
+function collectPotabReportData(r) {
+    const fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+    const kv = (l, v, u) => [l, v, u];
+    const inputs = [
+        kv("Caudal diario", f(r.qd, 2), "m³/d"),
+        kv("K1 — Consumo máx. diario", SP.k1, ""),
+        kv("K2 — Consumo máx. horario", SP.k2, ""),
+        kv("K3 — Planta de tratamiento", SP.k3, ""),
+        kv("Caudal de captación Qcap", f(r.qcapLps, 2), "l/s"),
+    ];
+    const aquiet = [
+        kv("Velocidad ascensional", SP.vAsc, "cm/s"),
+        kv("Área sección transversal", f(r.aqArea, 3), "m²"),
+        kv("Lados del aquietador", f(r.aqLado, 3), "m"),
+        kv("Profundidad de la cámara", f(r.aqProf, 3), "m"),
+    ];
+    const parshall = [
+        kv("Ancho de garganta W", f(r.phW, 3), "m"),
+        kv("Altura del agua H", f(r.phH, 3), "m"),
+        kv("Velocidad", f(r.phV, 2), "m/s"),
+        kv("Verificación (≥ 2 m/s)", r.phVerif ? "Verifica" : "No verifica", ""),
+    ];
+    const vertedero = [
+        kv("Hmax", f(r.vHmax, 4), "m"),
+        kv("Gradiente G", f(r.gVert, 2), "s⁻¹"),
+        kv("Gradiente Gr", f(r.gr, 2), "s⁻¹"),
+        kv("Verificación G > Gr", r.gVertVerif ? "Verifica" : "No verifica", ""),
+    ];
+    const floculador = [
+        kv("Separación de canales b", f(r.flBAdopt, 2), "m"),
+        kv("Velocidad v1", f(r.flV1rec, 3), "m/s"),
+        kv("Nº de canales", f(r.flN, 0), "unid"),
+        kv("Pérdida total", f(r.flHftotal, 4), "m"),
+        kv("Gradiente G", f(r.flG, 2), "s⁻¹"),
+        kv("Verificación (30–60)", r.flGVerif ? "Verifica" : "No verifica", ""),
+    ];
+    const sedimentador = [
+        kv("Tiempo de retención", f(r.sedTr, 1), "h"),
+        kv("Nº de filtros", f(r.sedNf, 0), "unid"),
+        kv("Nº de sedimentadores", f(r.sedNs, 0), "unid"),
+        kv("Largo", f(r.sedL, 2), "m"),
+        kv("Ancho", f(r.sedB, 2), "m"),
+        kv("Altura útil", f(r.sedH, 3), "m"),
+        kv("Verificación L/H", r.sedLHVerif ? "Verifica" : "No verifica", ""),
+    ];
+    const filtracion = [
+        kv("Área de cada filtro", f(r.filA, 3), "m²"),
+        kv("Caudal de lavado", f(r.filQlav, 2), "l/s"),
+        kv("Volumen del tanque de lavado", f(r.filVtanque, 2), "m³"),
+        kv("Potencia de la bomba", f(r.filPadop, 0), "cv"),
+    ];
+    const cloracion = [
+        kv("Volumen de contacto", f(r.clV, 2), "m³"),
+        kv("Consumo diario de cloro", f(r.clConsumo, 2), "Kg Cl2"),
+        kv("Hipoclorito de sodio (8%)", f(r.clHipo, 2), "l/d"),
+        kv("Bomba dosadora", f(r.clBomba, 2), "L/h"),
+    ];
+    const reservorio = [
+        kv("Volumen", f(r.resV, 2), "m³"),
+        kv("Diámetro", f(r.resD, 3), "m"),
+        kv("Altura de construcción", f(r.resH, 2), "m"),
+    ];
+    const conclusion = "Planta potabilizadora dimensionada para un caudal de captación de "
+        + f(r.qcapLps, 2) + " l/s. Se adoptan " + f(r.sedNf, 0) + " filtros y " + f(r.sedNs, 0)
+        + " sedimentadores. El gradiente del vertedero en V " + (r.gVertVerif ? "verifica" : "no verifica")
+        + " (G = " + f(r.gVert, 1) + " s⁻¹ vs Gr = " + f(r.gr, 1) + " s⁻¹) y el del floculador "
+        + (r.flGVerif ? "verifica" : "no verifica") + " (G = " + f(r.flG, 1) + " s⁻¹). "
+        + "Reservorio de agua tratada de " + f(r.resV, 0) + " m³.";
+    return {
+        fecha, inputs, aquiet, parshall, vertedero, floculador, sedimentador, filtracion, cloracion, reservorio, conclusion,
+    };
+}
+
+function buildPotabReportHTML(d) {
+    const row = (t) => `<tr><td class="pl">${esc(t[0])}</td><td class="pv">${t[1]}</td><td class="pu">${esc(t[2])}</td></tr>`;
+    const table = (rows) => `<table>
+        <thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th></tr></thead>
+        <tbody>${rows.map(row).join("")}</tbody></table>`;
+    const card = (title, rows) => `<div class="info-card"><h5>${esc(title)}</h5>${table(rows)}</div>`;
+    return `
+    <div class="informe">
+        <div class="informe-head">
+            <div>
+                <h3>Informe técnico — Planta Potabilizadora</h3>
+                <p class="informe-sub">Saneamiento (Norma 68) · Hoja POTABILIZADORA</p>
+            </div>
+            <div class="informe-meta">
+                <div>Fecha: ${esc(d.fecha)}</div>
+                <div>Grupo Nº: ______________</div>
+                <div>Integrantes: ______________________</div>
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>1 · Captación</h4>
+            <div class="info-grid">
+                ${card("Parámetros", d.inputs)}
+                ${card("Cámara de aquietamiento", d.aquiet)}
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>2 · Mezcla rápida</h4>
+            <div class="info-grid">
+                ${card("Canal Parshall", d.parshall)}
+                ${card("Vertedero en “V” y gradiente", d.vertedero)}
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>3 · Floculación y sedimentación</h4>
+            <div class="info-grid">
+                ${card("Floculador", d.floculador)}
+                ${card("Sedimentador", d.sedimentador)}
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>4 · Filtración y cloración</h4>
+            <div class="info-grid">
+                ${card("Filtración", d.filtracion)}
+                ${card("Cloración", d.cloracion)}
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>5 · Reservorio de agua tratada</h4>
+            <div class="info-grid">
+                ${card("Reservorio", d.reservorio)}
+            </div>
+        </div>
+
+        <div class="info-sec concl">
+            <h4>Conclusión</h4>
+            <p>${esc(d.conclusion)}</p>
+        </div>
+
+        <div class="informe-foot">
+            <p>Informe generado automáticamente con los parámetros de la hoja POTABILIZADORA (Norma 68).</p>
+        </div>
+    </div>`;
+}
+
+function renderInformePotab(r) {
+    const host = $("informe-content");
+    if (!host) return;
+    host.innerHTML = buildPotabReportHTML(collectPotabReportData(r));
+}
+
+function buildPotabPDF(d) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
+    const PW = 210, PH = 297, M = 13;
+    let y = 0;
+    doc.setFillColor(11, 93, 86);
+    doc.rect(0, 0, PW, 30, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(17);
+    doc.text("Informe técnico — Planta Potabilizadora", M, 13);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.text("Saneamiento (Norma 68) · Hoja POTABILIZADORA", M, 20);
+    doc.setFontSize(8);
+    doc.text("Fecha: " + d.fecha, PW - M, 12, { align: "right" });
+    doc.text("Grupo Nº: ______________", PW - M, 17, { align: "right" });
+    doc.text("Integrantes: ______________________", PW - M, 22, { align: "right" });
+    doc.setTextColor(20, 39, 31);
+    y = 36;
+    const ensure = (need) => { if (y + need > 272) { doc.addPage(); y = 20; } };
+    const heading = (txt) => {
+        ensure(12);
+        doc.setFillColor(11, 93, 86);
+        doc.rect(M, y - 4.5, 2, 6, "F");
+        doc.setTextColor(11, 93, 86);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.text(txt, M + 4, y);
+        y += 7;
+    };
+    const sub = (txt) => {
+        ensure(10);
+        doc.setTextColor(20, 39, 31);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.5);
+        doc.text(txt, M, y);
+        y += 4;
+    };
+    const kvTable = (rows) => {
+        doc.autoTable({
+            startY: y,
+            head: [["Parámetro", "Valor", "Unidad"]],
+            body: rows,
+            theme: "grid",
+            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 8, fontStyle: "bold" },
+            bodyStyles: { fontSize: 8, textColor: [22, 39, 31] },
+            alternateRowStyles: { fillColor: [247, 250, 249] },
+            columnStyles: { 1: { halign: "right" }, 2: { halign: "right" } },
+            styles: { cellPadding: 1.7 },
+            margin: { left: M, right: M },
+        });
+        y = doc.lastAutoTable.finalY + 6;
+    };
+    const section = (title, rows) => { sub(title); kvTable(rows); };
+    heading("1 · Captación");
+    section("Parámetros", d.inputs);
+    section("Cámara de aquietamiento", d.aquiet);
+    heading("2 · Mezcla rápida");
+    section("Canal Parshall", d.parshall);
+    section("Vertedero en “V” y gradiente", d.vertedero);
+    heading("3 · Floculación y sedimentación");
+    section("Floculador", d.floculador);
+    section("Sedimentador", d.sedimentador);
+    heading("4 · Filtración y cloración");
+    section("Filtración", d.filtracion);
+    section("Cloración", d.cloracion);
+    heading("5 · Reservorio de agua tratada");
+    section("Reservorio", d.reservorio);
+    heading("Conclusión");
+    ensure(24);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(20, 39, 31);
+    const lines = doc.splitTextToSize(d.conclusion, PW - 2 * M);
+    doc.text(lines, M, y);
+    y += lines.length * 4.5;
+    const pages = doc.getNumberOfPages();
+    for (let i = 1; i <= pages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(7);
+        doc.setTextColor(140);
+        doc.text("Informe generado automáticamente · Saneamiento (Norma 68)", M, PH - 8);
+        doc.text("Página " + i + " de " + pages, PW - M, PH - 8, { align: "right" });
+    }
+    doc.save("informe-potabilizadora.pdf");
+}
+
 /* ================= Init ================= */
 loadState();
+loadPotabState();
 renderDatos();
 renderCaudalUnitario();
 renderBombeoForm();
 renderOptForm();
 renderGeomForm();
+renderPotabForms();
 renderAll();
 setupFormulasToggle();
 setupPdf();
