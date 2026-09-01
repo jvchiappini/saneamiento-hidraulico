@@ -21,6 +21,7 @@ const S = {
 // Parametros economicos del algoritmo de minimo costo
 const Sopt = {
     pipeCost: { ...PIPE_COST_DEFAULT },
+    motorCost: { ...MOTOR_COST_DEFAULT },
     kwh: 0.06, pumpCost: 300, rate: 8, maint: 2,
 };
 
@@ -200,6 +201,15 @@ function annFactor(n) {
     return i * fm / (fm - 1);
 }
 
+function motorCost(hp) {
+    const c = Sopt.motorCost[hp];
+    if (c != null) return c;
+    const hps = Object.keys(Sopt.motorCost).map(Number).sort((a, b) => a - b);
+    const nearest = hps.find((x) => x >= hp - 1e-9) ?? hps[hps.length - 1];
+    if (nearest != null && Sopt.motorCost[nearest] != null) return Sopt.motorCost[nearest];
+    return Sopt.pumpCost * hp;
+}
+
 function optimalRows(b) {
     const i = Sopt.rate / 100;
     const ann = (n) => { const fm = Math.pow(1 + i, n); return i * fm / (fm - 1); };
@@ -220,7 +230,7 @@ function optimalRows(b) {
 
         const perMeter = Sopt.pipeCost[dn] != null ? Sopt.pipeCost[dn] : 0;
         const pipeCost = perMeter * (S.lImp + S.lSucc);
-        const pumpInv = Sopt.pumpCost * m.Padop;
+        const pumpInv = motorCost(m.Padop);
         const energyKWh = m.Pmb * 0.7457 * S.horasOp * 365;
         const energy = energyKWh * Sopt.kwh;
         const maint = (pipeCost + pumpInv) * Sopt.maint / 100;
@@ -372,27 +382,32 @@ function renderOptForm() {
         host.innerHTML = OPT_FIELDS.map((fd) => renderField(fd, Sopt)).join("");
         OPT_FIELDS.forEach((fd) => bind(fd.id, (v) => Sopt[fd.id] = v));
     }
-    const pc = $("pipe-cost-form");
+    renderCostTable("pipe-cost-form", "Diámetro nominal (mm)", Sopt.pipeCost, (dn) => `in-pipeCost-${dn}`, "$/m");
+    renderCostTable("motor-cost-form", "Potencia del motor (HP)", Sopt.motorCost, (hp) => `in-motorCost-${hp}`, "$");
+}
+
+function renderCostTable(hostId, labelCol, obj, idFor, unit) {
+    const pc = $(hostId);
     if (!pc) return;
-    const dns = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b);
+    const keys = Object.keys(obj).map((k) => Number(k)).sort((a, b) => a - b);
     pc.innerHTML = `
         <div class="table-wrap">
             <table>
-                <thead><tr><th>Diámetro nominal (mm)</th><th>Costo ($/m)</th></tr></thead>
+                <thead><tr><th>${esc(labelCol)}</th><th>Costo (${esc(unit)})</th></tr></thead>
                 <tbody>
-                ${dns.map((dn) => `
+                ${keys.map((k) => `
                     <tr>
-                        <td><strong>${dn}</strong></td>
-                        <td><input type="number" id="in-pipeCost-${dn}" value="${Sopt.pipeCost[dn]}" step="any" min="0" inputmode="decimal" class="pipe-cost-input"></td>
+                        <td><strong>${f(k, 1)}</strong></td>
+                        <td><input type="number" id="${idFor(k)}" value="${obj[k]}" step="any" min="0" inputmode="decimal" class="pipe-cost-input"></td>
                     </tr>`).join("")}
                 </tbody>
             </table>
         </div>`;
-    dns.forEach((dn) => {
-        const el = $("in-pipeCost-" + dn);
+    keys.forEach((k) => {
+        const el = $(idFor(k));
         if (!el) return;
         el.addEventListener("input", () => {
-            Sopt.pipeCost[dn] = nf(el);
+            obj[k] = nf(el);
             saveState();
             scheduleRecompute();
         });

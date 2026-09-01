@@ -755,6 +755,62 @@ main {
     color: var(--primary-dark);
 }
 
+/* ---------- Colapsables (details) ---------- */
+.collapse {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.collapse summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .8rem 1.1rem;
+    font-weight: 700;
+    font-size: .95rem;
+    color: var(--ink);
+    user-select: none;
+}
+
+.collapse summary::-webkit-details-marker {
+    display: none;
+}
+
+.collapse summary::after {
+    content: "▾";
+    margin-left: auto;
+    color: var(--muted);
+    font-size: .8rem;
+    transition: transform .2s;
+}
+
+.collapse[open] summary::after {
+    transform: rotate(180deg);
+}
+
+.collapse-body {
+    padding: .2rem 1.1rem 1.1rem;
+    border-top: 1px solid var(--border);
+}
+
+.opt-panel .collapse {
+    background: transparent;
+    border-color: #eadfc2;
+}
+
+.collapse-inner {
+    margin: 1.2rem 0;
+    background: #fafcfb;
+}
+
+.collapse-inner .collapse-body {
+    border-top-color: var(--border);
+}
+
 /* ---------- Diagramas de Pareto ---------- */
 .chart-grid {
     display: grid;

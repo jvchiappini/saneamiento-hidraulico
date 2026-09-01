@@ -101,6 +101,15 @@ const PIPE_COST_DEFAULT = {
     350: 140, 400: 165, 450: 190, 500: 220, 550: 250,
 };
 
+// Costo de motores por potencia ($) — editable en la web
+// Valores de referencia por HP, modificables en la sección de alternativas.
+const MOTOR_COST_DEFAULT = {
+    1: 500, 1.5: 600, 2: 700, 3: 850, 5: 1200, 7.5: 1600, 10: 2000,
+    15: 2800, 20: 3500, 25: 4200, 30: 4900, 40: 6200, 50: 7500,
+    60: 8700, 75: 10500, 100: 13500, 125: 16500, 150: 19500,
+    200: 25000, 300: 36000,
+};
+
 // Metadatos de las formulas (SVG en /formulas/<id>.svg) con explicacion de variables
 const FORMULAS = [
     {
