@@ -65,6 +65,28 @@
             sistema elija solo, usá la página <a href="potabilizadora-auto.html">Potabilizadora · Auto</a>.
         </section>
 
+        <details class="collapse" open>
+            <summary><span>Mapa de dependencias entre variables (hoja POTABILIZADORA)</span></summary>
+            <div class="collapse-body dep-map">
+                <ul>
+                    <li><strong>Q<sub>cap</sub> = Caudal diario · K1 · K3</strong> alimenta: cámara de aquietamiento,
+                        Parshall, vertedero en “V”, floculador, sedimentador, filtración, cloración y reservorio.</li>
+                    <li>La <strong>v1 recalculada del floculador</strong> (B111) es la velocidad del <strong>agua
+                        floculada</strong> en el sedimentador (B162).</li>
+                    <li>La <strong>profundidad del floculador h</strong> (B106) debe coincidir con la <strong>altura
+                        máxima del canal de agua floculada</strong> (B166/D166).</li>
+                    <li>El <strong>ancho del sedimentador b</strong> (B154) alimenta los <strong>lados aprox. del
+                        floculador</strong> (B115, para adoptar X) y los <strong>lados del filtro</strong> (B215).</li>
+                    <li>El <strong>nº de filtros adoptado Nf</strong> (par) define <strong>Ns = Nf/2</strong> y la
+                        <strong>filtración</strong> (B210).</li>
+                    <li>La <strong>viscosidad cinemática ϑ</strong> (B104, depende de la temperatura) alimenta el
+                        <strong>gradiente del vertedero</strong> y el del <strong>floculador</strong>.</li>
+                    <li>El <strong>caudal de lavado del filtro</strong> (B222) alimenta las <strong>canaletas</strong>
+                        (B227) y el <strong>tanque + bomba de lavado</strong> (B237–B244).</li>
+                </ul>
+            </div>
+        </details>
+
         <section class="card step" id="captacion">
             <div class="step-head">
                 <span class="step-num">1</span>
@@ -125,6 +147,10 @@
                     <div id="potab-parshall-content"></div>
                 </div>
             </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Esquema del aforador</h3>
+                <div id="potab-parshall-dibujo"></div>
+            </div>
             <details class="collapse collapse-inner" open>
                 <summary><span>Tabla de referencia del aforador Parshall (garganta y caudales)</span></summary>
                 <div class="collapse-body">
@@ -151,6 +177,12 @@
                     <h3>Resultados del vertedero</h3>
                     <div id="potab-vertedero-content"></div>
                 </div>
+            </div>
+            <div class="panel" style="margin-top:1.2rem">
+                <h3>Gradiente de mezcla rápida <span class="tag">editable</span></h3>
+                <p class="lede">Parámetros que alimentan el gradiente mínimo de mezcla rápida (Gr), comparado contra el
+                    gradiente del vertedero en “V” (G).</p>
+                <div id="potab-gradiente-form"></div>
             </div>
             <div class="panel" style="margin-top:1.2rem">
                 <h3>Resalto hidráulico y gradiente de velocidad</h3>

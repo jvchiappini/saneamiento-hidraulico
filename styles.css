@@ -918,6 +918,51 @@ main {
     border-top-color: var(--border);
 }
 
+/* ---------- Mapa de dependencias ---------- */
+.dep-map ul {
+    margin: .4rem 0 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: .55rem;
+}
+
+.dep-map li {
+    font-size: .9rem;
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+.dep-map li::marker {
+    color: var(--primary);
+}
+
+/* ---------- Dibujo del aforador Parshall ---------- */
+.fig-wrap {
+    margin-top: .8rem;
+}
+
+.parshall-svg {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: .4rem;
+    box-sizing: border-box;
+}
+
+.info-fig {
+    margin-top: 1rem;
+}
+
+.info-fig .parshall-svg {
+    max-width: 520px;
+    background: #fff;
+}
+
 /* ---------- Diagramas de Pareto ---------- */
 .chart-grid {
     display: grid;
