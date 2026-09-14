@@ -1565,6 +1565,10 @@ let parshallViewMode = "calc"; // "calc" | "canon"
 
 function setParshallViewMode(mode) {
     parshallViewMode = mode;
+    const bCalc = $("btn-mode-calc");
+    const bCanon = $("btn-mode-canon");
+    if (bCalc) bCalc.classList.toggle("active", mode === "calc");
+    if (bCanon) bCanon.classList.toggle("active", mode === "canon");
     const r = potabCalc();
     renderPotabParshallDibujo(r);
 }
@@ -2891,3 +2895,365 @@ async function buildPotabPDF(d) {
     doc.text(splitText, M, y);
     doc.save("informe-planta-potabilizadora.pdf");
 }
+
+/* ================= POTAB: esquemas técnicos SVG ================= */
+function svgDim(x1, y1, x2, y2, c = "#334155") {
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="1.2"/>` +
+        `<line x1="${x1}" y1="${y1 - 4}" x2="${x1}" y2="${y1 + 4}" stroke="${c}" stroke-width="1.2"/>` +
+        `<line x1="${x2}" y1="${y2 - 4}" x2="${x2}" y2="${y2 + 4}" stroke="${c}" stroke-width="1.2"/>`;
+}
+function svgTxt(x, y, t, size = 12, weight = "600", anchor = "middle", fill = "#0b5d56") {
+    return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}">${t}</text>`;
+}
+function svgMarker(uid) {
+    const mkd = "svgArr" + uid;
+    return `<defs><marker id="${mkd}" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#0b5d56"/></marker></defs>`;
+}
+
+function aquietamientoSVG(r, uid = "") {
+    const F = (v, d = 3) => f(v, d);
+    const lado = r.aqLado, prof = r.aqProf, sol = r.aqSolera, htot = r.aqHtot;
+    const L = 120, cx = 300, cy = 105;
+    const x0 = cx - L / 2, y0 = cy - L / 2;
+    const Yf = 360;
+    const Hp = Math.min(130, Math.max(55, prof * 55));
+    const Ep = Math.min(50, Math.max(20, sol * 130));
+    const mkd = "svgArr" + uid;
+    return `<svg class="parshall-svg" viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cámara de aquietamiento">
+    ${svgMarker(uid)}
+    <text x="340" y="20" font-size="13" font-weight="700" fill="#0b5d56" text-anchor="middle">Cámara de aquietamiento</text>
+    <text x="340" y="36" font-size="10" font-weight="500" fill="#64748b" text-anchor="middle">PLANTA (sección cuadrada)</text>
+
+    <rect x="${x0}" y="${y0}" width="${L}" height="${L}" fill="#e2f3f1" stroke="#0b5d56" stroke-width="2.5"/>
+    <line x1="${cx - 18}" y1="${y0 + 8}" x2="${cx - 18}" y2="${y0 - 12}" stroke="#0b5d56" stroke-width="2.5" marker-end="url(#${mkd})"/>
+    <text x="${cx - 18}" y="${y0 - 20}" font-size="11" fill="#334155" text-anchor="middle">entrada (río)</text>
+    <line x1="${cx + 18}" y1="${y0 + L - 8}" x2="${cx + 18}" y2="${y0 + L + 16}" stroke="#0b5d56" stroke-width="2.5" marker-end="url(#${mkd})"/>
+    <text x="${cx + 18}" y="${y0 + L + 32}" font-size="11" fill="#334155" text-anchor="middle">salida → Parshall</text>
+    ${svgDim(x0, y0 - 34, x0 + L, y0 - 34)}
+    ${svgTxt(cx, y0 - 44, "Lado = " + F(lado) + " m")}
+    ${svgDim(x0 - 26, y0, x0 - 26, y0 + L)}
+    ${svgTxt(x0 - 34, cy, "Lado", "end")}
+
+    <text x="340" y="228" font-size="10" font-weight="500" fill="#64748b" text-anchor="middle">CORTE A-A</text>
+
+    <polyline points="${x0},${Yf - Hp - Ep} ${x0},${Yf} ${x0 + L},${Yf} ${x0 + L},${Yf - Hp - Ep}" fill="none" stroke="#64748b" stroke-width="3"/>
+    <rect x="${x0}" y="${Yf - Hp}" width="${L}" height="${Hp}" fill="#bfe3e0" stroke="#0b5d56" stroke-width="1.4"/>
+    <rect x="${x0}" y="${Yf - Hp - Ep}" width="${L}" height="${Ep}" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+    <line x1="${x0}" y1="${Yf}" x2="${x0 + L}" y2="${Yf}" stroke="#334155" stroke-width="3.5"/>
+    <line x1="${x0 - 22}" y1="${Yf - Hp}" x2="${x0 - 14}" y2="${Yf - Hp}" stroke="#0b5d56" stroke-width="1.4"/>
+    <line x1="${x0 - 22}" y1="${Yf}" x2="${x0 - 14}" y2="${Yf}" stroke="#0b5d56" stroke-width="1.4"/>
+    ${svgDim(x0 + L + 26, Yf - Hp, x0 + L + 26, Yf)}
+    ${svgTxt(x0 + L + 38, Yf - Hp / 2, "Prof. útil = " + F(prof) + " m", "start")}
+    ${svgDim(x0 + L + 70, Yf - Hp - Ep, x0 + L + 70, Yf - Hp)}
+    ${svgTxt(x0 + L + 82, Yf - Hp - Ep / 2, "Solera = " + F(sol) + " m", "start")}
+    ${svgTxt(340, Yf + 26, "Altura total = " + F(htot) + " m · v = " + F(SP.vAsc, 1) + " cm/s · t = " + F(r.aqTiempo, 1) + " s")}
+</svg>`;
+}
+
+function parshallSVG(r, uid = "", mode) {
+    const m = mode || parshallViewMode || "calc";
+    const canon = m === "canon";
+    const F = (v, d = 3) => f(v, d);
+    const A = r.phA, B = r.phB, C = r.phC, D = r.phD, E = r.phE, Fw = r.phF, W = r.phW;
+    const N = r.phN, K = r.phK, H = r.phH, h2 = r.phH2, H3 = r.phH3;
+    const sc = 120;
+    const pA = Math.max(110, A * sc), pB = Math.max(60, B * sc), pC = Math.max(60, C * sc);
+    const pW = Math.max(30, W * sc), pD = Math.max(70, D * sc), pF = Math.max(50, Fw * sc);
+    const x0 = 90, xT1 = x0 + pA, xT2 = xT1 + pB, xE = xT2 + pC;
+    const yc = 120;
+    const scH = 150;
+    const pH = Math.max(28, H * scH), ph2p = Math.max(20, h2 * scH), pH3p = Math.max(20, H3 * scH);
+    const pN = Math.max(16, N * scH), pK = Math.max(9, K * scH), pE = Math.max(60, E * scH * 0.8);
+    const Yf = 400;
+    const mkd = "svgArr" + uid;
+    const lbl = (letter, name, val) => canon ? (letter + " (" + name + ")") : (letter + " = " + F(val) + " m");
+
+    return `<svg class="parshall-svg" viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Aforador Parshall">
+    ${svgMarker(uid)}
+    <text x="350" y="20" font-size="14" font-weight="700" fill="#0b5d56" text-anchor="middle">Figura 18 · Medidor Parshall (planta y perfil)</text>
+    <text x="350" y="36" font-size="10" font-weight="500" fill="#64748b" text-anchor="middle">PLANTA</text>
+
+    <polyline points="${x0},${yc - pD / 2} ${xT1},${yc - pW / 2} ${xT2},${yc - pW / 2} ${xE},${yc - pF / 2}" fill="none" stroke="#0b5d56" stroke-width="3" stroke-linejoin="round"/>
+    <polyline points="${x0},${yc + pD / 2} ${xT1},${yc + pW / 2} ${xT2},${yc + pW / 2} ${xE},${yc + pF / 2}" fill="none" stroke="#0b5d56" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="${xT1}" y="${yc - pW / 2}" width="${pB}" height="${pW}" fill="#bfe3e0" opacity="0.55"/>
+    <line x1="${xT1 + 16}" y1="${yc}" x2="${xT2 - 16}" y2="${yc}" stroke="#0b5d56" stroke-width="2" marker-end="url(#${mkd})"/>
+
+    <line x1="${xT1 - (2 / 3) * pA}" y1="${yc - pD / 2 - 6}" x2="${xT1 - (2 / 3) * pA}" y2="${yc + pD / 2 + 6}" stroke="#b45309" stroke-width="1.3" stroke-dasharray="4,3"/>
+    ${svgTxt(xT1 - (2 / 3) * pA, yc - pD / 2 - 12, "2/3·A (toma de nivel)", 10, "600", "middle", "#b45309")}
+
+    ${svgDim(44, yc - pD / 2, 44, yc + pD / 2)}
+    ${svgTxt(36, yc, "D", "end")}
+    ${svgDim(xT1, yc - pW / 2 - 20, xT2, yc - pW / 2 - 20)}
+    ${svgTxt((xT1 + xT2) / 2, yc - pW / 2 - 28, canon ? "E = W (garganta)" : "W = " + F(W) + " m")}
+    ${svgDim(xE + 22, yc - pF / 2, xE + 22, yc + pF / 2)}
+    ${svgTxt(xE + 30, yc, "F", "start")}
+
+    ${svgDim(x0, yc + pD / 2 + 24, xT1, yc + pD / 2 + 24)}
+    ${svgTxt((x0 + xT1) / 2, yc + pD / 2 + 38, lbl("A", "convergencia", A))}
+    ${svgDim(xT1, yc + pD / 2 + 24, xT2, yc + pD / 2 + 24)}
+    ${svgTxt((xT1 + xT2) / 2, yc + pD / 2 + 38, lbl("B", "garganta", B))}
+    ${svgDim(xT2, yc + pD / 2 + 24, xE, yc + pD / 2 + 24)}
+    ${svgTxt((xT2 + xE) / 2, yc + pD / 2 + 38, lbl("C", "salida", C))}
+    ${svgDim(x0, yc + pD / 2 + 58, xE, yc + pD / 2 + 58)}
+    ${svgTxt((x0 + xE) / 2, yc + pD / 2 + 72, lbl("G", "longitud total", A + B + C))}
+
+    <line x1="${x0}" y1="${yc}" x2="${x0 - 26}" y2="${yc}" stroke="#0b5d56" stroke-width="2" marker-end="url(#${mkd})"/>
+    <text x="${x0 - 34}" y="${yc - 6}" font-size="11" fill="#334155" text-anchor="end">flujo</text>
+
+    <text x="350" y="240" font-size="10" font-weight="500" fill="#64748b" text-anchor="middle">PERFIL</text>
+
+    <polygon points="${x0},${Yf - pH} ${xT1},${Yf - pH} ${xT1},${Yf + pN - ph2p} ${xT2},${Yf + pN - ph2p} ${xT2},${Yf + pN + pK - pH3p} ${xE},${Yf + pN + pK - pH3p} ${xE},${Yf + pN + pK} ${xT2},${Yf + pN + pK} ${xT2},${Yf + pN} ${xT1},${Yf + pN} ${xT1},${Yf} ${x0},${Yf}" fill="#bfe3e0" stroke="#0b5d56" stroke-width="1.6" stroke-linejoin="round"/>
+    <polyline points="${x0},${Yf} ${xT1},${Yf} ${xT1},${Yf + pN} ${xT2},${Yf + pN} ${xT2},${Yf + pN + pK} ${xE},${Yf + pN + pK}" fill="none" stroke="#334155" stroke-width="3" stroke-linejoin="round"/>
+    <line x1="${x0}" y1="${Yf}" x2="${x0}" y2="${Yf - pE}" stroke="#64748b" stroke-width="3"/>
+    <line x1="${x0}" y1="${Yf - pE}" x2="${xT2}" y2="${Yf - pE}" stroke="#64748b" stroke-width="3"/>
+    <line x1="${xE}" y1="${Yf + pN + pK}" x2="${xE}" y2="${Yf + pN + pK - pE}" stroke="#64748b" stroke-width="3"/>
+    <line x1="${xT2}" y1="${Yf + pN + pK - pE}" x2="${xE}" y2="${Yf + pN + pK - pE}" stroke="#64748b" stroke-width="3"/>
+
+    ${svgDim(xT1, Yf, xT1, Yf + pN)}
+    ${svgTxt(xT1 - 10, Yf + pN / 2, canon ? "N (escalón)" : "N = " + F(N) + " m", "end")}
+    ${svgDim(xT2, Yf + pN, xT2, Yf + pN + pK)}
+    ${svgTxt(xT2 - 10, Yf + pN + pK / 2, canon ? "K (desnivel)" : "K = " + F(K) + " m", "end")}
+    ${svgDim(120, Yf, 120, Yf - pH)}
+    ${svgTxt(120, Yf - pH - 8, canon ? "H (llegada)" : "H = " + F(H) + " m")}
+    ${svgDim(336, Yf + pN, 336, Yf + pN - ph2p)}
+    ${svgTxt(336, Yf + pN - ph2p - 8, canon ? "h₂ = 0,6·H" : "h₂ = " + F(h2) + " m")}
+    ${svgDim(520, Yf + pN + pK, 520, Yf + pN + pK - pH3p)}
+    ${svgTxt(520, Yf + pN + pK - pH3p - 8, canon ? "H₃ = 0,7·H" : "H₃ = " + F(H3) + " m")}
+    ${svgDim(64, Yf - pE, 64, Yf)}
+    ${svgTxt(64, Yf - pE - 8, canon ? "E (altura canal)" : "E = " + F(E) + " m")}
+
+    <text x="350" y="472" font-size="11" fill="#64748b" text-anchor="middle">Q = ${F(r.qcapLps)} l/s · W = ${F(W)} m · v = ${F(r.phV, 2)} m/s · ${r.phVerif ? "Apto mezclador rápido" : "No verifica v ≥ 2 m/s"}</text>
+</svg>`;
+}
+
+function renderPotabParshallDibujo(r) {
+    const host = $("potab-parshall-dibujo");
+    if (!host) return;
+    host.innerHTML = parshallSVG(r, "", parshallViewMode);
+}
+
+function vertederoSVG(r, uid = "") {
+    const F = (v, d = 3) => f(v, d);
+    const Hmax = r.vHmax, h1 = r.vH1, h2 = r.vH2, V1 = r.vV1, Fr = r.vF, Lm = r.vLm, hp = r.vHp;
+    const Yf = 350, xWall = 300;
+    const pHm = Math.min(95, Math.max(45, Hmax * 280));
+    const ph1 = Math.min(45, Math.max(12, h1 * 300));
+    const ph2 = Math.min(60, Math.max(20, h2 * 300));
+    const pLm = Math.min(130, Math.max(55, Lm * 40));
+    const xJet = xWall + 55, xEnd = xWall + pLm + 120;
+    const yWater = Yf - 2 * pHm, yCrest = Yf - pHm;
+    const mkd = "svgArr" + uid;
+    return `<svg class="parshall-svg" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vertedero triangular en V y resalto hidráulico">
+    ${svgMarker(uid)}
+    <text x="350" y="20" font-size="13" font-weight="700" fill="#0b5d56" text-anchor="middle">Vertedero triangular en "V" (φ = ${F(r.vPhi, 0)}°) y resalto hidráulico</text>
+
+    <rect x="70" y="${yWater}" width="${xWall - 70}" height="${Yf - yWater}" fill="#bfe3e0" stroke="#0b5d56" stroke-width="1.4"/>
+    <line x1="70" y1="${Yf}" x2="${xWall}" y2="${Yf}" stroke="#334155" stroke-width="3"/>
+
+    <path d="M${xWall - 6},${yWater - 26} L${xWall - 6},${Yf} L${xWall + 8},${Yf} L${xWall + 8},${yWater - 26} L${xWall - 38},${yWater - 26} L${xWall + 2},${yCrest} L${xWall + 42},${yWater - 26} Z" fill="#cbd5e1" stroke="#475569" stroke-width="1.6"/>
+    <path d="M${xWall + 2},${yCrest} Q${xWall + 42},${Yf - 42} ${xJet},${Yf - 8} L${xJet},${Yf} L${xWall + 8},${Yf} Z" fill="#7dd3fc" opacity="0.85"/>
+    <path d="M${xJet},${Yf} Q${xJet + pLm / 2},${Yf - ph2 - 18} ${xJet + pLm},${Yf} Z" fill="#bfe3e0" stroke="#0b5d56" stroke-width="1.2"/>
+    <line x1="${xJet + pLm}" y1="${Yf}" x2="${xEnd}" y2="${Yf}" stroke="#334155" stroke-width="3"/>
+
+    ${svgDim(xWall, yCrest, xWall, yWater)}
+    ${svgTxt(xWall + 14, (yCrest + yWater) / 2, "Hmax = " + F(Hmax, 4) + " m", "start")}
+    ${svgDim(118, Yf - ph1, 118, Yf)}
+    ${svgTxt(118, Yf - ph1 - 8, "h₁ = " + F(h1, 4) + " m")}
+    ${svgDim(xJet + pLm + 34, Yf - ph2, xJet + pLm + 34, Yf)}
+    ${svgTxt(xJet + pLm + 34, Yf - ph2 - 8, "h₂ = " + F(h2, 3) + " m")}
+    ${svgDim(xJet, Yf - 6, xJet + pLm, Yf - 6)}
+    ${svgTxt(xJet + pLm / 2, Yf + 24, "Lm = " + F(Lm, 3) + " m")}
+
+    <text x="350" y="394" font-size="11" fill="#64748b" text-anchor="middle">V₁ = ${F(V1, 2)} m/s · F = ${F(Fr, 2)} · Energía disipada hp = ${F(hp, 3)} m · G = ${F(r.gVert, 1)} s⁻¹ · ${r.gVertVerif ? "✓ G &gt; Gr" : "✕ G ≤ Gr"}</text>
+</svg>`;
+}
+
+function floculadorSVG(r, uid = "") {
+    const F = (v, d = 3) => f(v, d);
+    const X = r.flX, Y = r.flY, b = r.flBAdopt, bp = r.flBp, N = r.flN, N1 = r.flN1;
+    const sx = 15, sy = 13;
+    const W = Math.max(200, X * sx);
+    const bw = Math.max(9, b * sy);
+    const Ht = bw * N;
+    const x0 = 90, y0 = 80;
+    const pasW = Math.max(22, bp * sx);
+    const thk = Math.max(3, r.flE * sx);
+    const mkd = "svgArr" + uid;
+
+    let bands = "";
+    for (let i = 0; i < N; i++) {
+        bands += `<rect x="${x0}" y="${y0 + i * bw}" width="${W}" height="${bw}" fill="${i % 2 ? "#e6f4f2" : "#d9ecea"}" stroke="#94a3b8" stroke-width="0.7"/>`;
+    }
+    let walls = "";
+    for (let i = 0; i < N1; i++) {
+        const yy = y0 + (i + 1) * bw - thk / 2;
+        walls += i % 2 === 0
+            ? `<rect x="${x0 + pasW}" y="${yy}" width="${W - pasW}" height="${thk}" fill="#475569"/>`
+            : `<rect x="${x0}" y="${yy}" width="${W - pasW}" height="${thk}" fill="#475569"/>`;
+    }
+    let d = `M ${x0 + 12} ${y0 + bw / 2}`;
+    for (let i = 0; i < N; i++) {
+        const yc = y0 + i * bw + bw / 2;
+        const xe = i % 2 === 0 ? x0 + W - pasW / 2 : x0 + pasW / 2;
+        d += ` L ${xe} ${yc}`;
+        if (i < N - 1) d += ` L ${xe} ${y0 + (i + 1) * bw + bw / 2}`;
+    }
+    return `<svg class="parshall-svg" viewBox="0 0 700 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Floculador hidráulico de pantallas">
+    ${svgMarker(uid)}
+    <text x="350" y="20" font-size="13" font-weight="700" fill="#0b5d56" text-anchor="middle">Floculador hidráulico de pantallas (planta)</text>
+
+    <rect x="${x0}" y="${y0}" width="${W}" height="${Ht}" fill="none" stroke="#0b5d56" stroke-width="2.5"/>
+    ${bands}
+    ${walls}
+    <path d="${d}" fill="none" stroke="#0b5d56" stroke-width="2.2" marker-end="url(#${mkd})" opacity="0.9"/>
+
+    <line x1="${x0}" y1="${y0 - 8}" x2="${x0 - 14}" y2="${y0 - 8}" stroke="#0b5d56" stroke-width="2" marker-end="url(#${mkd})"/>
+    <text x="${x0 - 22}" y="${y0 - 12}" font-size="11" fill="#334155" text-anchor="end">entrada</text>
+    <line x1="${x0 + W}" y1="${y0 + Ht + 8}" x2="${x0 + W + 14}" y2="${y0 + Ht + 8}" stroke="#0b5d56" stroke-width="2" marker-end="url(#${mkd})"/>
+    <text x="${x0 + W + 22}" y="${y0 + Ht + 4}" font-size="11" fill="#334155" text-anchor="start">salida → sedimentador</text>
+
+    ${svgDim(x0, y0 - 26, x0 + W, y0 - 26)}
+    ${svgTxt(x0 + W / 2, y0 - 38, "X = " + F(X, 0) + " m")}
+    ${svgDim(x0 + W + 26, y0, x0 + W + 26, y0 + Ht)}
+    ${svgTxt(x0 + W + 36, y0 + Ht / 2, "Y", "start")}
+    ${svgDim(x0 - 26, y0, x0 - 26, y0 + bw)}
+    ${svgTxt(x0 - 34, y0 + bw / 2, "b", "end")}
+    ${svgTxt(x0 + W / 2, y0 + Ht + 30, "b' (paso) = " + F(bp, 2) + " m · e (espesor) = " + F(r.flE, 3) + " m · N = " + F(N, 0) + " canales · N₁ = " + F(N1, 0) + " bafles · L = " + F(r.flL, 1) + " m")}
+</svg>`;
+}
+
+function sedimentadorSVG(r, uid = "") {
+    const F = (v, d = 3) => f(v, d);
+    const L = r.sedL, H = r.sedH, haf = r.scHafMax;
+    const sx = 9, sy = 30;
+    const W = Math.min(540, Math.max(300, L * sx));
+    const Ht = Math.max(50, H * sy);
+    const x0 = 90, yTop = 96;
+    const Yf = yTop + Ht;
+    const floorOut = Yf + 0.05 * W;
+    const mkd = "svgArr" + uid;
+    return `<svg class="parshall-svg" viewBox="0 0 720 392" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sedimentador de escurrimiento horizontal">
+    ${svgMarker(uid)}
+    <text x="360" y="20" font-size="13" font-weight="700" fill="#0b5d56" text-anchor="middle">Sedimentador de escurrimiento horizontal — corte longitudinal</text>
+
+    <polygon points="${x0},${Yf} ${x0},${yTop} ${x0 + W},${yTop} ${x0 + W},${floorOut}" fill="none" stroke="#64748b" stroke-width="3"/>
+    <polygon points="${x0},${Yf} ${x0},${yTop + 16} ${x0 + W},${yTop + 16} ${x0 + W},${floorOut}" fill="#bfe3e0" opacity="0.55"/>
+
+    <rect x="${x0 - 36}" y="${yTop + 8}" width="36" height="${Math.min(60, haf * sy)}" fill="#d6ece9" stroke="#0b5d56" stroke-width="1.4"/>
+    <text x="${x0 - 18}" y="${yTop + 4}" font-size="10" fill="#334155" text-anchor="middle">haf</text>
+    <line x1="${x0 - 4}" y1="${yTop + 12}" x2="${x0}" y2="${yTop + 12}" stroke="#0b5d56" stroke-width="1.4" marker-end="url(#${mkd})"/>
+    <line x1="${x0 - 4}" y1="${yTop + 12 + Math.min(40, haf * sy / 2)}" x2="${x0}" y2="${yTop + 12 + Math.min(40, haf * sy / 2)}" stroke="#0b5d56" stroke-width="1.4" marker-end="url(#${mkd})"/>
+    <text x="${x0 - 40}" y="${yTop + 34}" font-size="9" fill="#334155" text-anchor="end">compuertas</text>
+
+    <line x1="${x0 + 36}" y1="${yTop + 16}" x2="${x0 + 36}" y2="${Yf}" stroke="#b45309" stroke-width="2" stroke-dasharray="5,3"/>
+    <circle cx="${x0 + 36}" cy="${yTop + 30}" r="3.5" fill="#0b5d56"/>
+    <circle cx="${x0 + 36}" cy="${yTop + 46}" r="3.5" fill="#0b5d56"/>
+    ${svgTxt(x0 + 36, yTop + 64, "cortina", 9)}
+
+    <circle cx="${x0 + 140}" cy="${yTop + 36}" r="3" fill="#475569"/>
+    <circle cx="${x0 + 200}" cy="${yTop + 54}" r="3" fill="#475569"/>
+    <circle cx="${x0 + 260}" cy="${yTop + 34}" r="3" fill="#475569"/>
+    <line x1="${x0 + 140}" y1="${yTop + 36}" x2="${x0 + 140}" y2="${yTop + 48}" stroke="#475569" stroke-width="1"/>
+    <line x1="${x0 + 200}" y1="${yTop + 54}" x2="${x0 + 200}" y2="${yTop + 66}" stroke="#475569" stroke-width="1"/>
+    <line x1="${x0 + 260}" y1="${yTop + 34}" x2="${x0 + 260}" y2="${yTop + 46}" stroke="#475569" stroke-width="1"/>
+
+    <line x1="${x0 + W / 2}" y1="${floorOut}" x2="${x0 + W / 2}" y2="${floorOut + 28}" stroke="#334155" stroke-width="3"/>
+    <rect x="${x0 + W / 2 - 9}" y="${floorOut + 18}" width="18" height="12" fill="#94a3b8" stroke="#475569" stroke-width="1"/>
+    <text x="${x0 + W / 2 + 16}" y="${floorOut + 30}" font-size="10" fill="#334155" text-anchor="start">drenaje + válvula</text>
+
+    <line x1="${x0 + W}" y1="${yTop + 16}" x2="${x0 + W}" y2="${floorOut}" stroke="#334155" stroke-width="2.5"/>
+    <rect x="${x0 + W}" y="${yTop - 16}" width="28" height="20" fill="#d6ece9" stroke="#0b5d56" stroke-width="1.4"/>
+    <text x="${x0 + W + 14}" y="${yTop - 22}" font-size="9" fill="#334155" text-anchor="middle">canaleta</text>
+    <line x1="${x0 + W + 28}" y1="${yTop + 2}" x2="${x0 + W + 54}" y2="${yTop + 2}" stroke="#0b5d56" stroke-width="1.6" marker-end="url(#${mkd})"/>
+    <text x="${x0 + W + 42}" y="${yTop - 4}" font-size="10" fill="#334155" text-anchor="middle">vertedero</text>
+
+    ${svgDim(x0, floorOut + 48, x0 + W, floorOut + 48)}
+    ${svgTxt(x0 + W / 2, floorOut + 60, "L = " + F(L, 1) + " m")}
+    ${svgDim(x0 - 10, yTop, x0 - 10, Yf)}
+    ${svgTxt(x0 - 16, (yTop + Yf) / 2, "H", "end")}
+
+    <text x="360" y="384" font-size="11" fill="#64748b" text-anchor="middle">H = ${F(H, 2)} m · haf = ${F(haf, 2)} m · fondo 5% · Ns = ${F(r.sedNs, 0)} · b = ${F(r.sedB, 1)} m</text>
+</svg>`;
+}
+
+function filtracionSVG(r, uid = "") {
+    const F = (v, d = 3) => f(v, d);
+    const L1 = r.filL1, L2 = r.filL2, A = r.filA, ncan = r.filNCan, qLav = r.filQlav;
+    const sx = 34;
+    const W = Math.max(240, Math.min(460, L1 * sx));
+    const x0 = 120, yFloor = 320;
+    const hFree = 20, hWater = 26, hArena = 34, hGrava = 22;
+    const yTop = yFloor - hFree - hWater - hArena - hGrava;
+    const mkd = "svgArr" + uid;
+    return `<svg class="parshall-svg" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Filtro rápido de lecho granular">
+    ${svgMarker(uid)}
+    <text x="350" y="20" font-size="13" font-weight="700" fill="#0b5d56" text-anchor="middle">Filtro rápido de lecho granular — corte transversal</text>
+
+    <rect x="${x0}" y="${yTop}" width="${W}" height="${hFree + hWater + hArena + hGrava}" fill="#f8fafc" stroke="#64748b" stroke-width="3"/>
+    <rect x="${x0}" y="${yFloor - hFree - hWater}" width="${W}" height="${hWater}" fill="#bfe3e0" opacity="0.6"/>
+    <rect x="${x0}" y="${yFloor - hFree - hWater - hArena}" width="${W}" height="${hArena}" fill="#eab308" opacity="0.5" stroke="#ca8a04" stroke-width="1"/>
+    ${svgTxt(x0 + W / 2, yFloor - hFree - hWater - hArena / 2, "Arena (expansión " + F(r.filExp, 0) + "%)", 11, "600", "middle", "#854d0e")}
+    <rect x="${x0}" y="${yFloor - hFree - hWater - hArena - hGrava}" width="${W}" height="${hGrava}" fill="#94a3b8" opacity="0.6" stroke="#64748b" stroke-width="1"/>
+    ${svgTxt(x0 + W / 2, yFloor - hFree - hWater - hArena - hGrava / 2, "Grava / soporte", 11, "600", "middle", "#334155")}
+
+    <line x1="${x0 + 12}" y1="${yFloor}" x2="${x0 + W - 12}" y2="${yFloor}" stroke="#475569" stroke-width="3"/>
+    ${[0.25, 0.5, 0.75].map((p) => `<circle cx="${x0 + W * p}" cy="${yFloor}" r="3.2" fill="#334155"/>`).join("")}
+
+    ${Array.from({ length: Math.min(ncan, 6) }).map((_, i) => {
+        const xc = x0 + W * (i + 1) / (Math.min(ncan, 6) + 1);
+        return `<path d="M${xc - 10},${yFloor - hFree - hWater} L${xc},${yFloor - hFree - hWater - 18} L${xc + 10},${yFloor - hFree - hWater}" fill="none" stroke="#0b5d56" stroke-width="2"/>`;
+    }).join("")}
+    ${svgTxt(x0 + W / 2, yFloor - hFree - hWater - 30, "Canaletas de lavado (N = " + F(ncan, 0) + ")", 11, "600", "middle", "#0b5d56")}
+
+    <line x1="${x0 + W / 2 - 42}" y1="${yFloor}" x2="${x0 + W / 2 - 42}" y2="${yFloor - 34}" stroke="#0b5d56" stroke-width="1.6" marker-end="url(#${mkd})"/>
+    <text x="${x0 + W / 2 - 42}" y="${yFloor - 42}" font-size="10" fill="#0b5d56" text-anchor="middle">retrolavado</text>
+    <line x1="${x0 + W / 2 + 42}" y1="${yFloor}" x2="${x0 + W / 2 + 42}" y2="${yFloor - 24}" stroke="#0b5d56" stroke-width="1.6" marker-end="url(#${mkd})"/>
+
+    <line x1="${x0 - 22}" y1="${yTop + 8}" x2="${x0}" y2="${yTop + 8}" stroke="#0b5d56" stroke-width="1.6" marker-end="url(#${mkd})"/>
+    <text x="${x0 - 28}" y="${yTop + 4}" font-size="10" fill="#334155" text-anchor="end">entrada</text>
+    <line x1="${x0 + W}" y1="${yTop + 8}" x2="${x0 + W + 22}" y2="${yTop + 8}" stroke="#0b5d56" stroke-width="1.6" marker-end="url(#${mkd})"/>
+    <text x="${x0 + W + 28}" y="${yTop + 4}" font-size="10" fill="#334155" text-anchor="start">agua filtrada</text>
+
+    <text x="350" y="372" font-size="11" fill="#64748b" text-anchor="middle">L₁ = ${F(L1, 2)} m · L₂ = ${F(L2, 2)} m · A = ${F(A, 1)} m² · Q lavado = ${F(qLav, 1)} l/s</text>
+</svg>`;
+}
+
+/* ================= Navegación (menú hamburguesa + dropdowns) ================= */
+function setupNav() {
+    const toggle = $("nav-toggle");
+    const links = $("nav-links");
+    if (toggle && links) {
+        toggle.addEventListener("click", () => {
+            links.classList.toggle("open");
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+        });
+    }
+    document.querySelectorAll(".nav-dd > a").forEach((a) => {
+        a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const dd = a.parentElement;
+            const wasOpen = dd.classList.contains("open");
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+            if (!wasOpen) dd.classList.add("open");
+        });
+    });
+    document.addEventListener("click", (e) => {
+        if (e.target && !e.target.closest(".nav-dd")) {
+            document.querySelectorAll(".nav-dd.open").forEach((x) => x.classList.remove("open"));
+        }
+    });
+}
+
+/* ================= Init ================= */
+loadState();
+loadPotabState();
+renderDatos();
+renderCaudalUnitario();
+renderBombeoForm();
+renderOptForm();
+renderGeomForm();
+renderPotabForms();
+setupNav();
+renderAll();
+setupFormulasToggle();
+setupPdf();
