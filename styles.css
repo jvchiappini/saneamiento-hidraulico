@@ -1920,3 +1920,130 @@ footer .footnote {
 .link-underlined:hover {
     color: var(--primary);
 }
+
+/* ================= Planchas y Esquemas Técnicos (Potabilizadora) ================= */
+.schema-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-top: 1.2rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.schema-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.schema-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-group-toggle {
+    display: inline-flex;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 3px;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-mode {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.btn-mode:hover {
+    color: #0f172a;
+}
+
+.btn-mode.active {
+    background: #ffffff;
+    color: var(--primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-weight: 700;
+}
+
+.blueprint-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.blueprint-container svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-width: 600px;
+}
+
+/* Tarjetas de Criterios de la Cátedra (Clase 3) */
+.criterio-card {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.05) 0%, rgba(20, 184, 166, 0.02) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.1rem;
+    font-size: 0.86rem;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.criterio-card strong {
+    color: var(--primary-dark);
+}
+
+.criterio-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.3rem;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.criterio-card ul {
+    margin: 0.35rem 0 0 1.2rem;
+    padding: 0;
+}
+
+.criterio-card li {
+    margin-bottom: 0.25rem;
+}
+
+.step-formula-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    color: #334155;
+    margin: 0.4rem 0 0.8rem 0;
+}
