@@ -311,6 +311,65 @@ function _altSteps(a, B23) {
 /* ============================================================================
    PLANTA POTABILIZADORA
    ========================================================================== */
+/* ============================================================================
+   Conversión de la notación de texto a LaTeX (para MathJax en HTML y PDF)
+   Devuelve una cadena LaTeX sin delimitadores, o null si la expresión no es
+   matemática (por ejemplo textos explicativos).
+   ========================================================================== */
+function _texBalanced(s, token, wrap) {
+    let idx;
+    while ((idx = s.indexOf(token)) !== -1) {
+        const open = idx + token.length - 1;
+        let depth = 0, end = -1;
+        for (let i = open; i < s.length; i++) {
+            if (s[i] === "(") depth++;
+            else if (s[i] === ")") { depth--; if (depth === 0) { end = i; break; } }
+        }
+        if (end === -1) break;
+        const inner = s.slice(open + 1, end);
+        s = s.slice(0, idx) + wrap(inner) + s.slice(end + 1);
+    }
+    return s;
+}
+
+function texFormula(str) {
+    if (str == null) return null;
+    const orig = String(str);
+    if (/\b(Se|valor|primer|adoptado|comercial|menor|según|guía)\b/i.test(orig)) return null;
+
+    let s = " " + orig + " ";
+    s = _texBalanced(s, "sqrt(", (inner) => "\\sqrt{" + inner + "}");
+    s = _texBalanced(s, "ceil(", (inner) => "\\lceil " + inner + " \\rceil ");
+    s = s.replace(/⁻¹/g, "^-1");
+    s = s.replace(/²/g, "^2").replace(/³/g, "^3").replace(/⁵/g, "^5");
+    s = s.replace(/·/g, " \\cdot ");
+    s = s.replace(/φ/g, "\\varphi ");
+    s = s.replace(/≈/g, " \\approx ");
+    s = s.replace(/>=/g, " \\ge ");
+    s = s.replace(/<=/g, " \\le ");
+    s = s.replace(/%/g, "\\%");
+    s = s.replace(/\btan\b/g, "\\tan ");
+    s = s.replace(/\bmax\b/g, "\\max ");
+    s = s.replace(/\bmin\b/g, "\\min ");
+    s = s.replace(/\bpi\b/g, "\\pi ");
+    s = s.replace(/\beta\b/g, "\\eta ");
+    s = s.replace(/\brho\b/g, "\\rho ");
+    s = s.replace(/\bmu\b/g, "\\mu ");
+    s = s.replace(/\bnu\b/g, "\\nu ");
+    s = s.replace(/\btheta\b/g, "\\theta ");
+    s = s.replace(/\bphi\b/g, "\\phi ");
+    s = s.replace(/\^(-?\([^)]*\)|-?\{[^}]*\}|-?[A-Za-z0-9][A-Za-z0-9,.]*)/g, (m, g) => {
+        let inner = g;
+        if ((inner[0] === "(" && inner[inner.length - 1] === ")") ||
+            (inner[0] === "{" && inner[inner.length - 1] === "}")) inner = inner.slice(1, -1);
+        return "^{" + inner + "}";
+    });
+    s = s.replace(/_([A-Za-z0-9][A-Za-z0-9,']*)/g, "_{$1}");
+    s = s.replace(/(\d),(\d)/g, "$1{,}$2");
+    s = s.replace(/(\d(?:\{,\}\d+)?)e(-?\d+)/g, "$1 \\cdot 10^{$2}");
+    return s.replace(/\s+/g, " ").trim();
+}
+
 function potabSteps(r) {
     const P = (typeof SP !== "undefined") ? SP : {};
     const g = [];

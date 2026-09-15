@@ -1590,6 +1590,20 @@ body.show-formulas .formula,
     font-weight: 600;
 }
 
+.calc-table td.cs-formula {
+    min-width: 150px;
+}
+
+.calc-tex {
+    font-size: .84rem;
+    color: #16271f;
+}
+
+.calc-tex mjx-container {
+    margin: 0 !important;
+    outline: none;
+}
+
 .concl p {
     line-height: 1.7;
 }

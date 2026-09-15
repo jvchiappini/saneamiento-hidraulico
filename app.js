@@ -1144,6 +1144,23 @@ function impulsionInputsExtra(r, alts) {
     return { caudales, tipos, diametros };
 }
 
+function impulsionAdoptados(alts, best) {
+    const kv = (l, v, u) => [l, v, u];
+    const rows = [];
+    (alts || []).forEach((a, i) => {
+        const m = a.m || a;
+        rows.push(kv(`Alt ${i + 1} — Diámetro de impulsión`, m.dI, "mm"));
+        rows.push(kv(`Alt ${i + 1} — Diámetro de succión`, m.dS, "mm"));
+        rows.push(kv(`Alt ${i + 1} — η bomba (Tabla 6) / η motor (Tabla 7)`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    });
+    if (best) {
+        rows.push(kv("Óptima — DN de impulsión", best.dn, "mm"));
+        rows.push(kv("Óptima — DN de succión", best.succ, "mm"));
+        rows.push(kv("Óptima — Potencia adoptada (Tabla 8)", f(best.m.Padop, 0), "HP"));
+    }
+    return rows;
+}
+
 function collectReportData(r) {
     const rows = optimalRows(r);
     const best = rows[0];
@@ -1178,6 +1195,7 @@ function collectReportData(r) {
     const inputsRend = r.alts.map((a, i) =>
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
     const { caudales: inputsCaudales, tipos: inputsTipos, diametros: inputsDiametros } = impulsionInputsExtra(r, r.alts);
+    const adoptados = impulsionAdoptados(r.alts, best);
     const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
         .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
     const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
@@ -1225,7 +1243,7 @@ function collectReportData(r) {
     return {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
-        inputsCaudales, inputsTipos, inputsDiametros,
+        inputsCaudales, inputsTipos, inputsDiametros, adoptados,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
         steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
@@ -1267,6 +1285,7 @@ function collectAutoReportData(r) {
     const inputsRend = auto.map((a, i) =>
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
     const { caudales: inputsCaudales, tipos: inputsTipos, diametros: inputsDiametros } = impulsionInputsExtra(r, auto);
+    const adoptados = impulsionAdoptados(auto, best);
     const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
         .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
     const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
@@ -1314,17 +1333,49 @@ function collectAutoReportData(r) {
     return {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
-        inputsCaudales, inputsTipos, inputsDiametros,
+        inputsCaudales, inputsTipos, inputsDiametros, adoptados,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
         steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
 }
 
+function fallbackPlainMath(host) {
+    if (!host) return;
+    host.querySelectorAll(".calc-tex").forEach((el) => {
+        const fb = el.getAttribute("data-fallback");
+        if (fb) el.textContent = fb;
+    });
+}
+
+function typesetMath(host) {
+    if (!host) return;
+    const run = () => {
+        if (window.MathJax && window.MathJax.typesetPromise) window.MathJax.typesetPromise([host]).catch(() => { });
+        else fallbackPlainMath(host);
+    };
+    if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+        window.MathJax.startup.promise.then(run);
+    } else if (window.MathJax && window.MathJax.typesetPromise) {
+        run();
+    } else {
+        setTimeout(() => {
+            if (window.MathJax && window.MathJax.typesetPromise) run();
+            else fallbackPlainMath(host);
+        }, 4000);
+    }
+}
+
 function stepsHTML(groups, title) {
     if (!groups || !groups.length) return "";
+    const formulaCell = (s) => {
+        const tex = (typeof texFormula === "function") ? texFormula(s.formula) : null;
+        return tex
+            ? `<span class="calc-tex" data-fallback="${esc(s.formula)}">\\(${esc(tex)}\\)</span>`
+            : `<code>${esc(s.formula)}</code>`;
+    };
     const row = (s) => `<tr>
         <td class="cs-name">${esc(s.name)}</td>
-        <td class="cs-formula"><code>${esc(s.formula)}</code></td>
+        <td class="cs-formula">${formulaCell(s)}</td>
         <td class="cs-sub"><code>${esc(s.sub)}</code></td>
         <td class="cs-res"><code>${esc(s.result)}</code></td>
     </tr>`;
@@ -1360,33 +1411,86 @@ function pdfSafe(s) {
         .replace(/ϑ/g, "nu");
 }
 
-function pdfStepsTable(doc, groups, y, M) {
-    (groups || []).forEach((grp) => {
-        if (y > 266) { doc.addPage(); y = 20; }
+async function texToPng(tex) {
+    if (!window.MathJax || !window.MathJax.tex2svg) return null;
+    if (window.MathJax.startup && window.MathJax.startup.promise) {
+        try { await window.MathJax.startup.promise; } catch (e) { /* noop */ }
+    }
+    const node = window.MathJax.tex2svg(tex, { display: false, em: 16, ex: 8 });
+    const svgEl = (node.tagName && node.tagName.toLowerCase() === "svg") ? node : node.querySelector("svg");
+    if (!svgEl) return null;
+    const wAttr = parseFloat(svgEl.getAttribute("width")) || 6;
+    const hAttr = parseFloat(svgEl.getAttribute("height")) || 1;
+    const ratio = wAttr / hAttr;
+    const H = 64;
+    const W = Math.max(8, Math.round(H * ratio));
+    svgEl.setAttribute("width", String(W));
+    svgEl.setAttribute("height", String(H));
+    svgEl.removeAttribute("style");
+    const svg = new XMLSerializer().serializeToString(svgEl);
+    const png = await svgToPngUrl(svg, W, H);
+    return { png, ratio };
+}
+
+async function buildTexCache(groups) {
+    const cache = {};
+    if (!window.MathJax || !window.MathJax.tex2svg || typeof svgToPngUrl !== "function") return cache;
+    const uniq = [...new Set((groups || []).flatMap((g) => g.steps.map((s) => s.formula)))];
+    for (const f of uniq) {
+        const tex = (typeof texFormula === "function") ? texFormula(f) : null;
+        if (!tex) continue;
+        try { cache[f] = await texToPng(tex); } catch (e) { /* fallback a texto */ }
+    }
+    return cache;
+}
+
+async function pdfStepsBlocks(doc, groups, y, M, PW) {
+    const usable = PW - 2 * M;
+    const cache = await buildTexCache(groups);
+    for (const grp of (groups || [])) {
+        if (y > 262) { doc.addPage(); y = 20; }
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
-        doc.setTextColor(20, 39, 31);
+        doc.setTextColor(11, 93, 86);
         doc.text(pdfSafe(grp.title), M, y);
-        y += 3.5;
-        doc.autoTable({
-            startY: y,
-            head: [["Cálculo", "Fórmula", "Reemplazo numérico", "Resultado"]],
-            body: grp.steps.map((s) => [pdfSafe(s.name), pdfSafe(s.formula), pdfSafe(s.sub), pdfSafe(s.result)]),
-            theme: "grid",
-            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 6.5, fontStyle: "bold" },
-            bodyStyles: { fontSize: 6.3, textColor: [22, 39, 31] },
-            alternateRowStyles: { fillColor: [247, 250, 249] },
-            columnStyles: {
-                0: { cellWidth: 34 },
-                1: { cellWidth: 44 },
-                2: { cellWidth: 64 },
-                3: { cellWidth: 42, fontStyle: "bold" },
-            },
-            styles: { cellPadding: 1.1, overflow: "linebreak" },
-            margin: { left: M, right: M },
-        });
-        y = doc.lastAutoTable.finalY + 4;
-    });
+        y += 4.5;
+        for (const s of grp.steps) {
+            const subLines = doc.splitTextToSize("Reemplazo: " + pdfSafe(s.sub), usable);
+            const resLines = doc.splitTextToSize("Resultado: " + pdfSafe(s.result), usable);
+            const imgH = 4.0;
+            const need = 3.8 + imgH + 1.5 + subLines.length * 2.9 + resLines.length * 2.9 + 2;
+            if (y + need > 288) { doc.addPage(); y = 20; }
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(7.4);
+            doc.setTextColor(22, 39, 31);
+            doc.text(pdfSafe(s.name), M, y);
+            y += 4.2;
+            const im = cache[s.formula];
+            if (im) {
+                let ih = imgH;
+                let iw = ih * im.ratio;
+                if (iw > usable) { iw = usable; ih = iw / im.ratio; }
+                doc.addImage(im.png, "PNG", M, y, iw, ih);
+                y += ih + 1.4;
+            } else {
+                doc.setFont("courier", "normal");
+                doc.setFontSize(6.6);
+                doc.setTextColor(22, 39, 31);
+                doc.text(pdfSafe(s.formula), M, y);
+                y += 3.6;
+            }
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(6.4);
+            doc.setTextColor(90);
+            doc.text(subLines, M, y);
+            y += subLines.length * 2.9;
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(11, 93, 86);
+            doc.text(resLines, M, y);
+            y += resLines.length * 2.9 + 2.4;
+        }
+        y += 1.6;
+    }
     return y;
 }
 
@@ -1421,6 +1525,7 @@ function buildReportHTML(d) {
                 <div class="info-card"><h5>Tipos de inmueble y caudales unitarios</h5>${table(d.inputsTipos)}</div>
                 <div class="info-card"><h5>Coeficientes y horas de operación</h5>${table(d.inputsCaud)}</div>
                 <div class="info-card"><h5>Diámetros adoptados</h5>${table(d.inputsDiametros)}</div>
+                ${d.adoptados ? `<div class="info-card"><h5>Valores adoptados / de tanteo</h5>${table(d.adoptados)}</div>` : ""}
                 <div class="info-card"><h5>Geometría</h5>${table(d.inputsGeom)}</div>
                 <div class="info-card"><h5>Rendimientos</h5>${table(d.inputsRend)}</div>
                 <div class="info-card"><h5>Parámetros económicos</h5>${table(d.inputsEco)}</div>
@@ -1471,9 +1576,10 @@ function renderInforme(r) {
     const host = $("informe-content");
     if (!host) return;
     host.innerHTML = buildReportHTML(PAGE === "auto" ? collectAutoReportData(r) : collectReportData(r));
+    typesetMath(host);
 }
 
-function buildPDF(d) {
+async function buildPDF(d) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
     const PW = 210, PH = 297, M = 13;
@@ -1555,6 +1661,7 @@ function buildPDF(d) {
     kvTable(d.inputsCaud);
     sub("Diámetros adoptados");
     kvTable(d.inputsDiametros);
+    if (d.adoptados) { sub("Valores adoptados / de tanteo"); kvTable(d.adoptados); }
     sub("Geometría");
     kvTable(d.inputsGeom);
     sub("Rendimientos de las alternativas");
@@ -1581,7 +1688,7 @@ function buildPDF(d) {
     wideTable(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData);
 
     heading("6 · Memoria de cálculo (todos los pasos)");
-    y = pdfStepsTable(doc, d.steps, y, M);
+    y = await pdfStepsBlocks(doc, d.steps, y, M, PW);
 
     heading("Conclusión");
     ensure(24);
@@ -1617,7 +1724,7 @@ function setupPdf() {
                     if (PAGE === "potab-auto") applyPotabAuto();
                     await buildPotabPDF(collectPotabReportData(potabCalc()));
                 } else {
-                    buildPDF(PAGE === "auto" ? collectAutoReportData(calc()) : collectReportData(calc()));
+                    await buildPDF(PAGE === "auto" ? collectAutoReportData(calc()) : collectReportData(calc()));
                 }
             } else {
                 window.print();
@@ -2769,7 +2876,7 @@ function potabInputsGroups() {
     const kv = (l, v, u) => [l, v, u];
     return [
         {
-            title: "Caudal y coeficientes", rows: [
+            base: true, title: "Caudal y coeficientes", rows: [
                 kv("Caudal diario de diseño", f(SP.caudalDiario, 2), "m³/d"),
                 kv("K1 — Consumo máx. diario", SP.k1, ""),
                 kv("K2 — Consumo máx. horario", SP.k2, ""),
@@ -2969,6 +3076,12 @@ function buildPotabReportHTML(d) {
         <thead><tr><th>Parámetro</th><th>Valor</th><th>Unidad</th></tr></thead>
         <tbody>${rows.map(row).join("")}</tbody></table>`;
     const card = (title, rows) => `<div class="info-card"><h5>${esc(title)}</h5>${table(rows)}</div>`;
+    const allIn = d.inputsAll || [];
+    const baseIn = allIn.filter((g) => g.base);
+    const adIn = allIn.filter((g) => !g.base);
+    const adTitle = (typeof PAGE !== "undefined" && PAGE === "potab-auto")
+        ? "B · Valores adoptados automáticamente (tanteo)"
+        : "B · Valores adoptados / de tanteo";
     return `
     <div class="informe">
         <div class="informe-head">
@@ -2986,9 +3099,16 @@ function buildPotabReportHTML(d) {
         <div class="info-sec">
             <h4>A · Datos de entrada del proyecto</h4>
             <div class="info-grid">
-                ${(d.inputsAll || []).map((g) => card(g.title, g.rows)).join("")}
+                ${baseIn.map((g) => card(g.title, g.rows)).join("")}
             </div>
         </div>
+
+        ${adIn.length ? `<div class="info-sec">
+            <h4>${esc(adTitle)}</h4>
+            <div class="info-grid">
+                ${adIn.map((g) => card(g.title, g.rows)).join("")}
+            </div>
+        </div>` : ""}
 
         <div class="info-sec">
             <h4>1 · Captación y Aquietamiento</h4>
@@ -3047,6 +3167,7 @@ function renderInformePotab(r) {
     const host = $("informe-content");
     if (!host) return;
     host.innerHTML = buildPotabReportHTML(collectPotabReportData(r));
+    typesetMath(host);
 }
 
 async function buildPotabPDF(d) {
@@ -3104,8 +3225,15 @@ async function buildPotabPDF(d) {
         y = doc.lastAutoTable.finalY + 6;
     };
     const section = (title, rows) => { sub(title); kvTable(rows); };
+    const _allIn = d.inputsAll || [];
+    const _baseIn = _allIn.filter((g) => g.base);
+    const _adIn = _allIn.filter((g) => !g.base);
     heading("A · Datos de entrada del proyecto");
-    (d.inputsAll || []).forEach((g) => section(g.title, g.rows));
+    _baseIn.forEach((g) => section(g.title, g.rows));
+    if (_adIn.length) {
+        heading((typeof PAGE !== "undefined" && PAGE === "potab-auto") ? "B · Valores adoptados automáticamente (tanteo)" : "B · Valores adoptados / de tanteo");
+        _adIn.forEach((g) => section(g.title, g.rows));
+    }
     heading("1 · Captación y Aquietamiento");
     section("Parámetros de Captación", d.inputs);
     section("Cámara de Aquietamiento", d.aquiet);
@@ -3133,7 +3261,7 @@ async function buildPotabPDF(d) {
     heading("5 · Reservorio de Agua Tratada");
     section("Reservorio", d.reservorio);
     heading("6 · Memoria de cálculo (todos los pasos)");
-    y = pdfStepsTable(doc, d.steps, y, M);
+    y = await pdfStepsBlocks(doc, d.steps, y, M, PW);
     ensure(20);
     heading("Conclusión");
     doc.setFont("helvetica", "normal");

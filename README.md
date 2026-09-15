@@ -81,6 +81,9 @@ Se actualiza automáticamente con cada `push` a la rama `main`.
   (velocidades, gradientes, relaciones L/H, separaciones, potencias, etc.).
 - **Fórmulas del cálculo** como imágenes SVG (generadas desde LaTeX) con el detalle de sus variables,
   y **toggle global** para mostrarlas u ocultarlas.
+- **Memoria de cálculo con LaTeX**: las fórmulas del informe se tipografían con **MathJax** en pantalla
+  y se embeben como imagen en el PDF; los **valores adoptados / de tanteo** de los modos automáticos
+  también aparecen en el informe.
 - **Tablas de referencia** de la Norma 68 (Tablas 1, 3, 6, 7 y 8) en la página de referencias.
 - Diseño **responsive**, menú hamburguesa y dropdowns de navegación.
 
@@ -95,12 +98,14 @@ Se actualiza automáticamente con cada `push` a la rama `main`.
 | Build       | **Ninguno** — sitio estático sin bundlers ni transpilado |
 | Persistencia| `localStorage`                                          |
 | PDF         | `jsPDF` + `jsPDF-AutoTable` (CDN, en las páginas de informe) |
+| Matemática  | `MathJax 3` (`tex-svg`) por CDN para las fórmulas del informe en LaTeX |
 | Tipografía  | Google Fonts: *Inter* y *JetBrains Mono*                |
 | Diagramas   | SVG inline generado dinámicamente (aforador Parshall)   |
 | Fórmulas    | SVG generadas con LaTeX/MiKTeX (`tools/build_formulas.py`) |
 
-La única dependencia externa en runtime son las dos librerías de PDF cargadas por CDN en
-`potabilizadora.html` y `potabilizadora-auto.html`.
+Las dependencias externas en runtime son las dos librerías de PDF cargadas por CDN en
+`potabilizadora.html` y `potabilizadora-auto.html`, más MathJax (CDN) en las cuatro páginas de
+cálculo para tipografiar las fórmulas del informe.
 
 ---
 
