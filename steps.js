@@ -45,17 +45,17 @@ function impulsionSteps(r, rows, best) {
         `(${_raw(S2.deptos)} · ${_raw(S2.pisos)}) · (${_raw(S2.pctLog)} / 100) · ${_raw(S2.lotes)} · ${_raw(S2.manzanas)}`,
         "= " + _fmt(r.B12, 0) + " pers"));
     g1.push(_step(
-        "Caudal medio de bombeo (l/d)",
+        "Caudal diario — caudal medio de bombeo (l/d)",
         "Q_m = P_total · q_d + P_log · q_o",
         `${_fmt(r.B11, 0)} · ${_raw(S2.qDept)} + ${_fmt(r.B12, 0)} · ${_raw(S2.qLog)}`,
         "= " + _fmt(r.B15, 0) + " l/d"));
     g1.push(_step(
-        "Caudal medio de bombeo (m³/d)",
+        "Caudal diario — caudal medio de bombeo (m³/d)",
         "Q_m = Q_m(l/d) / 1000",
         `${_fmt(r.B15, 0)} / 1000`,
         "= " + _fmt(r.B16, 2) + " m³/d"));
     g1.push(_step(
-        "Caudal medio de bombeo (l/s)",
+        "Caudal diario — caudal medio de bombeo (l/s)",
         "Q_m = Q_m(l/d) / 86400",
         `${_fmt(r.B15, 0)} / 86400`,
         "= " + _fmt(r.B17, 2) + " l/s"));
@@ -319,6 +319,11 @@ function potabSteps(r) {
 
     /* --- 1 · Captación -------------------------------------------------- */
     g.push(_grp("1 · Caudal de captación", [
+        _step(
+            "Caudal diario de diseño (dato de entrada)",
+            "Q_d",
+            `${d(r.qd, 2)}`,
+            "= " + d(r.qd, 2) + " m³/d"),
         _step(
             "Caudal de captación",
             "Q_cap = Q_d · K1 · K3 · 1000 / 86400",

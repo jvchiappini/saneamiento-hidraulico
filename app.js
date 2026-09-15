@@ -1121,6 +1121,29 @@ function setupFormulasToggle() {
 }
 
 /* ================= Informe técnico ================= */
+function impulsionInputsExtra(r, alts) {
+    const kv = (l, v, u) => [l, v, u];
+    const caudales = [
+        kv("Caudal diario de diseño (Qm)", f0(r.B15), "l/d"),
+        kv("Caudal diario de diseño (Qm)", f(r.B16, 2), "m³/d"),
+        kv("Caudal diario de diseño (Qm)", f(r.B17, 2), "l/s"),
+        kv("Caudal de bombeo (Qb)", f(r.D23, 2), "l/s"),
+        kv("Caudal de bombeo (Qb)", f(r.B23, 4), "m³/s"),
+        kv("Diámetro de impulsión (Bresse)", f(r.B26, 3), "m"),
+    ];
+    const tipos = [
+        kv("Tipo de inmueble — departamentos", S.caudalTipoDept || "Personalizado (editable)", ""),
+        kv("Tipo de inmueble — logística", S.caudalTipoLog || "Personalizado (editable)", ""),
+        kv("Caudal unitario — departamentos", S.qDept, "l/pers/d"),
+        kv("Caudal unitario — logística", S.qLog, "l/pers/d"),
+    ];
+    const diametros = (alts || []).map((a, i) => {
+        const m = a.m || a;
+        return kv(`Diámetros adoptados — Alternativa ${i + 1}`, `Suc ${m.dS} / Imp ${m.dI}`, "mm");
+    });
+    return { caudales, tipos, diametros };
+}
+
 function collectReportData(r) {
     const rows = optimalRows(r);
     const best = rows[0];
@@ -1154,6 +1177,7 @@ function collectReportData(r) {
     ];
     const inputsRend = r.alts.map((a, i) =>
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    const { caudales: inputsCaudales, tipos: inputsTipos, diametros: inputsDiametros } = impulsionInputsExtra(r, r.alts);
     const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
         .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
     const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
@@ -1201,8 +1225,9 @@ function collectReportData(r) {
     return {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
+        inputsCaudales, inputsTipos, inputsDiametros,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
-        steps: impulsionSteps(r, rows, best),
+        steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
 }
 
@@ -1241,6 +1266,7 @@ function collectAutoReportData(r) {
     ];
     const inputsRend = auto.map((a, i) =>
         kv(`Rendimiento bomba/motor — Alt ${i + 1}`, `${f(a.etaB * 100, 0)}% / ${f(a.etaM * 100, 0)}%`, ""));
+    const { caudales: inputsCaudales, tipos: inputsTipos, diametros: inputsDiametros } = impulsionInputsExtra(r, auto);
     const pipeCostRows = Object.keys(Sopt.pipeCost).map(Number).sort((a, b) => a - b)
         .map((dn) => kv(`Costo tubería DN ${dn}`, "$ " + Sopt.pipeCost[dn], "$/m"));
     const bombaCostRows = Object.keys(Sopt.bombaCost).map(Number).sort((a, b) => a - b)
@@ -1288,8 +1314,9 @@ function collectAutoReportData(r) {
     return {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
+        inputsCaudales, inputsTipos, inputsDiametros,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
-        steps: impulsionSteps(r, rows, best),
+        steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
 }
 
@@ -1389,8 +1416,11 @@ function buildReportHTML(d) {
         <div class="info-sec">
             <h4>1 · Datos de entrada</h4>
             <div class="info-grid">
+                <div class="info-card"><h5>Caudales de diseño</h5>${table(d.inputsCaudales)}</div>
                 <div class="info-card"><h5>Urbanísticos</h5>${table(d.inputsUrban)}</div>
-                <div class="info-card"><h5>Caudales unitarios y coeficientes</h5>${table(d.inputsCaud)}</div>
+                <div class="info-card"><h5>Tipos de inmueble y caudales unitarios</h5>${table(d.inputsTipos)}</div>
+                <div class="info-card"><h5>Coeficientes y horas de operación</h5>${table(d.inputsCaud)}</div>
+                <div class="info-card"><h5>Diámetros adoptados</h5>${table(d.inputsDiametros)}</div>
                 <div class="info-card"><h5>Geometría</h5>${table(d.inputsGeom)}</div>
                 <div class="info-card"><h5>Rendimientos</h5>${table(d.inputsRend)}</div>
                 <div class="info-card"><h5>Parámetros económicos</h5>${table(d.inputsEco)}</div>
@@ -1515,10 +1545,16 @@ function buildPDF(d) {
     };
 
     heading("1 · Datos de entrada");
+    sub("Caudales de diseño");
+    kvTable(d.inputsCaudales);
     sub("Urbanísticos");
     kvTable(d.inputsUrban);
-    sub("Caudales unitarios y coeficientes");
+    sub("Tipos de inmueble y caudales unitarios");
+    kvTable(d.inputsTipos);
+    sub("Coeficientes y horas de operación");
     kvTable(d.inputsCaud);
+    sub("Diámetros adoptados");
+    kvTable(d.inputsDiametros);
     sub("Geometría");
     kvTable(d.inputsGeom);
     sub("Rendimientos de las alternativas");
@@ -2729,6 +2765,125 @@ function renderPotabAll(auto) {
 }
 
 /* ================= POTAB: informe ================= */
+function potabInputsGroups() {
+    const kv = (l, v, u) => [l, v, u];
+    return [
+        {
+            title: "Caudal y coeficientes", rows: [
+                kv("Caudal diario de diseño", f(SP.caudalDiario, 2), "m³/d"),
+                kv("K1 — Consumo máx. diario", SP.k1, ""),
+                kv("K2 — Consumo máx. horario", SP.k2, ""),
+                kv("K3 — Planta de tratamiento", SP.k3, ""),
+            ]
+        },
+        {
+            title: "Cámara de aquietamiento", rows: [
+                kv("Velocidad ascensional", SP.vAsc, "cm/s"),
+                kv("Tiempo de aquietamiento", SP.tAq, "s"),
+            ]
+        },
+        {
+            title: "Canal Parshall", rows: [
+                kv("Ancho de garganta W", f(SP.parshallW, 3), "m"),
+                kv("Escalón del resalto N", f(SP.parshallN, 3), "m"),
+                kv("Desnivel de piso K", f(SP.parshallK, 3), "m"),
+                kv("Longitud A", f(SP.parshallA, 3), "m"),
+            ]
+        },
+        {
+            title: "Vertedero en “V”", rows: [
+                kv("Coeficiente de descarga Cd", SP.cd, ""),
+                kv("Ángulo φ", SP.phi, "°"),
+                kv("H adoptado", SP.hadoptado, "m"),
+                kv("2·Hmax adoptado", SP.b2hmaxAdopt, "m"),
+                kv("Altura de paredes exteriores", SP.altParedExt, "m"),
+            ]
+        },
+        {
+            title: "Gradiente de mezcla", rows: [
+                kv("Factor de forma de paletas K", SP.kPaletas, ""),
+                kv("Revoluciones del agitador", SP.rpm, "rpm"),
+            ]
+        },
+        {
+            title: "Canal de estabilización", rows: [
+                kv("Tiempo de estabilización", SP.tCanal, "s"),
+            ]
+        },
+        {
+            title: "Mezclador rápido mecánico", rows: [
+                kv("Tiempo de retención", SP.mzTiempo, "min"),
+                kv("Volumen adoptado", SP.mzVolAdopt, "L"),
+                kv("Altura del tanque", SP.mzAltura, "m"),
+                kv("Eficiencia del motor", SP.mzEfic, ""),
+                kv("Coeficiente de seguridad", SP.mzCoef, ""),
+                kv("Potencia adoptada", SP.mzPadop, "HP"),
+            ]
+        },
+        {
+            title: "Floculador", rows: [
+                kv("Temperatura del agua", SP.flocTemp, "°C"),
+                kv("Profundidad adoptada", SP.flocProf, "m"),
+                kv("Velocidad v1 (tanteo)", SP.flocV1, "m/s"),
+                kv("Velocidad v2 (tanteo)", SP.flocV2, "m/s"),
+                kv("Separación adoptada b", SP.flocBAdopt, "m"),
+                kv("Lado X adoptado", SP.flocX, "m"),
+                kv("Espesor de bafles e", SP.flocE, "m"),
+                kv("Coeficiente de curvas K", SP.flocK, ""),
+                kv("Manning n", SP.flocN, ""),
+            ]
+        },
+        {
+            title: "Sedimentador", rows: [
+                kv("Tiempo de retención", SP.sedTr, "h"),
+                kv("Carga superficial Csup", SP.sedCsup, "l/s·m²"),
+                kv("Relación L/b adoptada", SP.sedLb, ""),
+                kv("Nº de filtros adoptado", SP.sedNfAdopt, "unid"),
+                kv("Ancho de canaleta baf", SP.sedBaf, "m"),
+                kv("Nº de compuertas por unidad", SP.sedNComp, "unid"),
+                kv("Separación de cortina", SP.sedSepPct, "%"),
+                kv("Separación de orificios del fondo", SP.sedSepFondo, "m"),
+                kv("Velocidad en orificios", SP.sedVorif, "m/s"),
+                kv("Diámetro de orificios", SP.sedDorif, "m"),
+                kv("Tasa de vertedero adoptada", SP.sedTasaAdopt, "l/s·m"),
+                kv("Grosor del vertedero", SP.sedGrosor, "m"),
+                kv("Velocidad en canaleta sedimentada", SP.sedVCan, "m/s"),
+                kv("Cd de drenaje", SP.sedCd, ""),
+                kv("Tiempo de vaciado", SP.sedTVaciado, "h"),
+            ]
+        },
+        {
+            title: "Filtración", rows: [
+                kv("Tasa de filtración", SP.filTasa, "m³/m²/d"),
+                kv("Expansión del lecho", SP.filExp, "%"),
+                kv("Tamaño efectivo de arena", SP.filArena, "mm"),
+                kv("Velocidad de lavado", SP.filVasc, "m/min"),
+                kv("Nº de canaletas", SP.filNCan, "unid"),
+                kv("Ancho de canaleta", SP.filACan, "m"),
+                kv("Separación al borde", SP.filSepBorde, "m"),
+                kv("Tiempo de lavado", SP.filTLavado, "min"),
+                kv("Horas de lavado", SP.filHoras, "h"),
+                kv("Factor de seguridad", SP.filFseg, ""),
+                kv("Frecuencia de lavado", SP.filFrec, "h"),
+                kv("Tiempo de llenado del tanque", SP.filTLlenado, "min"),
+                kv("Potencia de bomba adoptada", SP.filPadop, "cv"),
+            ]
+        },
+        {
+            title: "Cloración", rows: [
+                kv("Tiempo de contacto", SP.clTContacto, "min"),
+                kv("Dosis aplicada", SP.clDosis, "ppm"),
+                kv("Tanque comercial adoptado", SP.clTanque, "L"),
+            ]
+        },
+        {
+            title: "Reservorio", rows: [
+                kv("Profundidad adoptada", SP.resProf, "m"),
+            ]
+        },
+    ];
+}
+
 function collectPotabReportData(r) {
     const fecha = new Date().toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
     const kv = (l, v, u) => [l, v, u];
@@ -2802,8 +2957,9 @@ function collectPotabReportData(r) {
         + "Reservorio de agua tratada de " + f(r.resV, 0) + " m³.";
     return {
         fecha, inputs, aquiet, parshall, vertedero, floculador, sedimentador, filtracion, cloracion, reservorio, conclusion,
+        inputsAll: (typeof potabInputsGroups === "function") ? potabInputsGroups() : [],
         parshallSvg: parshallSVG(r, "report", "calc"),
-        steps: potabSteps(r),
+        steps: (typeof potabSteps === "function") ? potabSteps(r) : [],
     };
 }
 
@@ -2824,6 +2980,13 @@ function buildPotabReportHTML(d) {
                 <div>Fecha: ${esc(d.fecha)}</div>
                 <div>Grupo Nº: ______________</div>
                 <div>Integrantes: ______________________</div>
+            </div>
+        </div>
+
+        <div class="info-sec">
+            <h4>A · Datos de entrada del proyecto</h4>
+            <div class="info-grid">
+                ${(d.inputsAll || []).map((g) => card(g.title, g.rows)).join("")}
             </div>
         </div>
 
@@ -2941,6 +3104,8 @@ async function buildPotabPDF(d) {
         y = doc.lastAutoTable.finalY + 6;
     };
     const section = (title, rows) => { sub(title); kvTable(rows); };
+    heading("A · Datos de entrada del proyecto");
+    (d.inputsAll || []).forEach((g) => section(g.title, g.rows));
     heading("1 · Captación y Aquietamiento");
     section("Parámetros de Captación", d.inputs);
     section("Cámara de Aquietamiento", d.aquiet);
