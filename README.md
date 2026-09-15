@@ -72,6 +72,8 @@ Se actualiza automáticamente con cada `push` a la rama `main`.
 - **Informe técnico** profesional generado automáticamente:
   - Vista HTML en pantalla.
   - **Exportación a PDF** (jsPDF + autotable) con encabezado, tablas, conclusión y figuras.
+  - **Memoria de cálculo completa**: todas las fórmulas con su **reemplazo numérico parte por parte** y el
+    resultado de cada operación (ver `steps.js`).
 - **Esquema dinámico del aforador Parshall** (SVG generado en vivo con planta y perfil, cotas
   W, H, h2, H3, N, K, A, D, E) en la página, en el informe HTML y embebido en el PDF.
 - **Mapa de dependencias** de la potabilizadora: explica qué variables alimentan a otras.
@@ -116,6 +118,7 @@ saneamiento-hidraulico/
 │
 ├── app.js                    # Lógica de cálculo, estado, formularios y renderizado
 ├── data.js                   # Tablas de la Norma 68 y metadatos de fórmulas
+├── steps.js                  # Memoria de cálculo: fórmula + reemplazo numérico + resultado
 ├── styles.css                # Estilos globales
 │
 ├── image.png                 # Esquema de accesorios (Tabla 3 · Norma 68)

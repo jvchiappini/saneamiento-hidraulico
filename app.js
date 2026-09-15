@@ -1202,6 +1202,7 @@ function collectReportData(r) {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+        steps: impulsionSteps(r, rows, best),
     };
 }
 
@@ -1288,7 +1289,78 @@ function collectAutoReportData(r) {
         r, rows, best, fecha,
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+        steps: impulsionSteps(r, rows, best),
     };
+}
+
+function stepsHTML(groups, title) {
+    if (!groups || !groups.length) return "";
+    const row = (s) => `<tr>
+        <td class="cs-name">${esc(s.name)}</td>
+        <td class="cs-formula"><code>${esc(s.formula)}</code></td>
+        <td class="cs-sub"><code>${esc(s.sub)}</code></td>
+        <td class="cs-res"><code>${esc(s.result)}</code></td>
+    </tr>`;
+    const group = (grp) => `<div class="calc-group">
+        <h5>${esc(grp.title)}</h5>
+        <div class="calc-wrap"><table class="calc-table">
+            <thead><tr><th>Cálculo</th><th>Fórmula</th><th>Reemplazo numérico</th><th>Resultado</th></tr></thead>
+            <tbody>${grp.steps.map(row).join("")}</tbody>
+        </table></div>
+    </div>`;
+    return `<div class="info-sec calc-sec">
+        <h4>${esc(title)}</h4>
+        <p class="calc-note">Memoria de cálculo: cada fórmula con su reemplazo numérico parte por parte y su resultado.</p>
+        ${groups.map(group).join("")}
+    </div>`;
+}
+
+function pdfSafe(s) {
+    return String(s)
+        .replace(/⁻¹/g, "^-1")
+        .replace(/⁻/g, "^-")
+        .replace(/⁵/g, "^5")
+        .replace(/⁴/g, "^4")
+        .replace(/≈/g, "~")
+        .replace(/→/g, "->")
+        .replace(/—/g, "-")
+        .replace(/φ/g, "phi")
+        .replace(/θ/g, "theta")
+        .replace(/μ/g, "mu")
+        .replace(/ρ/g, "rho")
+        .replace(/η/g, "eta")
+        .replace(/γ/g, "gamma")
+        .replace(/ϑ/g, "nu");
+}
+
+function pdfStepsTable(doc, groups, y, M) {
+    (groups || []).forEach((grp) => {
+        if (y > 266) { doc.addPage(); y = 20; }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8.5);
+        doc.setTextColor(20, 39, 31);
+        doc.text(pdfSafe(grp.title), M, y);
+        y += 3.5;
+        doc.autoTable({
+            startY: y,
+            head: [["Cálculo", "Fórmula", "Reemplazo numérico", "Resultado"]],
+            body: grp.steps.map((s) => [pdfSafe(s.name), pdfSafe(s.formula), pdfSafe(s.sub), pdfSafe(s.result)]),
+            theme: "grid",
+            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 6.5, fontStyle: "bold" },
+            bodyStyles: { fontSize: 6.3, textColor: [22, 39, 31] },
+            alternateRowStyles: { fillColor: [247, 250, 249] },
+            columnStyles: {
+                0: { cellWidth: 34 },
+                1: { cellWidth: 44 },
+                2: { cellWidth: 64 },
+                3: { cellWidth: 42, fontStyle: "bold" },
+            },
+            styles: { cellPadding: 1.1, overflow: "linebreak" },
+            margin: { left: M, right: M },
+        });
+        y = doc.lastAutoTable.finalY + 4;
+    });
+    return y;
 }
 
 function buildReportHTML(d) {
@@ -1350,6 +1422,8 @@ function buildReportHTML(d) {
             <h4>5 · Pozo de bombeo</h4>
             ${wide(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData)}
         </div>
+
+        ${stepsHTML(d.steps, "6 · Memoria de cálculo (todos los pasos)")}
 
         <div class="info-sec concl">
             <h4>Conclusión</h4>
@@ -1469,6 +1543,9 @@ function buildPDF(d) {
 
     heading("5 · Pozo de bombeo");
     wideTable(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData);
+
+    heading("6 · Memoria de cálculo (todos los pasos)");
+    y = pdfStepsTable(doc, d.steps, y, M);
 
     heading("Conclusión");
     ensure(24);
@@ -2726,6 +2803,7 @@ function collectPotabReportData(r) {
     return {
         fecha, inputs, aquiet, parshall, vertedero, floculador, sedimentador, filtracion, cloracion, reservorio, conclusion,
         parshallSvg: parshallSVG(r, "report", "calc"),
+        steps: potabSteps(r),
     };
 }
 
@@ -2788,6 +2866,8 @@ function buildPotabReportHTML(d) {
                 ${card("Reservorio Final", d.reservorio)}
             </div>
         </div>
+
+        ${stepsHTML(d.steps, "6 · Memoria de cálculo (todos los pasos)")}
 
         <div class="info-sec concl">
             <h4>Conclusión</h4>
@@ -2887,6 +2967,8 @@ async function buildPotabPDF(d) {
     section("Sistema de Cloración", d.cloracion);
     heading("5 · Reservorio de Agua Tratada");
     section("Reservorio", d.reservorio);
+    heading("6 · Memoria de cálculo (todos los pasos)");
+    y = pdfStepsTable(doc, d.steps, y, M);
     ensure(20);
     heading("Conclusión");
     doc.setFont("helvetica", "normal");
