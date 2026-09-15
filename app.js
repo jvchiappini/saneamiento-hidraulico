@@ -1445,50 +1445,98 @@ async function buildTexCache(groups) {
 
 async function pdfStepsBlocks(doc, groups, y, M, PW) {
     const usable = PW - 2 * M;
+    const gap = 6;
+    const colW = (usable - gap) / 2;
+    const xs = [M, M + colW + gap];
+    const pad = 1.6;
+    const innerW = colW - 2 * pad;
     const cache = await buildTexCache(groups);
-    for (const grp of (groups || [])) {
-        if (y > 262) { doc.addPage(); y = 20; }
+
+    const layout = (s) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.7);
+        const nameLines = doc.splitTextToSize(pdfSafe(s.name), innerW);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(5.9);
+        const subLines = doc.splitTextToSize("Reemplazo: " + pdfSafe(s.sub), innerW);
+        doc.setFont("helvetica", "bold");
+        const resLines = doc.splitTextToSize(pdfSafe(s.result), innerW);
+        const im = cache[s.formula];
+        let iw = 0, ih = 3.4;
+        if (im) {
+            iw = ih * im.ratio;
+            if (iw > innerW) { iw = innerW; ih = iw / im.ratio; }
+        }
+        const nameH = nameLines.length * 2.7;
+        const subH = subLines.length * 2.5;
+        const resH = resLines.length * 2.5;
+        const imgBlock = im ? ih + 1.1 : 3.4;
+        const h = nameH + imgBlock + subH + resH + 5.0;
+        return { nameLines, subLines, resLines, im, iw, ih, h };
+    };
+
+    const drawBlock = (s, L, x, top) => {
+        let yy = top + 2.8;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(6.7);
+        doc.setTextColor(22, 39, 31);
+        doc.text(L.nameLines, x + pad, yy);
+        yy += L.nameLines.length * 2.7;
+        if (L.im) {
+            const ix = x + pad + (innerW - L.iw) / 2;
+            doc.addImage(L.im.png, "PNG", ix, yy, L.iw, L.ih);
+            yy += L.ih + 1.1;
+        } else {
+            doc.setFont("courier", "normal");
+            doc.setFontSize(5.9);
+            doc.setTextColor(22, 39, 31);
+            doc.text(pdfSafe(s.formula), x + pad, yy);
+            yy += 3.4;
+        }
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(5.9);
+        doc.setTextColor(96);
+        doc.text(L.subLines, x + pad, yy);
+        yy += L.subLines.length * 2.5;
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(11, 93, 86);
+        doc.text(L.resLines, x + pad, yy);
+    };
+
+    const drawTitle = (title) => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(8.5);
         doc.setTextColor(11, 93, 86);
-        doc.text(pdfSafe(grp.title), M, y);
-        y += 4.5;
-        for (const s of grp.steps) {
-            const subLines = doc.splitTextToSize("Reemplazo: " + pdfSafe(s.sub), usable);
-            const resLines = doc.splitTextToSize("Resultado: " + pdfSafe(s.result), usable);
-            const imgH = 4.0;
-            const need = 3.8 + imgH + 1.5 + subLines.length * 2.9 + resLines.length * 2.9 + 2;
-            if (y + need > 288) { doc.addPage(); y = 20; }
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(7.4);
-            doc.setTextColor(22, 39, 31);
-            doc.text(pdfSafe(s.name), M, y);
-            y += 4.2;
-            const im = cache[s.formula];
-            if (im) {
-                let ih = imgH;
-                let iw = ih * im.ratio;
-                if (iw > usable) { iw = usable; ih = iw / im.ratio; }
-                doc.addImage(im.png, "PNG", M, y, iw, ih);
-                y += ih + 1.4;
-            } else {
-                doc.setFont("courier", "normal");
-                doc.setFontSize(6.6);
-                doc.setTextColor(22, 39, 31);
-                doc.text(pdfSafe(s.formula), M, y);
-                y += 3.6;
+        doc.text(pdfSafe(title), M, y);
+        y += 5.2;
+    };
+
+    for (const grp of (groups || [])) {
+        const steps = grp.steps || [];
+        let rowIndex = 0;
+        for (let i = 0; i < steps.length; i += 2, rowIndex++) {
+            const leftStep = steps[i];
+            const rightStep = steps[i + 1] || null;
+            const L = layout(leftStep);
+            const R = rightStep ? layout(rightStep) : null;
+            const rowH = Math.max(L.h, R ? R.h : 0);
+            if (rowIndex === 0) {
+                if (y + 5.2 + rowH > 288) { doc.addPage(); y = 20; }
+                drawTitle(grp.title);
+            } else if (y + rowH > 288) {
+                doc.addPage();
+                y = 20;
+                drawTitle(grp.title + " (cont.)");
             }
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(6.4);
-            doc.setTextColor(90);
-            doc.text(subLines, M, y);
-            y += subLines.length * 2.9;
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(11, 93, 86);
-            doc.text(resLines, M, y);
-            y += resLines.length * 2.9 + 2.4;
+            doc.setDrawColor(223, 230, 228);
+            doc.setLineWidth(0.2);
+            doc.rect(xs[0], y, colW, rowH, "S");
+            if (rightStep) doc.rect(xs[1], y, colW, rowH, "S");
+            drawBlock(leftStep, L, xs[0], y);
+            if (rightStep) drawBlock(rightStep, R, xs[1], y);
+            y += rowH + 1.4;
         }
-        y += 1.6;
+        y += 2;
     }
     return y;
 }
