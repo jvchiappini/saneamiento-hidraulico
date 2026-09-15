@@ -485,31 +485,81 @@ function renderAll() {
 }
 
 /* ================= Pagina automatica ================= */
-const AUTO_SUCC_POOL = [...CAND_DN, 550, 600, 700];
+const AUTO_CAND = (() => {
+    const big = [];
+    for (let d = 550; d <= 2000; d += 50) big.push(d);
+    return [...CAND_DN, ...big];
+})();
+const AUTO_SUCC_POOL = AUTO_CAND;
 
+/* Busca combinaciones (impulsión, succión) que verifiquen todas las
+   condiciones de velocidad (0,7–4,0 m/s) y succión > impulsión.
+   Guarda en autoDiameters.lastLog los intentos hasta llegar a las válidas. */
 function autoDiameters(b) {
     const bresseMm = b.B26 * 1000;
-    const sorted = [...CAND_DN].sort((a, b) => a - b);
-    const near = [...sorted]
-        .sort((x, y) => Math.abs(x - bresseMm) - Math.abs(y - bresseMm))
-        .slice(0, 3)
-        .sort((a, b) => a - b);
     const etaB = etaBomba(b.D23);
-    return near.map((dI) => {
-        const dS = AUTO_SUCC_POOL.find((s) => s > dI) ?? dI;
+    const tries = [];
+    const all = [];
+    for (const dI of AUTO_CAND) {
+        const dS = AUTO_CAND.find((s) => s > dI);
+        if (!dS) continue;
         let etaM = 0.88, m = null;
         for (let k = 0; k < 3; k++) {
             m = altMetrics(b, dS, dI, etaB, etaM);
             etaM = etaMotor(m.Pmb);
         }
-        return { dI, dS, m, etaB, etaM };
-    });
+        const fails = [];
+        if (!(m.vS >= 0.7 && m.vS <= 4.0)) fails.push("v succión fuera de 0,7–4,0 m/s");
+        if (!(m.vI >= 0.7 && m.vI <= 4.0)) fails.push("v impulsión fuera de 0,7–4,0 m/s");
+        if (!m.sGtI) fails.push("succión no mayor que impulsión");
+        tries.push({ dI, dS, vI: m.vI, vS: m.vS, fails });
+        all.push({ dI, dS, m, etaB, etaM, fails });
+    }
+    const ok = all.filter((a) => !a.fails.length);
+    const base = ok.length ? ok : all;
+    const chosen = [...base]
+        .sort((x, y) => Math.abs(x.dI - bresseMm) - Math.abs(y.dI - bresseMm))
+        .slice(0, 3)
+        .sort((x, y) => x.dI - y.dI);
+    autoDiameters.lastLog = {
+        bresseMm,
+        tries,
+        chosen: chosen.map((c) => ({ dI: c.dI, dS: c.dS })),
+        allPass: chosen.every((c) => !c.fails.length),
+    };
+    return chosen;
+}
+autoDiameters.lastLog = null;
+
+function renderAutoLog() {
+    const host = $("auto-log");
+    if (!host) return;
+    const log = S.autoLog;
+    if (!log || !log.tries) { host.innerHTML = ""; return; }
+    const rows = log.tries.map((t, i) => `<tr class="${!t.fails.length ? "log-ok" : ""}">
+        <td>${i + 1}</td><td>${t.dI}</td><td>${t.dS}</td>
+        <td>${f(t.vI, 2)}</td><td>${f(t.vS, 2)}</td>
+        <td>${!t.fails.length ? "✓ Verifica" : esc(t.fails.join("; "))}</td></tr>`).join("");
+    host.innerHTML = `
+        <p class="footnote">Se probaron <strong>${log.tries.length}</strong> combinaciones en torno
+        al diámetro de Bresse (${f(log.bresseMm, 0)} mm). Se adoptan las ${log.chosen.length} que verifican
+        velocidades y succión &gt; impulsión.</p>
+        <details class="auto-log">
+            <summary>Ver los ${log.tries.length} intentos hasta el verificado</summary>
+            <div class="table-wrap"><table>
+                <thead><tr><th>#</th><th>Imp (mm)</th><th>Suc (mm)</th><th>v imp (m/s)</th><th>v suc (m/s)</th><th>Resultado</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table></div>
+        </details>`;
 }
 
 function renderAutoResults() {
     const r = calc();
     const rows = optimalRows(r);
     const best = rows[0];
+    const auto = autoDiameters(r);
+    S.autoLog = autoDiameters.lastLog;
+    saveState();
 
     const kpis = $("auto-kpis");
     if (kpis) {
@@ -522,7 +572,6 @@ function renderAutoResults() {
 
     const alts = $("auto-alts");
     if (alts) {
-        const auto = autoDiameters(r);
         alts.innerHTML = `
             <div class="table-wrap">
                 <table>
@@ -596,6 +645,8 @@ function renderAutoResults() {
             );
         }
     }
+
+    renderAutoLog();
 }
 
 function kpi(label, value, unit) {
@@ -1245,6 +1296,7 @@ function collectReportData(r) {
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
         inputsCaudales, inputsTipos, inputsDiametros, adoptados,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+        autoLog: (typeof autoDiameters === "function" && autoDiameters.lastLog) ? autoDiameters.lastLog : null,
         steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
 }
@@ -1335,6 +1387,7 @@ function collectAutoReportData(r) {
         inputsUrban, inputsCaud, inputsGeom, inputsRend, inputsEco,
         inputsCaudales, inputsTipos, inputsDiametros, adoptados,
         resCaud, resBombeo, altsData, pozoData, optData, conclusion,
+        autoLog: (typeof autoDiameters === "function" && autoDiameters.lastLog) ? autoDiameters.lastLog : null,
         steps: (typeof impulsionSteps === "function") ? impulsionSteps(r, rows, best) : [],
     };
 }
@@ -1389,6 +1442,33 @@ function stepsHTML(groups, title) {
         <h4>${esc(title)}</h4>
         <p class="calc-note">Memoria de cálculo: cada fórmula con su reemplazo numérico parte por parte y su resultado.</p>
         ${groups.map(group).join("")}
+    </div>`;
+}
+
+function impLogRows(log) {
+    return (log.tries || []).map((t, i) => [
+        String(i + 1), String(t.dI), String(t.dS), f(t.vI, 2), f(t.vS, 2),
+        !t.fails.length ? "Verifica" : t.fails.join("; "),
+    ]);
+}
+
+function potabLogRows(log) {
+    return (log.tried || []).map((t, i) => [
+        String(i + 1), String(t.flX), String(t.nf), f(t.lb, 2), String(t.nc),
+        f(t.b, 2), f(t.baf, 3), f(t.flG, 1), f(t.v1, 3), f(t.LH, 1),
+        f(t.dsTasa, 2), f(t.sepCan, 2),
+        !t.fails.length ? "Verifica" : t.fails.join("; "),
+    ]);
+}
+
+function autoLogHTML(title, head, rows, note) {
+    return `<div class="info-sec auto-log-sec">
+        <h4>${esc(title)}</h4>
+        <p class="calc-note">${note}</p>
+        <div class="wide-wrap"><table class="wide">
+            <thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+            <tbody>${rows.map((c) => `<tr>${c.map((x) => `<td>${esc(x)}</td>`).join("")}</tr>`).join("")}</tbody>
+        </table></div>
     </div>`;
 }
 
@@ -1605,7 +1685,12 @@ function buildReportHTML(d) {
             ${wide(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData)}
         </div>
 
-        ${stepsHTML(d.steps, "6 · Memoria de cálculo (todos los pasos)")}
+        ${d.autoLog ? autoLogHTML("6 · Proceso automático (tanteos)",
+            ["#", "Imp (mm)", "Suc (mm)", "v imp (m/s)", "v suc (m/s)", "Resultado"],
+            impLogRows(d.autoLog),
+            "Se probaron <strong>" + d.autoLog.tries.length + "</strong> combinaciones en torno al diámetro de Bresse (" + f(d.autoLog.bresseMm, 0) + " mm) hasta las que verifican velocidades y succión &gt; impulsión.") : ""}
+
+        ${stepsHTML(d.steps, (d.autoLog ? "7" : "6") + " · Memoria de cálculo (todos los pasos)")}
 
         <div class="info-sec concl">
             <h4>Conclusión</h4>
@@ -1734,7 +1819,11 @@ async function buildPDF(d) {
     heading("5 · Pozo de bombeo");
     wideTable(["Alternativa", "Por cavitación (m)", "Por seguridad (m)", "Adoptada (m)"], d.pozoData);
 
-    heading("6 · Memoria de cálculo (todos los pasos)");
+    if (d.autoLog) {
+        heading("6 · Proceso automático (tanteos)");
+        wideTable(["#", "Imp (mm)", "Suc (mm)", "v imp (m/s)", "v suc (m/s)", "Resultado"], impLogRows(d.autoLog), 6);
+    }
+    heading((d.autoLog ? "7" : "6") + " · Memoria de cálculo (todos los pasos)");
     y = await pdfStepsBlocks(doc, d.steps, y, M, PW);
 
     heading("Conclusión");
@@ -2133,6 +2222,13 @@ function potabAutoAdopt() {
     SP.parshallK = sel.k;
     SP.parshallA = sel.a;
 
+    const phPossible = PARSHALL_TABLA.some((row) => {
+        if (row.min == null) return false;
+        if (qcapLps < row.min || qcapLps > row.max) return false;
+        const H = Math.pow(qcap / (2.2 * row.w), 2 / 3);
+        return (qcap / (row.w * 0.6 * H)) >= 2;
+    });
+
     SP.cd = 0.6; SP.phi = 90; SP.hadoptado = 0.3; SP.b2hmaxAdopt = 0.3; SP.altParedExt = 0.2;
     SP.kPaletas = 2.3; SP.rpm = 105;
     SP.tCanal = 10;
@@ -2146,29 +2242,125 @@ function potabAutoAdopt() {
     SP.mzPadop = POTENCIAS_MEZCLADOR.find((p) => p >= mzP) ?? 7.5;
 
     const sedQ = qcap * 86400;
-    let nf = Math.ceil(0.044 * Math.sqrt(sedQ));
-    if (nf % 2 !== 0) nf += 1;
-    if (nf < 2) nf = 2;
-    SP.sedNfAdopt = nf;
-    const ns = nf / 2;
-    SP.sedLb = 3.98;
+    let nfRef = Math.ceil(0.044 * Math.sqrt(sedQ));
+    if (nfRef % 2 !== 0) nfRef += 1;
+    if (nfRef < 2) nfRef = 2;
+
     SP.sedCsup = 0.1853;
-
     SP.flocTemp = 23; SP.flocProf = 1.7; SP.flocV1 = 0.175; SP.flocV2 = 0.425;
-    SP.flocBAdopt = 0.7; SP.flocX = 22; SP.flocE = 0.002; SP.flocK = 2; SP.flocN = 0.01;
-
-    SP.sedBaf = 0.234;
+    SP.flocE = 0.002; SP.flocK = 2; SP.flocN = 0.01;
     SP.sedNComp = 4;
     SP.sedSepPct = 3.6; SP.sedSepFondo = 0.8; SP.sedVorif = 0.3; SP.sedDorif = 0.1;
-
     SP.sedTasaAdopt = 3.1; SP.sedGrosor = 0.1; SP.sedVCan = 1.2;
     SP.sedCd = 0.61; SP.sedTVaciado = 0.53;
-
-    SP.filTasa = 120; SP.filExp = 30; SP.filArena = 0.7; SP.filVasc = 0.72; SP.filNCan = 3; SP.filACan = 0.2; SP.filSepBorde = 0.665;
+    SP.filTasa = 120; SP.filExp = 30; SP.filArena = 0.7; SP.filVasc = 0.72;
+    SP.filACan = 0.2; SP.filSepBorde = 0.665;
     SP.filTLavado = 10; SP.filHoras = 4; SP.filFseg = 2.5; SP.filFrec = 1.5; SP.filTLlenado = 90; SP.filPadop = 20;
-
     SP.clTContacto = 20; SP.clDosis = 10; SP.clTanque = 750;
     SP.resProf = 3.6;
+
+    /* Búsqueda por tanteo hasta que TODAS las verificaciones pasen.
+       Se registran los intentos en SP.autoLog. */
+    const h = SP.flocProf;
+    const bBase = Math.round((qcap / (0.175 * h)) * 100) / 100;
+    const flXvals = [22, 20, 24, 18, 26, 16, 28, 14, 30, 12, 10];
+    const lbvals = [3.98, 4, 3.5, 4.5, 3, 2.5, 2];
+    const ncanvals = [3, 4, 5, 6];
+    const nfPool = [];
+    for (let n = 2; n <= 24; n += 2) nfPool.push(n);
+    nfPool.sort((a, b) => Math.abs(a - nfRef) - Math.abs(b - nfRef));
+
+    const evalChecks = (r) => {
+        const checks = {
+            "velocidad ascensional 4–10 cm/s": SP.vAsc >= 4 && SP.vAsc <= 10,
+            "tiempo de aquietamiento 30–60 s": r.aqTiempo >= 30 && r.aqTiempo <= 60,
+            "gradiente vertedero G > Gr": r.gVertVerif,
+            "velocidad floculador v1 0,15–0,20 m/s": r.flV1rec >= 0.15 && r.flV1rec <= 0.20,
+            "gradiente floculador 30–60 s⁻¹": r.flGVerif,
+            "relación L/H 7–30": r.sedLHVerif,
+            "altura canaleta = profundidad floculador": r.scVerif,
+            "separación tabique ≥ 0,6 m": r.deSepTab >= 0.6,
+            "separación orificios 0,6–0,9 m": r.deSepFondo >= 0.6 && r.deSepFondo <= 0.9,
+            "velocidad orificios > 0,125 m/s": r.deVverifOk,
+            "tasa vertedero 2–7 l/s/m": r.dsTasaOk,
+            "separación canaleta–borde ≤ 0,9 m": r.filSepBorde <= 0.9,
+            "separación entre canaletas ≤ 1,8 m": r.filSepCan <= 1.8,
+            "volumen disponible > tanque de lavado": r.filVtanqueVerif,
+        };
+        if (phPossible) checks["Parshall v ≥ 2 m/s"] = r.phVerif;
+        return checks;
+    };
+
+    const tries = [];
+    let best = null;
+    outer:
+    for (const flX of flXvals) {
+        for (const nf of nfPool) {
+            for (const lb of lbvals) {
+                for (const nc of ncanvals) {
+                    SP.flX = flX;
+                    SP.sedNfAdopt = nf;
+                    SP.sedLb = lb;
+                    SP.filNCan = nc;
+                    SP.flocBAdopt = bBase;
+                    let r = potabCalc();
+                    SP.sedBaf = Math.round((r.scSafMax / h) * 1000) / 1000;
+                    r = potabCalc();
+                    const checks = evalChecks(r);
+                    const fails = Object.keys(checks).filter((k) => !checks[k]);
+                    const entry = {
+                        flX, nf, lb, nc, b: bBase, baf: SP.sedBaf, fails,
+                        flG: r.flG, v1: r.flV1rec, LH: r.sedLH, dsTasa: r.dsTasa, sepCan: r.filSepCan,
+                    };
+                    tries.push(entry);
+                    if (!best || entry.fails.length < best.fails.length) best = entry;
+                    if (fails.length === 0) { best = entry; break outer; }
+                }
+            }
+        }
+    }
+
+    SP.flX = best.flX;
+    SP.sedNfAdopt = best.nf;
+    SP.sedLb = best.lb;
+    SP.filNCan = best.nc;
+    SP.flocBAdopt = best.b;
+    let rr = potabCalc();
+    SP.sedBaf = Math.round((rr.scSafMax / SP.flocProf) * 1000) / 1000;
+
+    SP.autoLog = {
+        qd, nfRef, b: best.b, tried: tries,
+        chosen: { flX: best.flX, nf: best.nf, lb: best.lb, nc: best.nc, b: best.b, baf: SP.sedBaf },
+        ok: best.fails.length === 0,
+        fails: best.fails,
+        phPossible,
+        phVerif: rr.phVerif,
+    };
+}
+
+function renderPotabAutoLog() {
+    const host = $("potab-auto-log");
+    if (!host) return;
+    const log = SP.autoLog;
+    if (!log || !log.tried) { host.innerHTML = ""; return; }
+    const rows = log.tried.map((t, i) => `<tr class="${!t.fails.length ? "log-ok" : ""}">
+        <td>${i + 1}</td><td>${t.flX}</td><td>${t.nf}</td><td>${f(t.lb, 2)}</td><td>${t.nc}</td>
+        <td>${f(t.b, 2)}</td><td>${f(t.baf, 3)}</td>
+        <td>${f(t.flG, 1)}</td><td>${f(t.v1, 3)}</td><td>${f(t.LH, 1)}</td>
+        <td>${f(t.dsTasa, 2)}</td><td>${f(t.sepCan, 2)}</td>
+        <td>${!t.fails.length ? "✓ Verifica todo" : esc(t.fails.join("; "))}</td></tr>`).join("");
+    host.innerHTML = `
+        <p class="footnote">Se probaron <strong>${log.tried.length}</strong> combinaciones de tanteo
+        (lado X, Nº de filtros, relación L/b y Nº de canaletas) hasta la que verifica todas las condiciones.
+        ${log.ok ? "" : "No fue posible verificar el 100% para este caudal; se adoptó la de menor cantidad de fallas."}
+        ${log.phPossible === false ? " Con este caudal el Parshall no alcanza v ≥ 2 m/s, por lo que se adopta el mezclador rápido mecánico (vertedero en “V”)." : ""}</p>
+        <details class="auto-log">
+            <summary>Ver los ${log.tried.length} intentos hasta el verificado</summary>
+            <div class="table-wrap"><table>
+                <thead><tr><th>#</th><th>X (m)</th><th>Nf</th><th>L/b</th><th>Ncan</th><th>b (m)</th><th>baf (m)</th><th>G (s⁻¹)</th><th>v1 (m/s)</th><th>L/H</th><th>tasa</th><th>sep. canaletas</th><th>Resultado</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table></div>
+        </details>`;
 }
 
 function applyPotabAuto() {
@@ -2887,6 +3079,7 @@ function renderPotabAutoResults(r) {
             </div>
         </div>
         <p class="footnote">Los valores adoptados se calculan y redondean de acuerdo con las especificaciones pedagógicas de la Clase 3 y la planilla Excel de la cátedra.</p>`;
+    renderPotabAutoLog();
 }
 
 function renderPotabAll(auto) {
@@ -3113,6 +3306,7 @@ function collectPotabReportData(r) {
         fecha, inputs, aquiet, parshall, vertedero, floculador, sedimentador, filtracion, cloracion, reservorio, conclusion,
         inputsAll: (typeof potabInputsGroups === "function") ? potabInputsGroups() : [],
         parshallSvg: parshallSVG(r, "report", "calc"),
+        autoLog: (typeof PAGE !== "undefined" && PAGE === "potab-auto" && typeof SP !== "undefined" && SP.autoLog) ? SP.autoLog : null,
         steps: (typeof potabSteps === "function") ? potabSteps(r) : [],
     };
 }
@@ -3197,7 +3391,12 @@ function buildPotabReportHTML(d) {
             </div>
         </div>
 
-        ${stepsHTML(d.steps, "6 · Memoria de cálculo (todos los pasos)")}
+        ${d.autoLog ? autoLogHTML("6 · Proceso automático (tanteos)",
+            ["#", "X (m)", "Nf", "L/b", "Ncan", "b (m)", "baf (m)", "G (s⁻¹)", "v1 (m/s)", "L/H", "tasa", "sep. canaletas", "Resultado"],
+            potabLogRows(d.autoLog),
+            "Se probaron <strong>" + d.autoLog.tried.length + "</strong> combinaciones de tanteo (lado X, Nº de filtros, relación L/b y Nº de canaletas) hasta la que verifica todas las condiciones.") : ""}
+
+        ${stepsHTML(d.steps, (d.autoLog ? "7" : "6") + " · Memoria de cálculo (todos los pasos)")}
 
         <div class="info-sec concl">
             <h4>Conclusión</h4>
@@ -3307,7 +3506,22 @@ async function buildPotabPDF(d) {
     section("Sistema de Cloración", d.cloracion);
     heading("5 · Reservorio de Agua Tratada");
     section("Reservorio", d.reservorio);
-    heading("6 · Memoria de cálculo (todos los pasos)");
+    if (d.autoLog) {
+        heading("6 · Proceso automático (tanteos)");
+        doc.autoTable({
+            startY: y,
+            head: [["#", "X (m)", "Nf", "L/b", "Ncan", "b (m)", "baf (m)", "G", "v1", "L/H", "tasa", "sep. canaletas", "Resultado"]],
+            body: potabLogRows(d.autoLog),
+            theme: "striped",
+            headStyles: { fillColor: [11, 93, 86], textColor: 255, fontSize: 7, fontStyle: "bold" },
+            bodyStyles: { fontSize: 6.2, textColor: [22, 39, 31] },
+            styles: { cellPadding: 1.2, halign: "right" },
+            columnStyles: { 0: { halign: "center" }, 12: { halign: "left" } },
+            margin: { left: M, right: M },
+        });
+        y = doc.lastAutoTable.finalY + 6;
+    }
+    heading((d.autoLog ? "7" : "6") + " · Memoria de cálculo (todos los pasos)");
     y = await pdfStepsBlocks(doc, d.steps, y, M, PW);
     ensure(20);
     heading("Conclusión");

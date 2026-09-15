@@ -84,6 +84,9 @@ Se actualiza automáticamente con cada `push` a la rama `main`.
 - **Memoria de cálculo con LaTeX**: las fórmulas del informe se tipografían con **MathJax** en pantalla
   y se embeben como imagen en el PDF; los **valores adoptados / de tanteo** de los modos automáticos
   también aparecen en el informe.
+- **Modo automático que busca hasta verificar todo**: en impulsión recorre los diámetros comerciales y en
+  la potabilizadora prueba combinaciones de tanteo hasta que **todas las verificaciones** pasan. Cada
+  intento se muestra en pantalla y en el informe, y queda guardado en `localStorage`.
 - **Tablas de referencia** de la Norma 68 (Tablas 1, 3, 6, 7 y 8) en la página de referencias.
 - Diseño **responsive**, menú hamburguesa y dropdowns de navegación.
 

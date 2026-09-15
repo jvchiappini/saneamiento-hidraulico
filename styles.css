@@ -1626,6 +1626,39 @@ body.show-formulas .formula,
     overflow-wrap: anywhere;
 }
 
+/* ---------- Proceso automático (tanteos) ---------- */
+.auto-log {
+    margin-top: .6rem;
+}
+
+.auto-log > summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: .82rem;
+    padding: .3rem 0;
+}
+
+.auto-log .table-wrap {
+    max-height: 360px;
+    overflow: auto;
+    margin-top: .5rem;
+}
+
+.auto-log table {
+    font-size: .72rem;
+    white-space: nowrap;
+}
+
+.auto-log td,
+.auto-log th {
+    padding: .28rem .45rem;
+}
+
+tr.log-ok td {
+    background: #e5f6ec;
+}
+
 .concl p {
     line-height: 1.7;
 }
