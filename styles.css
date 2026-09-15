@@ -1541,67 +1541,88 @@ body.show-formulas .formula,
     border-left: 3px solid var(--primary);
 }
 
-.calc-wrap {
-    overflow-x: auto;
+.calc-list {
     border: 1px solid var(--border);
     border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
 }
 
-.calc-table {
-    min-width: 620px;
-    border-collapse: collapse;
+.calc-item {
+    padding: .55rem .85rem;
+    border-bottom: 1px dashed var(--border);
+    break-inside: avoid;
+    page-break-inside: avoid;
 }
 
-.calc-table th,
-.calc-table td {
-    font-size: .7rem;
-    padding: .3rem .5rem;
-    text-align: left;
-    vertical-align: top;
-    border-bottom: 1px solid var(--border);
-}
-
-.calc-table th {
-    color: #fff;
-    background: var(--primary);
-    font-size: .64rem;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-}
-
-.calc-table tbody tr:nth-child(even) {
+.calc-item:nth-child(even) {
     background: #f7faf9;
 }
 
-.calc-table td.cs-name {
-    font-weight: 600;
-    color: #16271f;
+.calc-item:last-child {
+    border-bottom: none;
 }
 
-.calc-table code {
+.calc-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .35rem .75rem;
+}
+
+.calc-item-name {
+    font-weight: 600;
+    font-size: .76rem;
+    color: #16271f;
+    min-width: 0;
+}
+
+.calc-item-res code {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: .66rem;
-    color: #334155;
-    white-space: normal;
-}
-
-.calc-table td.cs-res code {
+    font-size: .74rem;
+    font-weight: 700;
     color: var(--primary-dark);
-    font-weight: 600;
+    white-space: nowrap;
 }
 
-.calc-table td.cs-formula {
-    min-width: 150px;
-}
-
-.calc-tex {
-    font-size: .84rem;
+.calc-item-math {
+    margin: .4rem 0 .3rem;
+    font-size: .95rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    overflow-y: hidden;
     color: #16271f;
 }
 
-.calc-tex mjx-container {
+.calc-item-math mjx-container {
     margin: 0 !important;
     outline: none;
+    max-width: 100%;
+}
+
+.calc-item-math mjx-container svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.calc-item-math code.calc-plain {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .72rem;
+    color: #334155;
+}
+
+.calc-item-sub {
+    font-size: .7rem;
+    color: var(--muted);
+}
+
+.calc-item-sub code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .68rem;
+    color: #334155;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .concl p {

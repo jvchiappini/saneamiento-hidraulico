@@ -1354,37 +1354,36 @@ function typesetMath(host) {
         else fallbackPlainMath(host);
     };
     if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
-        window.MathJax.startup.promise.then(run);
+        window.MathJax.startup.promise.then(run).catch(() => fallbackPlainMath(host));
     } else if (window.MathJax && window.MathJax.typesetPromise) {
         run();
     } else {
         setTimeout(() => {
             if (window.MathJax && window.MathJax.typesetPromise) run();
             else fallbackPlainMath(host);
-        }, 4000);
+        }, 2500);
     }
 }
 
 function stepsHTML(groups, title) {
     if (!groups || !groups.length) return "";
-    const formulaCell = (s) => {
+    const item = (s) => {
         const tex = (typeof texFormula === "function") ? texFormula(s.formula) : null;
-        return tex
+        const math = tex
             ? `<span class="calc-tex" data-fallback="${esc(s.formula)}">\\(${esc(tex)}\\)</span>`
-            : `<code>${esc(s.formula)}</code>`;
+            : `<code class="calc-plain">${esc(s.formula)}</code>`;
+        return `<div class="calc-item">
+            <div class="calc-item-top">
+                <span class="calc-item-name">${esc(s.name)}</span>
+                <span class="calc-item-res"><code>${esc(s.result)}</code></span>
+            </div>
+            <div class="calc-item-math">${math}</div>
+            <div class="calc-item-sub"><span>Reemplazo:</span> <code>${esc(s.sub)}</code></div>
+        </div>`;
     };
-    const row = (s) => `<tr>
-        <td class="cs-name">${esc(s.name)}</td>
-        <td class="cs-formula">${formulaCell(s)}</td>
-        <td class="cs-sub"><code>${esc(s.sub)}</code></td>
-        <td class="cs-res"><code>${esc(s.result)}</code></td>
-    </tr>`;
     const group = (grp) => `<div class="calc-group">
         <h5>${esc(grp.title)}</h5>
-        <div class="calc-wrap"><table class="calc-table">
-            <thead><tr><th>Cálculo</th><th>Fórmula</th><th>Reemplazo numérico</th><th>Resultado</th></tr></thead>
-            <tbody>${grp.steps.map(row).join("")}</tbody>
-        </table></div>
+        <div class="calc-list">${grp.steps.map(item).join("")}</div>
     </div>`;
     return `<div class="info-sec calc-sec">
         <h4>${esc(title)}</h4>
