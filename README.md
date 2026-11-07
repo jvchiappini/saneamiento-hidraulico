@@ -192,6 +192,39 @@ Los **11 pasos** de la hoja *"POTABILIZADORA"*:
 
 ---
 
+### Red de distribución (`red.html`, Clase 5)
+
+Datos iniciales, tanque elevado cilíndrico, red en malla **genérica** (nodos, tramos y anillos editables)
+resuelta por **Hardy Cross** con Hazen-Williams, y verificación de presiones. El modo automático reparte
+los caudales iniciales por continuidad (árbol desde el tanque), dimensiona con la velocidad económica,
+itera hasta que los diámetros no cambian y calcula la altura mínima de la base del tanque para P ≥ 10 m.c.a.
+
+### Impulsión al tanque (`tanque.html`, Clase 5)
+
+Bresse, alternativas de diámetro, Fair-Whipple-Hsiao, longitudes equivalentes (Tabla 3 NP 68), potencia
+con las Tablas VI–VIII y selección por **mínimo costo anual** entre todos los diámetros comerciales.
+
+### Red cloacal (`cloacal.html`, Clase 6)
+
+Caudales acumulados con infiltración, pendiente mínima NBR 9649, cotas de fondo con empalme por la clave,
+profundidades, velocidad de Bazin y capacidad a sección llena. El algoritmo elige, tramo por tramo, el menor
+diámetro que no profundiza más de lo deseado.
+
+### Predial · agua potable del edificio (`predial.html`, Clase 7)
+
+Pesos de artefactos (Tabla III y V, Figura I), departamentos, columnas de bajada, acometida (Tabla II),
+impulsión y succión, tanques (incendio, inferior, superior), ventilaciones, rebosaderos, limpieza, puente de
+empalme, ruptor de vacío, electrobombas (Flamant), agua caliente y sistema contra incendio (Ordenanza 038).
+
+Todos los módulos nuevos usan `mod-core.js` (tablas normativas y fórmulas) y generan una **memoria de cálculo
+en LaTeX** (fórmula → reemplazo numérico → resultado) imprimible como PDF. Las funciones de cálculo no usan
+el DOM, así que se pueden verificar con Node (`require("./red.js").calc(...)`).
+
+### Interfaz común (`ui-shell.js` / `ui-shell.css`)
+
+Índice lateral con el estado de cada sección, contador global de verificaciones (clic → primera que falla),
+resultados clave siempre visibles, secciones plegables y botón para volver arriba.
+
 ## ⚙️ Modo manual vs. automático
 
 Tanto la impulsión como la potabilizadora tienen **dos páginas** con el mismo motor de cálculo pero

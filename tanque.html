@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saneamiento Hidráulico · Impulsión al tanque</title>
+    <meta name="description" content="Sistema de impulsión desde la planta potabilizadora al tanque elevado: Bresse, alternativas, pérdidas, potencia y mínimo costo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mod.css">
+    <link rel="stylesheet" href="ui-shell.css">
+    <script>
+        window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+</head>
+<body data-page="tanque">
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="nav-links">
+            <li class="nav-dd"><a href="index.html">Impulsión</a><ul class="dd-menu"><li><a href="index.html">Manual</a></li><li><a href="auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="potabilizadora.html">Potabilizadora</a><ul class="dd-menu"><li><a href="potabilizadora.html">Manual</a></li><li><a href="potabilizadora-auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="red.html" class="active">Red pública</a><ul class="dd-menu"><li><a href="red.html">Red de distribución</a></li><li><a href="tanque.html" class="active">Impulsión al tanque</a></li><li><a href="cloacal.html">Red cloacal</a></li></ul></li>
+            <li class="nav-dd"><a href="predial.html">Predial</a><ul class="dd-menu"><li><a href="predial.html">Agua del edificio</a></li></ul></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+    </nav>
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento público · Clase 5</p>
+            <h1>Impulsión al <span class="accent-word">tanque elevado</span></h1>
+            <p class="hero-sub">Desde el reservorio de agua tratada hasta el tanque de la red: caudal de bombeo, Bresse, tres alternativas de diámetro, alturas manométricas, potencia y alternativa de mínimo costo.</p>
+            <div class="hero-kpis" id="hero-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path></svg>
+    </header>
+    <main id="app">
+        <div class="mode-wrap"><div id="mode"></div>
+            <button type="button" class="btn-sm" data-act="import">Importar de la red de distribución</button>
+            <button type="button" class="btn-sm" data-act="reset">Restaurar ejemplo de la guía</button></div>
+        <div id="errs"></div>
+<div class="page-note">La altura topográfica de impulsión se arma con la diferencia de cotas, la altura de la base del tanque (de <a href="red.html#presiones">Presiones</a>) y la altura del tanque. Con <em>Importar</em> se traen solas desde la página de la red.</div>
+        <section class="card step" id="base">
+            <div class="step-head"><span class="step-num">1</span><div><h2>Datos y caudal de bombeo</h2><p class="lede">Datos del proyecto y diámetro económico de Bresse.</p></div></div>
+            <div class="grid-2"><div class="panel"><h3>Entradas</h3><div class="grid-2" id="in-base"></div></div><div class="panel"><h3>Resultados</h3><div id="out-base"></div></div></div>
+            <details class="notes"><summary><span>Notas de la cátedra</span></summary><div class="notes-body"><ul><li>La cota de la base de la motobomba depende del proyecto: se predimensiona y luego se verifica.</li><li>La altura se toma en el centro de la boca de succión (no más de 30 cm sobre el terreno; 50 cm con pedestal).</li><li>A la succión se le agregan 1,5 m de altura y 2 m de longitud. Presión de llegada: 1 m.</li></ul></div></details>
+        </section>
+        <section class="card step" id="accesorios">
+            <div class="step-head"><span class="step-num">2</span><div><h2>Pérdidas localizadas</h2><p class="lede">Accesorios de succión e impulsión (longitudes equivalentes de la Tabla 3 de la NP 68).</p></div></div>
+            <div id="in-fit"></div>
+            
+        </section>
+        <section class="card step" id="alternativas">
+            <div class="step-head"><span class="step-num">3</span><div><h2>Alternativas de diámetro</h2><p class="lede">Al menos un diámetro inferior y uno superior a Bresse; la succión siempre mayor que la impulsión.</p></div></div>
+            <div id="in-alts"></div><div id="out-alts" class="no-count"></div>
+            
+        </section>
+        <section class="card step" id="costos">
+            <div class="step-head"><span class="step-num">4</span><div><h2>Selección por mínimo costo</h2><p class="lede">Inversión en tubería y bomba (anualizada), energía y mantenimiento para todos los diámetros comerciales.</p></div></div>
+            <div id="in-cost"></div><div id="out-cand" class="no-count"></div>
+            
+        </section>
+        <section class="card step" id="informe">
+            <div class="step-head"><span class="step-num">▤</span><div><h2>Memoria de cálculo e informe</h2><p class="lede">Cada fórmula con su reemplazo numérico y resultado, más el resumen de verificaciones. Imprimilo o guardalo como PDF para entregar.</p></div></div>
+            <div id="informe-body"></div>
+        </section>
+    </main>
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de Saneamiento y Medio Ambiente</p>
+        <p class="footnote">Cálculos conforme a la NP 68, la guía de la cátedra y las normas indicadas en cada sección.</p>
+    </footer>
+    <script src="mod-core.js"></script>
+    <script src="tanque.js"></script>
+    <script src="ui-shell.js"></script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+/* =====================================================================
+   mod.css — Estilos de los módulos nuevos (red, tanque, cloacal, predial).
+   Usa los tokens de styles.css.
+   ===================================================================== */
+
+body[data-page="red"] main,
+body[data-page="tanque"] main,
+body[data-page="cloacal"] main,
+body[data-page="predial"] main {
+    max-width: 1320px;
+}
+
+.ed-cards .mtable select {
+    max-width: 190px;
+}
+
+.ed-cards .mtable td,
+.ed-cards .mtable th {
+    padding: .3rem .35rem;
+}
+
+.mode-bar {
+    display: inline-flex;
+    gap: .35rem;
+    padding: .3rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+}
+
+.mode-bar button {
+    border: 0;
+    background: transparent;
+    padding: .55rem 1rem;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.mode-bar button small {
+    display: block;
+    font-weight: 500;
+    font-size: .72rem;
+}
+
+.mode-bar button.on {
+    background: var(--primary);
+    color: #fff;
+}
+
+.mode-wrap {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.4rem;
+}
+
+.mode-wrap .btn-sm {
+    margin: 0;
+}
+
+.field.adopt label {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tag-adopt {
+    font-size: .62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .1rem .4rem;
+    border-radius: 999px;
+    background: #fff7e0;
+    color: var(--warn);
+    border: 1px solid #f3dfae;
+}
+
+.field.adopt.is-auto .tag-adopt {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    border-color: #bfe3da;
+}
+
+.field.adopt input:disabled {
+    background: var(--primary-soft);
+    color: var(--ink);
+    font-weight: 600;
+    opacity: 1;
+}
+
+.fhelp {
+    display: block;
+    color: var(--muted);
+    font-size: .74rem;
+    margin-top: .15rem;
+}
+
+.field select,
+.mtable select,
+.mtable input,
+.panel h3 input {
+    font: inherit;
+    font-size: .85rem;
+    padding: .3rem .4rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink);
+    max-width: 100%;
+}
+
+.ro {
+    font-family: var(--mono);
+    font-size: .85rem;
+    background: var(--primary-soft);
+    padding: .15rem .4rem;
+    border-radius: 6px;
+}
+
+.kv {
+    display: grid;
+    gap: .15rem;
+}
+
+.kv-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .4rem .6rem;
+    border-radius: 8px;
+    font-size: .9rem;
+}
+
+.kv-row:nth-child(odd) {
+    background: #f6f9f8;
+}
+
+.kv-row.hl {
+    background: var(--primary-soft);
+    font-weight: 700;
+}
+
+.kv-k {
+    color: var(--muted);
+}
+
+.kv-v {
+    font-family: var(--mono);
+    text-align: right;
+}
+
+.kv-v small {
+    color: var(--muted);
+    font-family: inherit;
+}
+
+.mtable td,
+.mtable th {
+    white-space: nowrap;
+    padding: .4rem .55rem;
+    vertical-align: middle;
+}
+
+.mtable tr.hl td {
+    background: var(--primary-soft);
+}
+
+.mtable tr.bad td {
+    background: var(--bad-bg);
+}
+
+.mtable tr.tot td {
+    font-weight: 700;
+    border-top: 2px solid var(--border);
+}
+
+.btn-sm {
+    font: inherit;
+    font-size: .82rem;
+    font-weight: 600;
+    padding: .38rem .8rem;
+    margin: .2rem .3rem .6rem 0;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    background: #fff;
+    color: var(--primary-dark);
+    cursor: pointer;
+}
+
+.btn-sm:hover {
+    background: var(--primary-soft);
+}
+
+.btn-x {
+    border: 0;
+    background: transparent;
+    color: var(--bad);
+    cursor: pointer;
+    font-size: .9rem;
+    padding: .2rem .4rem;
+    border-radius: 6px;
+}
+
+.btn-x:hover {
+    background: var(--bad-bg);
+}
+
+.btn-print {
+    font: inherit;
+    font-weight: 700;
+    padding: .6rem 1.1rem;
+    border: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: .85rem;
+}
+
+.mini {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    margin: .6rem 0 .3rem;
+}
+
+.alert {
+    background: var(--warn-bg);
+    border: 1px solid #f3d6a5;
+    color: #7a3e06;
+    padding: .8rem 1rem;
+    border-radius: 10px;
+    margin: .8rem 0;
+    font-size: .9rem;
+}
+
+.alert div+div {
+    margin-top: .3rem;
+}
+
+.ed-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: .6rem;
+}
+
+.ed-cards .panel h3 {
+    flex-wrap: wrap;
+}
+
+.amb-out {
+    font-size: .85rem;
+    color: var(--ink);
+    background: var(--primary-soft);
+    border-radius: 8px;
+    padding: .4rem .6rem;
+}
+
+.amb-out:empty {
+    display: none;
+}
+
+/* ---------- Memoria de cálculo ---------- */
+.memo {
+    display: grid;
+    gap: 1rem;
+}
+
+.mm-group h4 {
+    font-size: .95rem;
+    margin: .6rem 0 .5rem;
+    color: var(--primary-dark);
+    border-bottom: 2px solid var(--primary-soft);
+    padding-bottom: .3rem;
+}
+
+.mm-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .55rem .8rem;
+    margin-bottom: .5rem;
+    background: #fff;
+    break-inside: avoid;
+}
+
+.mm-head {
+    display: flex;
+    justify-content: space-between;
+    gap: .6rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.mm-name {
+    font-weight: 700;
+    font-size: .86rem;
+}
+
+.mm-eq {
+    overflow-x: auto;
+    overflow-y: hidden;
+    font-size: .95rem;
+    padding: .1rem 0;
+}
+
+.mm-eq mjx-container {
+    margin: .35em 0 !important;
+}
+
+.mm-sub,
+.mm-note {
+    font-size: .82rem;
+    color: var(--muted);
+}
+
+.mm-note {
+    padding: .4rem .2rem;
+}
+
+.checks-sum {
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
+/* ---------- Hardy Cross ---------- */
+details.iter {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .5rem .8rem;
+    margin-bottom: .6rem;
+    background: #fafcfb;
+}
+
+details.iter summary {
+    font-weight: 700;
+    cursor: pointer;
+}
+
+details.iter h5 {
+    margin: .6rem 0 .3rem;
+}
+
+.net-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.2rem;
+    align-items: start;
+}
+
+.net-svg {
+    width: 100%;
+    height: auto;
+    background: #fbfdfc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.net-svg .pipe {
+    stroke: #8fb7ad;
+    stroke-width: 5;
+    stroke-linecap: round;
+}
+
+.net-svg .flow {
+    stroke: var(--primary-dark);
+    stroke-width: 2;
+}
+
+.net-svg .arr {
+    fill: var(--primary-dark);
+}
+
+.net-svg .node {
+    fill: #fff;
+    stroke: var(--primary-dark);
+    stroke-width: 2.5;
+}
+
+.net-svg .node.tank {
+    fill: var(--accent);
+    stroke: #8a4b03;
+}
+
+.net-svg .plab {
+    font-size: 11px;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 3px;
+}
+
+.net-svg .nlab {
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--ink);
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 3px;
+}
+
+.net-svg .llab {
+    font-size: 22px;
+    font-weight: 800;
+    fill: #c7ddd6;
+}
+
+/* ---------- Informe ---------- */
+.mod-informe {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    background: #fff;
+}
+
+.mod-informe h3 {
+    margin: 1.4rem 0 .6rem;
+    font-size: 1.05rem;
+}
+
+.inf-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 3px solid var(--primary);
+    padding-bottom: .8rem;
+}
+
+.inf-eyebrow {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.inf-meta {
+    font-size: .85rem;
+    color: var(--muted);
+    text-align: right;
+}
+
+.page-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: .8rem 1rem;
+    margin-bottom: 1.4rem;
+    font-size: .9rem;
+}
+
+.page-note ul {
+    margin: .3rem 0 0 1.1rem;
+}
+
+@media (max-width: 860px) {
+    .net-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-bar {
+        width: 100%;
+    }
+
+    .mode-bar button {
+        flex: 1;
+    }
+}
+
+@media print {
+    .mm-item {
+        border-color: #ccc;
+        padding: .3rem .5rem;
+    }
+
+    .mod-informe {
+        border: none;
+        padding: 0;
+    }
+
+    .mtable td,
+    .mtable th {
+        white-space: normal;
+        font-size: 9pt;
+    }
+
+    .table-wrap {
+        overflow: visible;
+    }
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saneamiento Hidráulico · Red de distribución</title>
+    <meta name="description" content="Datos iniciales, tanque elevado, red en malla por Hardy Cross y verificación de presiones.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mod.css">
+    <link rel="stylesheet" href="ui-shell.css">
+    <script>
+        window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+</head>
+<body data-page="red">
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="nav-links">
+            <li class="nav-dd"><a href="index.html">Impulsión</a><ul class="dd-menu"><li><a href="index.html">Manual</a></li><li><a href="auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="potabilizadora.html">Potabilizadora</a><ul class="dd-menu"><li><a href="potabilizadora.html">Manual</a></li><li><a href="potabilizadora-auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="red.html" class="active">Red pública</a><ul class="dd-menu"><li><a href="red.html" class="active">Red de distribución</a></li><li><a href="tanque.html">Impulsión al tanque</a></li><li><a href="cloacal.html">Red cloacal</a></li></ul></li>
+            <li class="nav-dd"><a href="predial.html">Predial</a><ul class="dd-menu"><li><a href="predial.html">Agua del edificio</a></li></ul></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+        </ul>
+    </nav>
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento público · Clase 5</p>
+            <h1>Red de distribución <span class="accent-word">Hardy Cross</span></h1>
+            <p class="hero-sub">Caudales por tramo, tanque elevado, iteraciones de Hardy Cross y presiones en cada nodo. La red es genérica: definí tus nodos, tramos y anillos.</p>
+            <div class="hero-kpis" id="hero-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path></svg>
+    </header>
+    <main id="app">
+        <div class="mode-wrap"><div id="mode"></div>
+            <button type="button" class="btn-sm" data-act="import">Importar datos del barrio (Impulsión)</button>
+            <button type="button" class="btn-sm" data-act="reset">Restaurar ejemplo de la guía</button></div>
+        <div id="errs"></div>
+<div class="page-note"><strong>Cómo usar:</strong> en <em>Automático</em> el algoritmo reparte los caudales iniciales por continuidad, dimensiona cada tramo con la velocidad económica, corre Hardy Cross y repite hasta que los diámetros no cambian; después calcula la altura mínima de la base del tanque para que la presión mínima sea ≥ 10 m.c.a. En <em>Manual</em> elegís vos los diámetros, los caudales iniciales y la altura de la base.</div>
+        <section class="card step" id="datos">
+            <div class="step-head"><span class="step-num">1</span><div><h2>Datos iniciales</h2><p class="lede">Caudal medio del barrio y coeficientes de máximo consumo.</p></div></div>
+            <div class="grid-2"><div class="panel"><h3>Entradas</h3><div id="in-datos"></div></div><div class="panel"><h3>Resultados</h3><div id="out-datos"></div></div></div>
+            <details class="notes"><summary><span>Notas de la cátedra</span></summary><div class="notes-body"><ul><li>Lotes: ajustar la cantidad de edificios por manzana de cada grupo.</li><li>K1 y K2 son los mismos que en la impulsión del río.</li></ul></div></details>
+        </section>
+        <section class="card step" id="tanque">
+            <div class="step-head"><span class="step-num">2</span><div><h2>Tanque elevado</h2><p class="lede">Volumen de regulación para el caudal máximo horario más una reserva adicional; tanque cilíndrico.</p></div></div>
+            <div class="grid-2"><div class="panel"><h3>Entradas</h3><div id="in-tanque"></div></div><div class="panel"><h3>Resultados</h3><div id="out-tanque"></div></div></div>
+            
+        </section>
+        <section class="card step" id="red">
+            <div class="step-head"><span class="step-num">3</span><div><h2>Definición de la red</h2><p class="lede">Nodos con su cota de terreno, tramos (con la cantidad de lotes que abastecen) y anillos. Las coordenadas x, y solo sirven para el dibujo.</p></div></div>
+            <div class="grid-3" id="in-crit"></div><div class="net-wrap"><div><h4>Nodos</h4><div id="ed-nodes"></div><h4>Anillos</h4><div id="ed-loops"></div></div><div id="svg-red"></div></div><h4>Tramos</h4><div id="ed-pipes"></div>
+            <details class="notes"><summary><span>Notas de la cátedra</span></summary><div class="notes-body"><ul><li>Para el diseño se deben crear mallas; se necesitan las cotas de los puntos de la malla.</li><li>El sentido de circulación siempre debe ir de mayor a menor diámetro.</li><li>La profundidad de la tubería suele ser 1,20 m (0,90 m en calles poco transitadas).</li></ul></div></details>
+        </section>
+        <section class="card step" id="caudales">
+            <div class="step-head"><span class="step-num">4</span><div><h2>Caudales y diámetros</h2><p class="lede">Resultado final por tramo y demanda en cada nodo.</p></div></div>
+            <div id="out-red"></div>
+            
+        </section>
+        <section class="card step" id="hardy">
+            <div class="step-head"><span class="step-num">5</span><div><h2>Hardy Cross · iteraciones</h2><p class="lede">Corrección ΔQ = −Σh / (1,85·Σ|h/Q|) por anillo hasta que la suma de pérdidas de cada anillo sea cero.</p></div></div>
+            <div id="out-hc"></div>
+            <details class="notes"><summary><span>Notas de la cátedra</span></summary><div class="notes-body"><ul><li>Se busca que la suma de las pérdidas de cada anillo dé cero; normalmente hacia la sexta iteración ya está corregido.</li><li>Con tuberías más generosas se llega más rápido a la corrección.</li><li>Si hacen falta más de 10 iteraciones, conviene aumentar los diámetros.</li></ul></div></details>
+        </section>
+        <section class="card step" id="presiones">
+            <div class="step-head"><span class="step-num">6</span><div><h2>Presiones</h2><p class="lede">Cotas piezométricas desde el tanque y presión disponible en cada nodo.</p></div></div>
+            <div class="grid-3" id="in-hbase"></div><div id="out-pres"></div>
+            <details class="notes"><summary><span>Notas de la cátedra</span></summary><div class="notes-body"><ul><li>Se deben agregar las cotas y cuidar la cota de ubicación y la base del tanque.</li><li>Presión mínima en la red: 10 m.c.a.</li></ul></div></details>
+        </section>
+        <section class="card step" id="informe">
+            <div class="step-head"><span class="step-num">▤</span><div><h2>Memoria de cálculo e informe</h2><p class="lede">Cada fórmula con su reemplazo numérico y resultado, más el resumen de verificaciones. Imprimilo o guardalo como PDF para entregar.</p></div></div>
+            <div id="informe-body"></div>
+        </section>
+    </main>
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de Saneamiento y Medio Ambiente</p>
+        <p class="footnote">Cálculos conforme a la NP 68, la guía de la cátedra y las normas indicadas en cada sección.</p>
+    </footer>
+    <script src="mod-core.js"></script>
+    <script src="red.js"></script>
+    <script src="ui-shell.js"></script>
+</body>
+</html>

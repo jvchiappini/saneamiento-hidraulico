@@ -13,6 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ui-shell.css">
     <script>
         window.MathJax = {
             tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
@@ -28,20 +29,10 @@
         <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
         <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
         <ul class="nav-links" id="nav-links">
-            <li class="nav-dd">
-                <a href="index.html">Impulsión</a>
-                <ul class="dd-menu">
-                    <li><a href="index.html">Manual</a></li>
-                    <li><a href="auto.html">Automático</a></li>
-                </ul>
-            </li>
-            <li class="nav-dd">
-                <a href="potabilizadora.html" class="active">Potabilizadora</a>
-                <ul class="dd-menu">
-                    <li><a href="potabilizadora.html">Manual</a></li>
-                    <li><a href="potabilizadora-auto.html" class="active">Automático</a></li>
-                </ul>
-            </li>
+            <li class="nav-dd"><a href="index.html">Impulsión</a><ul class="dd-menu"><li><a href="index.html">Manual</a></li><li><a href="auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="potabilizadora.html" class="active">Potabilizadora</a><ul class="dd-menu"><li><a href="potabilizadora.html">Manual</a></li><li><a href="potabilizadora-auto.html" class="active">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="red.html">Red pública</a><ul class="dd-menu"><li><a href="red.html">Red de distribución</a></li><li><a href="tanque.html">Impulsión al tanque</a></li><li><a href="cloacal.html">Red cloacal</a></li></ul></li>
+            <li class="nav-dd"><a href="predial.html">Predial</a><ul class="dd-menu"><li><a href="predial.html">Agua del edificio</a></li></ul></li>
             <li><a href="referencias.html">Norma 68</a></li>
             <li><a href="formulas.html">Fórmulas</a></li>
         </ul>
@@ -139,6 +130,7 @@
     <script src="app.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="ui-shell.js"></script>
 </body>
 
 </html>
