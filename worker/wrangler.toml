@@ -1,0 +1,7 @@
+name = "saneamiento-opencode-proxy"
+main = "opencode-proxy.mjs"
+compatibility_date = "2026-01-01"
+
+[vars]
+# Orígenes que pueden usar el proxy (separados por coma). Ajustalo a tu GitHub Pages.
+ALLOWED_ORIGINS = "https://jvchiappini.github.io,http://localhost:8765,http://127.0.0.1:8765"

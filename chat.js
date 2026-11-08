@@ -8,12 +8,13 @@
 (function () {
     const { Agent, MODELS, DEFAULT_MODEL, buildSystem, describeError, userTurnStarts, textOf } = window.AgentCore;
     const Gem = window.GeminiCore;
+    const OC = window.OpenCodeCore;
     const Tools = window.AgentTools;
     const MC = window.MC;
 
     const SDK_URL = "https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
-    const SET_KEY = "sh-chat-settings-v1", API_KEY = "sh-chat-apikey", GEMINI_KEY = "sh-chat-gemini-key", PJ_KEY = "sh-chat-pj-closed";
-    const DEFAULTS = { mode: null, model: DEFAULT_MODEL, geminiModel: Gem.DEFAULT_MODEL, effort: "medium", maxTokens: 32000, ctxThreshold: 120000 };
+    const SET_KEY = "sh-chat-settings-v1", API_KEY = "sh-chat-apikey", GEMINI_KEY = "sh-chat-gemini-key", OC_KEY = "sh-chat-opencode-key", PJ_KEY = "sh-chat-pj-closed";
+    const DEFAULTS = { mode: null, model: DEFAULT_MODEL, geminiModel: Gem.DEFAULT_MODEL, opencodeModel: OC.DEFAULT_MODEL, opencodeProxy: "", effort: "medium", maxTokens: 32000, ctxThreshold: 120000 };
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const fmtInt = (n) => Math.round(n || 0).toLocaleString("es-AR");
@@ -28,16 +29,20 @@
     let settings = Object.assign({}, DEFAULTS, (() => { try { return JSON.parse(storage.getItem(SET_KEY) || "{}"); } catch (e) { return {}; } })());
     if (!MODELS.some((m) => m.id === settings.model)) settings.model = DEFAULT_MODEL;
     if (!Gem.MODELS.some((m) => m.id === settings.geminiModel)) settings.geminiModel = Gem.DEFAULT_MODEL;
-    if (!["gemini", "key", "demo"].includes(settings.mode)) settings.mode = null;
+    if (!OC.MODELS.some((m) => m.id === settings.opencodeModel)) settings.opencodeModel = OC.DEFAULT_MODEL;
+    if (typeof settings.opencodeProxy !== "string") settings.opencodeProxy = "";
+    if (!["gemini", "key", "opencode", "demo"].includes(settings.mode)) settings.mode = null;
     // Proveedor de cada modo. Cada conversación guarda el suyo (los historiales tienen formatos distintos).
-    const PROV = { gemini: "gemini", key: "claude", demo: "demo" };
-    const PROV_NAME = { gemini: "Gemini", claude: "Claude", demo: "el modo demo" };
+    const PROV = { gemini: "gemini", key: "claude", opencode: "opencode", demo: "demo" };
+    const PROV_NAME = { gemini: "Gemini", claude: "Claude", opencode: "OpenCode Go (DeepSeek)", demo: "el modo demo" };
+    const DISPLAY = { gemini: Gem, opencode: OC };
     const modeProv = () => PROV[settings.mode] || null;
     const convProv = (c) => (c && c.provider) || "claude";
-    const view = (c, msgs) => (convProv(c) === "gemini" ? Gem.toDisplay(msgs) : msgs);
-    const turnStartsOf = (c) => (convProv(c) === "gemini" ? Gem.userTurnStarts(c.messages) : userTurnStarts(c.messages));
-    const describeFor = (prov, e) => (prov === "gemini" ? Gem.describeError(e) : describeError(e));
-    const keyOf = (prov) => storage.getItem(prov === "gemini" ? GEMINI_KEY : API_KEY);
+    const view = (c, msgs) => (DISPLAY[convProv(c)] ? DISPLAY[convProv(c)].toDisplay(msgs) : msgs);
+    const turnStartsOf = (c) => (DISPLAY[convProv(c)] ? DISPLAY[convProv(c)].userTurnStarts(c.messages) : userTurnStarts(c.messages));
+    const modelOf = (prov) => (prov === "gemini" ? settings.geminiModel : prov === "opencode" ? settings.opencodeModel : settings.model);
+    const describeFor = (prov, e) => (prov === "gemini" ? Gem.describeError(e) : prov === "opencode" ? OC.describeError(e) : describeError(e));
+    const keyOf = (prov) => storage.getItem(prov === "gemini" ? GEMINI_KEY : prov === "opencode" ? OC_KEY : API_KEY);
     const saveSettings = () => storage.setItem(SET_KEY, JSON.stringify(settings));
 
     /* ---------------- IndexedDB ---------------- */
@@ -77,7 +82,7 @@
     let pendingCtx = null;   // contexto de la página de origen (?from=)
     let searchQ = "";
 
-    const newConv = () => ({ id: "c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title: "Nueva conversación", created: Date.now(), updated: Date.now(), provider: modeProv() || "claude", model: modeProv() === "gemini" ? settings.geminiModel : settings.model, system: null, messages: [], notices: [], usage: null });
+    const newConv = () => ({ id: "c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), title: "Nueva conversación", created: Date.now(), updated: Date.now(), provider: modeProv() || "claude", model: modelOf(modeProv() || "claude"), system: null, messages: [], notices: [], usage: null });
 
     /* =====================================================================
        Markdown + LaTeX
@@ -408,6 +413,7 @@
     async function getClient(prov) {
         if (prov === "demo") return new window.AgentDemo.DemoClient();
         if (prov === "gemini") { if (!keyOf("gemini")) throw new Error("Falta la API key de Gemini: cargala en Configuración."); return null; }
+        if (prov === "opencode") { if (!keyOf("opencode")) throw new Error("Falta la API key de OpenCode Go: cargala en Configuración."); if (!settings.opencodeProxy) throw new Error("Falta la URL del proxy de OpenCode Go: cargala en Configuración."); return null; }
         let mod;
         try { mod = await import(SDK_URL); } catch (e) { throw new Error("No se pudo cargar el SDK de Anthropic desde el CDN (¿sin conexión?)."); }
         const Anthropic = mod.default || mod.Anthropic;
@@ -416,6 +422,7 @@
         return new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true, maxRetries: 2 });
     }
     function makeAgent(prov, client) {
+        if (prov === "opencode") return new OC.OpenCodeAgent({ apiKey: keyOf("opencode"), proxy: settings.opencodeProxy, executor, model: settings.opencodeModel, maxTokens: settings.maxTokens, onEvent });
         if (prov === "gemini") return new Gem.GeminiAgent({ apiKey: keyOf("gemini"), executor, model: settings.geminiModel, maxTokens: settings.maxTokens, effort: settings.effort, onEvent });
         return new Agent({ client, executor, model: settings.model, maxTokens: settings.maxTokens, effort: settings.effort, onEvent, useFallbacks: prov !== "demo" });
     }
@@ -448,14 +455,14 @@
         const content = [];
         if (pendingCtx) { content.push({ type: "text", text: await contextBlock(pendingCtx) }); pendingCtx = null; renderCtxChip(); }
         content.push({ type: "text", text });
-        conv.messages.push(prov === "gemini" ? { role: "user", parts: content.map((b) => ({ text: b.text })) } : { role: "user", content });
+        conv.messages.push(prov === "gemini" ? { role: "user", parts: content.map((b) => ({ text: b.text })) } : prov === "opencode" ? { role: "user", content: content.map((b) => b.text).join("\n\n") } : { role: "user", content });
         if (conv.title === "Nueva conversación") conv.title = text.replace(/\s+/g, " ").slice(0, 60) + (text.length > 60 ? "…" : "");
         setPrompt("");
         await persist();
         await runAgent(prov, client, true);
     }
     async function runAgent(prov, client, compact) {
-        conv.model = prov === "gemini" ? settings.geminiModel : settings.model;
+        conv.model = modelOf(prov);
         renderConv(); startLive(); setBusy(true);
         abortCtl = new AbortController();
         const agent = makeAgent(prov, client);
@@ -538,14 +545,15 @@
     const modeOf = () => (dlgS.querySelector('input[name="mode"]:checked') || {}).value || "gemini";
     // El selector de modelo cambia con el proveedor (Gemini o Claude; la demo imita a Claude).
     function fillModels(mode, selected) {
-        const list = mode === "gemini" ? Gem.MODELS : MODELS;
+        const list = mode === "gemini" ? Gem.MODELS : mode === "opencode" ? OC.MODELS : MODELS;
         $("set-model").innerHTML = list.map((m) => `<option value="${m.id}">${esc(m.name)} — ${esc(m.desc)}</option>`).join("");
-        $("set-model").value = selected || (mode === "gemini" ? settings.geminiModel : settings.model);
+        $("set-model").value = selected || modelOf(PROV[mode]);
     }
     function syncModeFields() {
         const mode = modeOf();
         $("set-gkey").hidden = mode !== "gemini";
         $("set-key").hidden = mode !== "key";
+        $("set-okey").hidden = mode !== "opencode";
         $("set-model-wrap").hidden = mode === "demo";
         fillModels(mode);
     }
@@ -554,6 +562,7 @@
         dlgS.querySelectorAll('input[name="mode"]').forEach((r) => { r.checked = r.value === mode; });
         $("set-gapikey").value = keyOf("gemini") || "";
         $("set-apikey").value = keyOf("claude") || "";
+        $("set-oapikey").value = keyOf("opencode") || ""; $("set-oproxy").value = settings.opencodeProxy || "";
         $("set-effort").value = settings.effort;
         $("set-maxtok").value = settings.maxTokens; $("set-ctx").value = settings.ctxThreshold;
         $("set-test-out").textContent = "";
@@ -562,7 +571,7 @@
     }
     dlgS.addEventListener("change", (e) => { if (e.target.name === "mode") syncModeFields(); });
     const toggleKey = (btnId, inputId) => $(btnId).addEventListener("click", (e) => { const i = $(inputId); const show = i.type === "password"; i.type = show ? "text" : "password"; e.target.textContent = show ? "Ocultar" : "Ver"; e.target.setAttribute("aria-pressed", String(show)); });
-    toggleKey("set-showkey", "set-apikey"); toggleKey("set-gshowkey", "set-gapikey");
+    toggleKey("set-showkey", "set-apikey"); toggleKey("set-gshowkey", "set-gapikey"); toggleKey("set-oshowkey", "set-oapikey");
     function readForm() {
         const clamp = (v, lo, hi, d) => { v = parseInt(v, 10); return isFinite(v) ? Math.max(lo, Math.min(hi, v)) : d; };
         const mode = modeOf();
@@ -571,6 +580,7 @@
             maxTokens: clamp($("set-maxtok").value, 1000, mode === "gemini" ? 65536 : 128000, DEFAULTS.maxTokens), ctxThreshold: clamp($("set-ctx").value, 20000, 900000, DEFAULTS.ctxThreshold),
         };
         if (mode === "gemini") f.geminiModel = $("set-model").value; else if (mode === "key") f.model = $("set-model").value;
+        else if (mode === "opencode") { f.opencodeModel = $("set-model").value; f.opencodeProxy = $("set-oproxy").value.trim(); }
         return f;
     }
     dlgS.addEventListener("close", () => {
@@ -580,6 +590,8 @@
         const gkey = $("set-gapikey").value.trim(), key = $("set-apikey").value.trim();
         if (f.mode === "gemini" && gkey) storage.setItem(GEMINI_KEY, gkey);
         if (f.mode === "key" && key) storage.setItem(API_KEY, key);
+        const okey = $("set-oapikey").value.trim();
+        if (f.mode === "opencode" && okey) storage.setItem(OC_KEY, okey);
         updateModeChip(); updateMeter(); updateProvNote();
         if (!conv) renderConv();
     });
@@ -597,27 +609,35 @@
                 out.textContent = `✓ Conexión correcta (${Gem.modelInfo(f.geminiModel).name}; ${n} tokens de prueba).`;
                 return;
             }
+            if (f.mode === "opencode") {
+                const okey = $("set-oapikey").value.trim();
+                if (!okey) { out.textContent = "✕ Falta la API key de OpenCode Go."; return; }
+                const n = await OC.testConnection({ apiKey: okey, proxy: f.opencodeProxy, model: f.opencodeModel });
+                out.textContent = `✓ Proxy y modelo correctos (${OC.modelInfo(f.opencodeModel).name}; ${n} modelos disponibles). La key se valida con el primer mensaje.`;
+                return;
+            }
             const key = $("set-apikey").value.trim();
             if (!key) { out.textContent = "✕ Falta la API key de Anthropic."; return; }
             const mod = await import(SDK_URL).catch(() => { throw new Error("No se pudo cargar el SDK de Anthropic desde el CDN (¿sin conexión?)."); });
             const client = new (mod.default || mod.Anthropic)({ apiKey: key, dangerouslyAllowBrowser: true, maxRetries: 2 });
             const r = await client.beta.messages.countTokens({ model: f.model, messages: [{ role: "user", content: "Hola" }] });
             out.textContent = `✓ Conexión correcta (${MODELS.find((m) => m.id === f.model).name}; ${r.input_tokens} tokens de prueba).`;
-        } catch (e) { out.textContent = "✕ " + (f.mode === "gemini" ? Gem.describeError(e) : describeError(e)); }
+        } catch (e) { out.textContent = "✕ " + (f.mode === "gemini" ? Gem.describeError(e) : f.mode === "opencode" ? OC.describeError(e) : describeError(e)); }
     });
     $("set-delkey").addEventListener("click", () => { storage.removeItem(API_KEY); $("set-apikey").value = ""; $("set-test-out").textContent = "API key de Anthropic borrada de este navegador."; });
+    $("set-odelkey").addEventListener("click", () => { storage.removeItem(OC_KEY); $("set-oapikey").value = ""; $("set-test-out").textContent = "API key de OpenCode Go borrada de este navegador."; });
     $("set-gdelkey").addEventListener("click", () => { storage.removeItem(GEMINI_KEY); $("set-gapikey").value = ""; $("set-test-out").textContent = "API key de Gemini borrada de este navegador."; });
     $("set-delall").addEventListener("click", async () => {
         if (!confirm("¿Borrar todas las conversaciones, la configuración, las API keys y el avance del checklist guardado por el asistente? Los datos de las páginas de cálculo no se tocan.")) return;
         await DB.clear(); convs = []; conv = null;
-        [SET_KEY, API_KEY, GEMINI_KEY, PJ_KEY, Tools.CK_KEY].forEach((k) => storage.removeItem(k));
+        [SET_KEY, API_KEY, GEMINI_KEY, OC_KEY, PJ_KEY, Tools.CK_KEY].forEach((k) => storage.removeItem(k));
         settings = Object.assign({}, DEFAULTS);
         dlgS.close("cancel");
         updateModeChip(); renderList(); renderConv(); renderProject();
     });
     function updateModeChip() {
         const c = $("chip-mode");
-        const m = settings.mode === "gemini" ? Gem.modelInfo(settings.geminiModel) : MODELS.find((x) => x.id === settings.model);
+        const m = settings.mode === "gemini" ? Gem.modelInfo(settings.geminiModel) : settings.mode === "opencode" ? OC.modelInfo(settings.opencodeModel) : MODELS.find((x) => x.id === settings.model);
         c.className = "chip-mode" + (settings.mode === "demo" ? " demo" : "");
         c.textContent = !settings.mode ? "Sin configurar" : settings.mode === "demo" ? "Modo demo" : (m ? m.name.replace("Claude ", "") : settings.model);
         $("composer-foot").textContent = settings.mode === "demo" ? "Modo demo: respuestas simuladas; las herramientas y los cálculos son reales." : "Enter envía · Shift+Enter nueva línea. El asistente puede equivocarse: verificá con la memoria de cálculo y la norma.";

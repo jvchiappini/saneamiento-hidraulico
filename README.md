@@ -246,6 +246,10 @@ y el estado de cada módulo, y botón **Preguntar al asistente** en cada página
   gratuito Google puede usar los prompts y las respuestas para mejorar sus productos y pueden leerlos revisores
   humanos (no enviar información sensible); en el EEE, Suiza y Reino Unido exige plan pago. Modelos:
   `gemini-3.6-flash` (por defecto), `gemini-3.5-flash-lite` y `gemini-3.8-flash`.
+- **OpenCode Go (DeepSeek V4.1 Flash)**: con la key de OpenCode Go de cada estudiante. El endpoint no admite CORS ni
+  llamadas directas desde el navegador, así que hace falta un proxy mínimo de Cloudflare (`worker/`, ver
+  `worker/README.md`) que cada grupo despliega y cuya URL se carga en Configuración. Hay que elegir la región «Global»
+  en la consola de OpenCode para este modelo.
 - **Claude (key de Anthropic, de pago)**: cada estudiante usa su propia key de [console.anthropic.com](https://console.anthropic.com/)
   (el uso se cobra en esa cuenta). Se guarda solo en el `localStorage` de su navegador, se envía únicamente a
   `api.anthropic.com` y se borra desde Configuración. Anthropic no ofrece inicio de sesión con Google para
@@ -260,6 +264,7 @@ y el estado de cada módulo, y botón **Preguntar al asistente** en cada página
 | ------- | -------- |
 | `agent.js` | Bucle de la API de Mensajes con streaming: ejecuta las herramientas en el navegador y repite (máx. 10 pasos por turno). Prompt de sistema fijo por conversación con `kb/catalog.md` y la errata, con caché. Historial "solo agregar"; al pasar el umbral resume los turnos viejos y conserva los últimos 4. |
 | `gemini.js` | Adaptador de Gemini (`generateContent` con streaming SSE por `fetch`, sin SDK). Mismo contrato de eventos y mismo bucle que `agent.js`; historial en formato nativo con `thoughtSignature` reenviado sin tocar. Cada conversación guarda su proveedor y se queda con él. |
+| `opencode.js` | Adaptador de OpenCode Go (API compatible con OpenAI, `chat/completions` con streaming SSE) vía el proxy de `worker/`. Mismo contrato de eventos y bucle que los otros proveedores. |
 | `agent-tools.js` | Herramientas con JSON Schema estricto: `kb_search`, `kb_read`, `kb_table`, `kb_formula`, `kb_criteria`, `calc` (evaluador propio, sin `eval`; varias cuentas por llamada con `also`), `run_module`, `module_memo`, `project_get`, `project_set` (pide confirmación con la diferencia), y las de «una sola vez» para gastar pocas llamadas: `module_full` (datos + resultados + verificaciones + memoria completa de un módulo), `project_overview` (todos los módulos y el avance), `kb_lookup` (busca y lee) y `report` (informe en Markdown por módulo o global, con botón de descarga y enlace al informe imprimible), `checklist_get`, `checklist_update`, `open_page`. Resultados de hasta 4000 caracteres; los errores vuelven al modelo como resultado de error. |
 | `kb.js` | Carga de `kb/` y búsqueda BM25 sin tildes en el cliente. Si falta `kb/`, el chat funciona igual y avisa "base de conocimiento no disponible". |
 | `demo.js` | Cliente simulado para el modo demo. |
@@ -275,7 +280,7 @@ y el estado de cada módulo, y botón **Preguntar al asistente** en cada página
 ### Tests
 
 ```bash
-node --test tests/agent.test.js tests/gemini.test.js
+node --test tests/agent.test.js tests/gemini.test.js tests/opencode.test.js
 ```
 
 Cubren BM25 y la kb de prueba, `calc`, `run_module` con los 4 módulos (contra `XCalc.calc`), `project_set`

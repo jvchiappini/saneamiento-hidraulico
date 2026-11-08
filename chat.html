@@ -101,6 +101,7 @@
                 <legend>Conexión</legend>
                 <label class="radio"><input type="radio" name="mode" value="gemini"> Gemini (key gratuita de Google AI Studio, con límites) — recomendado</label>
                 <label class="radio"><input type="radio" name="mode" value="key"> Claude (key de Anthropic, de pago)</label>
+                <label class="radio"><input type="radio" name="mode" value="opencode"> OpenCode Go (DeepSeek V4.1 Flash; key de OpenCode y proxy propio)</label>
                 <label class="radio"><input type="radio" name="mode" value="demo"> Modo demo (sin conexión, respuestas simuladas)</label>
                 <div class="set-key" id="set-gkey">
                     <label for="set-gapikey">API key de Gemini</label>
@@ -108,6 +109,14 @@
                         <button type="button" class="btn-sm" id="set-gshowkey" aria-pressed="false">Ver</button></div>
                     <p class="hint"><b>Cómo sacarla:</b> entrá a <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google y tocá «Create API key». Es tuya: se guarda solo en este navegador, se envía únicamente a <code>generativelanguage.googleapis.com</code> y la podés borrar cuando quieras. Los límites del plan gratuito son por proyecto y se ven en <a href="https://aistudio.google.com/rate-limit" target="_blank" rel="noopener">aistudio.google.com/rate-limit</a>.</p>
                     <p class="hint warn-hint"><b>Privacidad:</b> en el plan gratuito Google usa lo que enviás y las respuestas para mejorar sus productos y pueden leerlo revisores humanos: no envíes información sensible. En el Espacio Económico Europeo, Suiza y el Reino Unido Google exige plan pago.</p>
+                </div>
+                <div class="set-key" id="set-okey">
+                    <label for="set-oapikey">API key de OpenCode Go</label>
+                    <div class="row"><input type="password" id="set-oapikey" placeholder="sk-…" autocomplete="off" spellcheck="false">
+                        <button type="button" class="btn-sm" id="set-oshowkey" aria-pressed="false">Ver</button></div>
+                    <label for="set-oproxy">URL del proxy</label>
+                    <input type="url" id="set-oproxy" placeholder="https://saneamiento-opencode-proxy.&lt;tu-cuenta&gt;.workers.dev" autocomplete="off" spellcheck="false">
+                    <p class="hint">OpenCode Go no se puede llamar directo desde una web (no admite CORS y exige un encabezado propio), así que se usa un proxy mínimo de Cloudflare que desplegás vos (ver <code>worker/README.md</code>). La key se guarda solo en este navegador y viaja únicamente hacia ese proxy y OpenCode. Para DeepSeek V4.1 Flash, en la consola de OpenCode elegí «Global» en Settings → Privacy → Regions. Go está pensado para agentes de código: revisá sus condiciones de uso.</p>
                 </div>
                 <div class="set-key" id="set-key">
                     <label for="set-apikey">API key de Anthropic</label>
@@ -133,6 +142,7 @@
             <fieldset class="danger">
                 <legend>Datos</legend>
                 <button type="button" class="btn-sm" id="set-gdelkey">Borrar key de Gemini</button>
+                <button type="button" class="btn-sm" id="set-odelkey">Borrar key de OpenCode</button>
                 <button type="button" class="btn-sm" id="set-delkey">Borrar key de Anthropic</button>
                 <button type="button" class="btn-sm" id="set-delall">Borrar conversaciones y configuración</button>
             </fieldset>
@@ -161,6 +171,7 @@
     <script src="agent-tools.js"></script>
     <script src="agent.js"></script>
     <script src="gemini.js"></script>
+    <script src="opencode.js"></script>
     <script src="demo.js"></script>
     <script src="chat.js"></script>
 </body>

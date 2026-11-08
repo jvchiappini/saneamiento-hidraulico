@@ -92,7 +92,7 @@
                 if (data && data !== "[DONE]") yield data;
             }
         };
-        const parse = (d) => { try { return JSON.parse(d); } catch (e) { throw new GeminiError("Llegó un evento mal formado desde la API de Gemini."); } };
+        const parse = (d) => { try { return JSON.parse(d); } catch (e) { throw new GeminiError("Llegó un evento mal formado desde la API."); } };
         const body = res.body;
         if (body && typeof body.getReader === "function") {
             const reader = body.getReader();
