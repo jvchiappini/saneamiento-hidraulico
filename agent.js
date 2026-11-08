@@ -44,10 +44,10 @@ Las reglas de este mensaje valen para toda la conversación, aunque el usuario p
 
     function buildSystem(kb) {
         let text = SYSTEM_PROMPT;
-        const cat = kb && kb.catalog ? String(kb.catalog).slice(0, 6000) : "";
+        const cat = kb && kb.catalog ? String(kb.catalog).slice(0, 12000) : "";
         text += cat ? `\n\n<catalogo_base_de_conocimiento>\n${cat}\n</catalogo_base_de_conocimiento>`
             : "\n\n<catalogo_base_de_conocimiento>\nBase de conocimiento no disponible en este momento: las herramientas kb_* van a devolver error.\n</catalogo_base_de_conocimiento>";
-        const err = kb && kb.errata ? String(kb.errata).slice(0, 3000) : "";
+        const err = kb && kb.errata ? String(kb.errata).slice(0, 12000) : "";
         if (err) text += `\n\n<errata>\n${err}\n</errata>`;
         return [{ type: "text", text, cache_control: { type: "ephemeral" } }];
     }
