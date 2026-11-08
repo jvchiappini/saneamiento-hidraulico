@@ -605,7 +605,9 @@ details.think summary::-webkit-details-marker {
 }
 
 .tool-link {
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
     margin: .3rem 0 .1rem;
 }
 

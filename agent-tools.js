@@ -10,7 +10,9 @@
    ===================================================================== */
 (function (root) {
     const RESULT_MAX = 4000;   // caracteres por resultado de herramienta
-    const MEMO_PAGE = 3500;    // caracteres por página de module_memo
+    const MEMO_PAGE = 3500;
+    // Herramientas "de una sola vez": resultados más grandes para evitar rondas de llamadas.
+    const BIG_MAX = { module_full: 16000, project_overview: 6000, kb_lookup: 9000, report: 16000 };    // caracteres por página de module_memo
 
     /* =====================================================================
        Evaluador matemático
@@ -318,6 +320,7 @@
                 properties: {
                     expression: S("Expresión, p. ej. \"1.3*sqrt(Q)*X^0.25\" o \"pi*D^2/4\"."),
                     vars: { type: "array", description: "Variables de la expresión.", items: { type: "object", additionalProperties: false, required: ["name", "value"], properties: { name: S("Nombre (letras, números y _)."), value: { type: "number", description: "Valor numérico." } } } },
+                    also: { type: "array", description: "Otras cuentas para resolver en esta misma llamada (cada una con su expression y sus vars, que puede ser una lista vacía). Usalo para no hacer una llamada por cuenta.", items: { type: "object", additionalProperties: false, required: ["expression", "vars"], properties: { expression: S("Expresión."), vars: { type: "array", description: "Variables de esta cuenta.", items: { type: "object", additionalProperties: false, required: ["name", "value"], properties: { name: S("Nombre."), value: { type: "number", description: "Valor." } } } } } } },
                 },
             },
         },
@@ -341,6 +344,13 @@
             input_schema: { type: "object", additionalProperties: false, properties: { id: S("Id exacto de la fórmula."), query: S("Texto a buscar, p. ej. \"Bresse\" o \"perdida de carga\".") } },
         },
         {
+            name: "kb_lookup", description: "PREFERIDA para consultar la base de conocimiento: busca y devuelve ya leídos (con texto, fuente y páginas) los k fragmentos más relevantes, todo en una sola llamada. Reemplaza a kb_search + kb_read. Citá como [id, p. X].",
+            input_schema: {
+                type: "object", additionalProperties: false, required: ["query"],
+                properties: { query: S("Palabras clave en español."), module: S("Filtrar por módulo (opcional)."), kind: S("Filtrar por tipo de fragmento (opcional)."), k: { type: "integer", description: "Fragmentos a leer, de 1 a 4 (por defecto 3)." } },
+            },
+        },
+        {
             name: "kb_read", description: "Lee un fragmento de la base de conocimiento (normas, clases, guías) por su id (sale de kb_search). Máximo 3000 caracteres.",
             input_schema: { type: "object", additionalProperties: false, required: ["id"], properties: { id: S("Id del fragmento.") } },
         },
@@ -359,6 +369,10 @@
             input_schema: { type: "object", additionalProperties: false, required: ["id"], properties: { id: S("Id de la tabla."), filter: S("Filtro opcional.") } },
         },
         {
+            name: "module_full", description: "PREFERIDA para revisar un módulo: devuelve de una sola vez los datos de entrada (parámetros), los resultados clave, las verificaciones que no cumplen y la memoria de cálculo completa (fórmulas con reemplazo y resultado). Acepta overrides para probar alternativas sin guardar. Reemplaza a project_get + run_module + module_memo.",
+            input_schema: { type: "object", additionalProperties: false, required: ["module"], properties: { module: S("Módulo.", { enum: MOD_ENUM }), overrides: Object.assign({}, PATCH_ITEMS, { description: "Cambios temporales {path, value} para probar alternativas." }) } },
+        },
+        {
             name: "module_memo", description: "Devuelve la memoria de cálculo (fórmula, reemplazo numérico y resultado en LaTeX) de un módulo con su estado guardado. Sin group lista los grupos; con group (número o parte del título) devuelve ese grupo, paginado.",
             input_schema: {
                 type: "object", additionalProperties: false, required: ["module"],
@@ -374,8 +388,16 @@
             input_schema: { type: "object", additionalProperties: false, required: ["module"], properties: { module: S("Módulo.", { enum: MOD_ENUM.concat(Object.keys(READONLY)) }) } },
         },
         {
+            name: "project_overview", description: "PREFERIDA para empezar o dar un panorama: en una sola llamada devuelve el estado de TODOS los módulos de cálculo (red, tanque, cloacal, predial: verificaciones que cumplen y no cumplen, resultados clave y si usan datos propios o el ejemplo), qué datos hay guardados de impulsión y potabilizadora, y el avance del TP por área.",
+            input_schema: { type: "object", additionalProperties: false, properties: {} },
+        },
+        {
             name: "project_set", description: "Propone cambios en los datos guardados de un módulo. El usuario ve la diferencia y tiene que aprobarla en la interfaz; si la rechaza, no se guarda nada. Probá antes con run_module y overrides.",
             input_schema: { type: "object", additionalProperties: false, required: ["module", "patch"], properties: { module: S("Módulo.", { enum: MOD_ENUM }), patch: PATCH_ITEMS } },
+        },
+        {
+            name: "report", description: "Arma el informe en Markdown (listo para mostrar, copiar o descargar) de un módulo —datos de entrada, resultados, verificaciones y memoria de cálculo con fórmulas— o un informe global de todo el proyecto (scope «todo»: resultados y verificaciones de cada módulo y el avance del TP). Usa los datos guardados del usuario (o el ejemplo de la guía si no hay) y devuelve también el enlace a la sección «Informe» de la página para imprimir o guardar como PDF. Mostrale el informe tal cual al usuario, sin cambiar los números.",
+            input_schema: { type: "object", additionalProperties: false, required: ["scope"], properties: { scope: S("Módulo del informe o «todo».", { enum: MOD_ENUM.concat(["todo"]) }) } },
         },
         {
             name: "run_module", description: "Corre el cálculo de un módulo con el estado guardado del usuario (o el ejemplo de la guía si no hay) más overrides opcionales, sin guardar nada. Devuelve un resumen: resultados clave, verificaciones que no cumplen y errores.",
@@ -446,6 +468,17 @@
             return out;
         }
 
+        function memoGroupLines(g) {
+            return g.items.map((it) => {
+                if (it.note) return `Nota: ${it.note}`;
+                let eq = it.f || "";
+                if (it.s) eq += ` = ${it.s}`;
+                if (it.r != null) eq += ` = ${it.r}${it.u ? `\\;\\mathrm{${it.u}}` : ""}`;
+                const ok = it.ok === undefined ? "" : it.ok ? " [verifica]" : " [NO verifica]";
+                return `• ${it.n}${ok}: $$${eq}$$${it.nota ? ` (${it.nota})` : ""}`;
+            });
+        }
+
         const H = {
             async calc(a) {
                 const vars = {};
@@ -454,7 +487,30 @@
                     vars[x.name] = x.value;
                 }
                 const v = evaluate(a.expression, vars);
-                return { expression: a.expression, vars, result: sig(v, 6), result_es: fmtEs(sig(v, 6)), result_full: Number(v.toPrecision(15)) };
+                const one = { expression: a.expression, vars, result: sig(v, 6), result_es: fmtEs(sig(v, 6)), result_full: Number(v.toPrecision(15)) };
+                if (!a.also || !a.also.length) return one;
+                one.tambien = a.also.map((x, i) => {
+                    const vs = {};
+                    for (const y of x.vars || []) { if (y.name in vs) throw new Error(`also[${i}]: variable repetida «${y.name}».`); vs[y.name] = y.value; }
+                    let w;
+                    try { w = evaluate(x.expression, vs); } catch (e) { throw new Error(`also[${i}] («${x.expression}»): ${e.message}`); }
+                    return { expression: x.expression, vars: vs, result: sig(w, 6), result_es: fmtEs(sig(w, 6)), result_full: Number(w.toPrecision(15)) };
+                });
+                return one;
+            },
+
+            async kb_lookup(a) {
+                await needKB();
+                const k = a.k == null ? 3 : a.k;
+                if (k < 1 || k > 4) throw new Error("k debe estar entre 1 y 4.");
+                const res = kb.search(a.query, { module: a.module, kind: a.kind, k });
+                if (!res.length) return { query: a.query, fragmentos: [], nota: "Sin resultados: probá con otras palabras o sin filtros." };
+                const fragmentos = [];
+                for (const r of res) {
+                    try { const c = await kb.read(r.id); fragmentos.push({ id: c.id, titulo: c.title, fuente: c.source, paginas: c.pages, truncado: c.truncated, texto: c.content.length > 2200 ? c.content.slice(0, 2200) + " […]" : c.content }); }
+                    catch (e) { fragmentos.push({ id: r.id, error: e.message }); }
+                }
+                return { query: a.query, fragmentos, nota: "Citá como [id, p. X]. Si falta algo, usá kb_read con el id para el texto completo o kb_table/kb_formula." };
             },
 
             async kb_search(a) {
@@ -480,6 +536,90 @@
                 return Object.assign({ fuente_datos: source, overrides: diff.map((d) => `${d.path}: ${JSON.stringify(d.before)} → ${JSON.stringify(d.after)}`) }, summary(a.module, st2, R));
             },
 
+            async module_full(a) {
+                const { state, source } = loadState(a.module);
+                const { state: st2, diff } = applyPatch(state, a.overrides || []);
+                const R = runCalc(a.module, st2);
+                const groups = (R.memo && R.memo.groups) || [];
+                const out = Object.assign({ fuente_datos: source, overrides: diff.map((d) => `${d.path}: ${JSON.stringify(d.before)} → ${JSON.stringify(d.after)}`), datos: compact(st2, 2500) }, summary(a.module, st2, R));
+                // Memoria de cálculo completa, agrupada, dentro de un presupuesto.
+                let used = JSON.stringify(out).length;
+                const omitted = [], memo = [];
+                groups.forEach((g, i) => {
+                    const text = `## ${i + 1}. ${g.title}\n` + memoGroupLines(g).join("\n");
+                    const size = JSON.stringify(text).length + 2; // tamaño ya escapado dentro del JSON (las barras del LaTeX se duplican)
+                    if (used + size <= BIG_MAX.module_full - 700) { memo.push(text); used += size; }
+                    else omitted.push(`${i + 1}. ${g.title}`);
+                });
+                out.memoria_de_calculo = memo.join("\n\n");
+                if (omitted.length) out.memoria_no_incluida = `Por tamaño faltan estos grupos; pedilos con module_memo (group = número): ${omitted.join(" | ")}`;
+                return out;
+            },
+
+            async report(a) {
+                const fecha = new Date().toLocaleDateString("es-AR");
+                const esc = (x) => String(x == null ? "" : x).replace(/\|/g, "\\|");
+                const tablaRes = (s) => "| Dato | Valor | Unidad |\n| --- | --- | --- |\n" + (s.resultados || []).map((r) => `| ${esc(r.k)} | ${esc(r.v)} | ${esc(r.u)} |`).join("\n");
+                const verif = (s) => {
+                    const v = s.verificaciones;
+                    let t = `Cumplen **${v.cumplen} de ${v.total}** verificaciones.`;
+                    if (v.no_cumplen.length) t += "\n\n**No cumplen:**\n" + v.no_cumplen.map((x) => `- ${x.n}${x.d ? " — " + x.d : ""} (${x.estado})`).join("\n");
+                    if (v.advertencias.length) t += "\n\n**A revisar:**\n" + v.advertencias.map((x) => `- ${x.n}${x.d ? " — " + x.d : ""} (${x.estado})`).join("\n");
+                    return t;
+                };
+                if (a.scope === "todo") {
+                    const parts = [`# Informe del proyecto\n_Generado el ${fecha} con los datos guardados de cada módulo (donde no hay datos propios se usa el ejemplo de la guía)._`];
+                    const links = [];
+                    for (const m of Object.keys(MODULES)) {
+                        try {
+                            const { state, source } = loadState(m);
+                            const s = summary(m, state, runCalc(m, state));
+                            parts.push(`## ${s.titulo}\n_Datos: ${source}._\n\n${tablaRes(s)}\n\n${verif(s)}`);
+                            links.push(`- [${s.titulo}](${MODULES[m].page}#informe)`);
+                        } catch (e) { parts.push(`## ${MODULES[m].title}\nNo se pudo calcular: ${e.message}`); }
+                    }
+                    const ck = await H.checklist_get({});
+                    parts.push(`## Avance del trabajo práctico\n${ck.progreso.hecho} ítems hechos, ${ck.progreso.en_progreso} en progreso, ${ck.progreso.pendiente} pendientes (${ck.progreso.porcentaje} %).`);
+                    parts.push("## Informes detallados (memoria de cálculo)\n" + links.join("\n"));
+                    return { titulo: "Informe del proyecto", markdown: parts.join("\n\n"), nota: "Informe global. Para la memoria de cálculo completa pedí el informe de un módulo." };
+                }
+                const { m } = calcOf(a.scope);
+                const { state, source } = loadState(a.scope);
+                const R = runCalc(a.scope, state);
+                const s = summary(a.scope, state, R);
+                const head = [`# Informe — ${m.title}\n_Generado el ${fecha}. Datos: ${source}._`,
+                    `## Datos de entrada\n\`\`\`json\n${JSON.stringify(compact(state, 1800), null, 1)}\n\`\`\``,
+                    `## Resultados\n${tablaRes(s)}`, `## Verificaciones\n${verif(s)}`];
+                const out = { titulo: `Informe — ${m.title}`, url: m.page + "#informe", markdown: "" };
+                let used = JSON.stringify(head.join("\n\n")).length + 600;
+                const memo = [], omitted = [];
+                ((R.memo && R.memo.groups) || []).forEach((g, i) => {
+                    const text = `### ${i + 1}. ${g.title}\n` + memoGroupLines(g).join("\n");
+                    const size = JSON.stringify(text).length + 4;
+                    if (used + size <= BIG_MAX.report - 900) { memo.push(text); used += size; } else omitted.push(`${i + 1}. ${g.title}`);
+                });
+                out.markdown = head.concat(["## Memoria de cálculo\n" + memo.join("\n\n")]).join("\n\n");
+                if (omitted.length) out.memoria_no_incluida = `Por tamaño faltan estos grupos; pedilos con module_memo (group = número) o imprimí el informe de la página: ${omitted.join(" | ")}`;
+                out.nota = "Mostrale el informe al usuario tal cual. El PDF completo se imprime desde el enlace (sección Informe de la página).";
+                return out;
+            },
+
+            async project_overview() {
+                const modulos = [];
+                for (const m of Object.keys(MODULES)) {
+                    try {
+                        const { state, source } = loadState(m);
+                        const s = summary(m, state, runCalc(m, state));
+                        modulos.push({ modulo: m, titulo: s.titulo, datos: /^guardado/.test(source) ? "propios" : "ejemplo de la guía", verificaciones: s.verificaciones, resultados_clave: (s.resultados || []).slice(0, 4).map((r) => `${r.k} = ${r.v} ${r.u}`.trim()), errores: s.errores });
+                    } catch (e) { modulos.push({ modulo: m, error: e.message }); }
+                }
+                const guardados = Object.entries(READONLY).filter(([k]) => k !== "red_resumen").map(([k, r]) => ({ modulo: k, titulo: r.title, guardado: !!r.pick(readJSON(r.key)) }));
+                const ck = await H.checklist_get({});
+                const areas = {};
+                for (const r of await checklistRows()) { const a = areas[r.area] || (areas[r.area] = { hecho: 0, en_progreso: 0, pendiente: 0, no_aplica: 0 }); a[r.status]++; }
+                return { modulos, solo_lectura: guardados, avance_tp: { total: ck.progreso, por_area: areas }, nota: "Para el detalle de un módulo usá module_full; para los ítems del TP, checklist_get con area." };
+            },
+
             async module_memo(a) {
                 const { state, source } = loadState(a.module);
                 const R = runCalc(a.module, state);
@@ -491,14 +631,7 @@
                 if (gi < 0) { const q = norm(a.group); gi = groups.findIndex((g) => norm(g.title).includes(q)); }
                 if (gi < 0 || gi >= groups.length) throw new Error(`No existe el grupo «${a.group}». Hay ${groups.length} grupos: ${groups.map((g, i) => `${i + 1}. ${g.title}`).join(" | ").slice(0, 1500)}`);
                 const g = groups[gi];
-                const lines = g.items.map((it) => {
-                    if (it.note) return `Nota: ${it.note}`;
-                    let eq = it.f || "";
-                    if (it.s) eq += ` = ${it.s}`;
-                    if (it.r != null) eq += ` = ${it.r}${it.u ? `\\;\\mathrm{${it.u}}` : ""}`;
-                    const ok = it.ok === undefined ? "" : it.ok ? " [verifica]" : " [NO verifica]";
-                    return `• ${it.n}${ok}: $$${eq}$$${it.nota ? ` (${it.nota})` : ""}`;
-                });
+                const lines = memoGroupLines(g);
                 const pages = []; let cur = "";
                 for (const l of lines) { if (cur && cur.length + l.length + 1 > MEMO_PAGE) { pages.push(cur); cur = ""; } cur += (cur ? "\n" : "") + l; }
                 pages.push(cur);
@@ -606,7 +739,7 @@
             try {
                 const out = await H[def.name](input || {});
                 const text = typeof out === "string" ? out : JSON.stringify(out);
-                return { content: truncate(text), is_error: false };
+                return { content: truncate(text, BIG_MAX[def.name] || RESULT_MAX), is_error: false };
             } catch (e) {
                 return nope(`Error en ${def.name}: ${e && e.message ? e.message : String(e)}`);
             }
@@ -617,7 +750,7 @@
 
     function norm(s) { return String(s == null ? "" : s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
 
-    const api = { TOOL_DEFS, apiTools, createExecutor, evaluate, validate, applyPatch, truncate, sig, MODULES, READONLY, PAGES, PAGE_TO_MODULE, DEFAULT_CHECKLIST, CK_KEY, CK_STATUS, RESULT_MAX };
+    const api = { TOOL_DEFS, apiTools, createExecutor, evaluate, validate, applyPatch, truncate, sig, MODULES, READONLY, PAGES, PAGE_TO_MODULE, DEFAULT_CHECKLIST, CK_KEY, CK_STATUS, RESULT_MAX, BIG_MAX };
     root.AgentTools = api;
     if (typeof module !== "undefined") module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);

@@ -351,3 +351,71 @@ test("modo demo: recorre los escenarios con las herramientas reales", async () =
     }
     assert.equal(JSON.parse(st.getItem("sh-red-v1")).tank.D, 22);
 });
+
+/* ---------------- herramientas "de una sola vez" ---------------- */
+test("module_full: datos + resultados + verificaciones + memoria completa en una llamada, sin guardar", async () => {
+    for (const mod of ["red", "tanque", "cloacal", "predial"]) {
+        const st = memStorage();
+        const ex = T.createExecutor({ storage: st, calcs });
+        const r = await ex.exec("module_full", { module: mod });
+        assert.equal(r.is_error, false, r.content);
+        assert.ok(r.content.length <= T.BIG_MAX.module_full, `${mod}: ${r.content.length}`);
+        const o = J(r);
+        assert.ok(o.datos && o.resultados && o.verificaciones && o.memoria_de_calculo, mod);
+        assert.match(o.memoria_de_calculo, /\$\$/, "fórmulas en LaTeX");
+        assert.equal(Object.keys(st.m).length, 0);
+    }
+    const ex = T.createExecutor({ storage: memStorage(), calcs });
+    const o = J(await ex.exec("module_full", { module: "red", overrides: [{ path: "tank.D", value: "22" }] }));
+    assert.match(o.overrides[0], /tank\.D/);
+});
+
+test("project_overview: los 4 módulos y el avance del TP en una llamada", async () => {
+    const ex = T.createExecutor({ storage: memStorage(), calcs });
+    const r = await ex.exec("project_overview", {});
+    assert.equal(r.is_error, false, r.content);
+    assert.ok(r.content.length <= T.BIG_MAX.project_overview);
+    const o = J(r);
+    assert.deepEqual(o.modulos.map((m) => m.modulo), ["red", "tanque", "cloacal", "predial"]);
+    assert.ok(o.modulos.every((m) => m.verificaciones && m.resultados_clave.length));
+    assert.ok(o.avance_tp.total && o.avance_tp.por_area);
+});
+
+test("kb_lookup: busca y devuelve los fragmentos ya leídos", async () => {
+    const ex = T.createExecutor({ kb: await fixtureKB() });
+    const o = J(await ex.exec("kb_lookup", { query: "presion minima", k: 2 }));
+    assert.equal(o.fragmentos[0].id, "np68-6-7");
+    assert.match(o.fragmentos[0].texto, /100 kPa/);
+    assert.deepEqual(o.fragmentos[0].paginas, [14]);
+    assert.equal((await ex.exec("kb_lookup", { query: "x", k: 9 })).is_error, true);
+    assert.deepEqual(J(await ex.exec("kb_lookup", { query: "zzzzqqq" })).fragmentos, []);
+});
+
+test("calc en lote: varias cuentas en una llamada, errores indicados por posición", async () => {
+    const ex = T.createExecutor({});
+    const o = J(await ex.exec("calc", { expression: "2*3", vars: [], also: [{ expression: "pi*D^2/4", vars: [{ name: "D", value: 0.45 }] }, { expression: "sqrt(16)", vars: [] }] }));
+    assert.equal(o.result, 6);
+    assert.deepEqual(o.tambien.map((x) => x.result), [0.159043, 4]);
+    const bad = await ex.exec("calc", { expression: "1", vars: [], also: [{ expression: "1/0", vars: [] }] });
+    assert.equal(bad.is_error, true);
+    assert.match(bad.content, /also\[0\]/);
+});
+
+test("report: informe en Markdown por módulo y global, JSON válido y dentro del presupuesto", async () => {
+    const ex = T.createExecutor({ storage: memStorage(), calcs });
+    for (const mod of ["red", "tanque", "cloacal", "predial"]) {
+        const r = await ex.exec("report", { scope: mod });
+        assert.equal(r.is_error, false, r.content);
+        assert.ok(r.content.length <= T.BIG_MAX.report, `${mod}: ${r.content.length}`);
+        const o = J(r);
+        assert.equal(o.url, T.MODULES[mod].page + "#informe");
+        assert.match(o.markdown, /^# Informe — /);
+        for (const sec of ["## Datos de entrada", "## Resultados", "## Verificaciones", "## Memoria de cálculo"]) assert.ok(o.markdown.includes(sec), mod + " " + sec);
+        assert.match(o.markdown, /\$\$/);
+    }
+    const all = J(await ex.exec("report", { scope: "todo" }));
+    assert.match(all.markdown, /^# Informe del proyecto/);
+    for (const m of Object.values(T.MODULES)) assert.ok(all.markdown.includes(m.title), m.title);
+    assert.match(all.markdown, /Avance del trabajo práctico/);
+    assert.equal((await ex.exec("report", { scope: "otro" })).is_error, true);
+});

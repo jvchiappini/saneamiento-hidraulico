@@ -174,11 +174,11 @@
        Render de una conversación
        ===================================================================== */
     const blocks = (m) => (Array.isArray(m.content) ? m.content : [{ type: "text", text: String(m.content || "") }]);
-    const TOOL_ICON = { calc: "∑", run_module: "▶", module_memo: "≡", project_get: "⌕", project_set: "✎", kb_search: "⌕", kb_read: "¶", kb_table: "▦", kb_formula: "ƒ", kb_criteria: "✓", checklist_get: "☑", checklist_update: "☑", open_page: "↗" };
+    const TOOL_ICON = { calc: "∑", run_module: "▶", module_full: "▣", project_overview: "◫", kb_lookup: "⌕", module_memo: "≡", project_get: "⌕", project_set: "✎", kb_search: "⌕", kb_read: "¶", kb_table: "▦", kb_formula: "ƒ", kb_criteria: "✓", checklist_get: "☑", checklist_update: "☑", open_page: "↗", report: "▤" };
     const argLine = (name, input) => {
         if (!input) return "";
         if (name === "calc") return input.expression || "";
-        if (name === "kb_search") return input.query || "";
+        if (name === "kb_search" || name === "kb_lookup") return input.query || "";
         if (input.module) return input.module + (input.group ? " · " + input.group : "") + (input.overrides && input.overrides.length ? ` · ${input.overrides.length} override(s)` : "") + (input.patch ? ` · ${input.patch.length} cambio(s)` : "");
         return input.id || input.page || input.query || "";
     };
@@ -200,12 +200,25 @@
         st.className = "tool-st " + (err ? "err" : "ok"); st.textContent = err ? "✕ error" : "✓ listo";
         const content = typeof result.content === "string" ? result.content : JSON.stringify(result.content);
         d.querySelector(".tool-out").textContent = prettyResult(content);
-        if (name === "open_page" && !err) {
+        if ((name === "open_page" || name === "report") && !err) {
             try {
                 const o = JSON.parse(content);
                 if (!d.nextElementSibling || !d.nextElementSibling.classList.contains("tool-link")) {
-                    const a = document.createElement("a"); a.className = "btn-sm tool-link"; a.href = o.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Abrir " + o.titulo + " ↗";
-                    d.after(a);
+                    const box = document.createElement("div"); box.className = "tool-link";
+                    if (o.url) {
+                        const a = document.createElement("a"); a.className = "btn-sm"; a.href = o.url; a.target = "_blank"; a.rel = "noopener"; a.textContent = (name === "report" ? "Imprimir / PDF: " : "Abrir ") + o.titulo + " ↗";
+                        box.appendChild(a);
+                    }
+                    if (name === "report" && o.markdown) {
+                        const b = document.createElement("button"); b.type = "button"; b.className = "btn-sm"; b.textContent = "Descargar informe (.md)";
+                        b.addEventListener("click", () => {
+                            const url = URL.createObjectURL(new Blob([o.markdown], { type: "text/markdown;charset=utf-8" }));
+                            const a = document.createElement("a"); a.href = url; a.download = (o.titulo || "informe").replace(/[^w-]+/g, "_") + ".md"; a.click();
+                            setTimeout(() => URL.revokeObjectURL(url), 2000);
+                        });
+                        box.appendChild(b);
+                    }
+                    d.after(box);
                 }
             } catch (e) { /* noop */ }
         }
@@ -370,7 +383,7 @@
             case "tool_run": { const c = live.chips.get(e.id); if (c) { c._input = e.input; c.querySelector(".tool-st").textContent = "ejecutando…"; c.querySelector(".tool-arg").textContent = argLine(e.name, e.input); c.querySelector(".tool-in").textContent = JSON.stringify(e.input, null, 2); } break; }
             case "tool_result": {
                 const c = live.chips.get(e.id); if (c) fillChip(c, e.name, c._input, e.result);
-                if (["run_module", "project_set", "checklist_update", "checklist_get"].includes(e.name)) renderProject();
+                if (["run_module", "module_full", "project_overview", "project_set", "checklist_update", "checklist_get"].includes(e.name)) renderProject();
                 const w = document.createElement("div"); w.className = "md cursor"; w.dataset.wait = "1"; live.body.appendChild(w);
                 scrollBottom();
                 break;
