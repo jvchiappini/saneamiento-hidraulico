@@ -1,0 +1,187 @@
+{
+ "id": "np68-tabla-i",
+ "title": "Tabla I: estimacion del consumo diario",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 11,
+ "columns": [
+  {
+   "key": "tipo",
+   "label": "Tipo de inmueble",
+   "unit": ""
+  },
+  {
+   "key": "consumo",
+   "label": "Consumo minimo",
+   "unit": "L/dia"
+  },
+  {
+   "key": "base",
+   "label": "Base",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "tipo": "Consumo minimo para caso de emergencia",
+   "consumo": 20,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Alojamientos provisorios",
+   "consumo": 80,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Casas populares rurales o Clase Baja",
+   "consumo": 120,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Residencias Clase Media",
+   "consumo": 150,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Residencias Clase Alta",
+   "consumo": 250,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Departamentos",
+   "consumo": 200,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Hoteles (sin cocina y sin lavanderia)",
+   "consumo": 120,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Hoteles (con cocina y sin lavanderia)",
+   "consumo": 250,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Hoteles (con cocina y lavanderia)",
+   "consumo": 300,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Escuelas - internados",
+   "consumo": 150,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Escuelas - semi internados",
+   "consumo": 100,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Escuelas sin internado",
+   "consumo": 50,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Cuarteles",
+   "consumo": 150,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Orfanatos, asilos, guarderias",
+   "consumo": 150,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Edificios publicos o comerciales",
+   "consumo": 50,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Oficinas",
+   "consumo": 50,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Talleres de costura",
+   "consumo": 50,
+   "base": "por persona"
+  },
+  {
+   "tipo": "Cines y teatros",
+   "consumo": 2,
+   "base": "por lugar"
+  },
+  {
+   "tipo": "Templos",
+   "consumo": 2,
+   "base": "por lugar"
+  },
+  {
+   "tipo": "Restaurantes y similar",
+   "consumo": 25,
+   "base": "por servicio"
+  },
+  {
+   "tipo": "Garajes",
+   "consumo": 50,
+   "base": "por automovil"
+  },
+  {
+   "tipo": "Lavanderias",
+   "consumo": 30,
+   "base": "por kg de ropa seca"
+  },
+  {
+   "tipo": "Mercados",
+   "consumo": 5,
+   "base": "por m2 de area"
+  },
+  {
+   "tipo": "Curtiembre de gran porte",
+   "consumo": 2000,
+   "base": "por cuero producido"
+  },
+  {
+   "tipo": "Frigorifico de gran porte",
+   "consumo": 1500,
+   "base": "por cabeza faenada"
+  },
+  {
+   "tipo": "Mataderos - animales de gran porte",
+   "consumo": 300,
+   "base": "por cabeza faenada"
+  },
+  {
+   "tipo": "Mataderos - animales de pequeno porte",
+   "consumo": 150,
+   "base": "por cabeza faenada"
+  },
+  {
+   "tipo": "Estaciones de servicio para automovil",
+   "consumo": 150,
+   "base": "por vehiculo"
+  },
+  {
+   "tipo": "Lavadero de camiones",
+   "consumo": 600,
+   "base": "por vehiculo"
+  },
+  {
+   "tipo": "Caballerizas",
+   "consumo": 100,
+   "base": "por caballo"
+  },
+  {
+   "tipo": "Jardines",
+   "consumo": 1.5,
+   "base": "por m2"
+  },
+  {
+   "tipo": "Jardines con sistemas automaticos",
+   "consumo": 10,
+   "base": "por m2"
+  }
+ ],
+ "lookup_rule": "Valor tabulado segun tipo de inmueble; no se admiten consumos inferiores.",
+ "notes": "Tabla I de la NP 68, pagina 11. La columna de emergencia corresponde a la primera fila."
+}

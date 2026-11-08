@@ -1,0 +1,42 @@
+{
+ "id": "ord38-tabla-extintores-cobertura",
+ "title": "Cobertura de una unidad extintora",
+ "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+ "page": 11,
+ "columns": [
+  {
+   "key": "clase",
+   "label": "Clase de riesgo",
+   "unit": ""
+  },
+  {
+   "key": "area",
+   "label": "Area",
+   "unit": "m2"
+  },
+  {
+   "key": "dist",
+   "label": "Distancia maxima",
+   "unit": "m"
+  }
+ ],
+ "rows": [
+  {
+   "clase": "Clase I",
+   "area": 400,
+   "dist": 20
+  },
+  {
+   "clase": "Clase II",
+   "area": 250,
+   "dist": 15
+  },
+  {
+   "clase": "Clase III",
+   "area": 150,
+   "dist": 12
+  }
+ ],
+ "lookup_rule": "Dividir el area o el recorrido por la cobertura de una unidad para obtener el numero de extintores.",
+ "notes": "Ordenanza 038 Art. 44.2."
+}

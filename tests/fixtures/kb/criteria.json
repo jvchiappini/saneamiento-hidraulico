@@ -1,0 +1,2 @@
+[{"id":"red-pmin","module":"red","param":"presion minima","value":10,"unit":"m.c.a.","source":"np68-6-7","pages":[14]},
+ {"id":"pre-reserva","module":"predial","param":"reserva total","value":"entre 1 y 2 veces el consumo diario","source":"np68-6-13-1","pages":[17]}]

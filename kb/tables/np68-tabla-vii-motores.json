@@ -1,0 +1,98 @@
+{
+ "id": "np68-tabla-vii-motores",
+ "title": "Tabla VII: rendimiento para motores electricos",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 23,
+ "columns": [
+  {
+   "key": "hp",
+   "label": "Potencia",
+   "unit": "HP"
+  },
+  {
+   "key": "eta",
+   "label": "Rendimiento",
+   "unit": "%"
+  }
+ ],
+ "rows": [
+  {
+   "hp": "1/4",
+   "eta": 61
+  },
+  {
+   "hp": "1/3",
+   "eta": 63
+  },
+  {
+   "hp": "1/2",
+   "eta": 64
+  },
+  {
+   "hp": "3/4",
+   "eta": 67
+  },
+  {
+   "hp": "1",
+   "eta": 72
+  },
+  {
+   "hp": "1 1/2",
+   "eta": 73
+  },
+  {
+   "hp": "2",
+   "eta": 75
+  },
+  {
+   "hp": "3",
+   "eta": 77
+  },
+  {
+   "hp": "4",
+   "eta": 79
+  },
+  {
+   "hp": "5",
+   "eta": 81
+  },
+  {
+   "hp": "6",
+   "eta": 82
+  },
+  {
+   "hp": "7 1/2",
+   "eta": 82.4
+  },
+  {
+   "hp": "10",
+   "eta": 83
+  },
+  {
+   "hp": "12",
+   "eta": 84
+  },
+  {
+   "hp": "15",
+   "eta": 85
+  },
+  {
+   "hp": "20",
+   "eta": 86
+  },
+  {
+   "hp": "30",
+   "eta": 87
+  },
+  {
+   "hp": "50",
+   "eta": 88
+  },
+  {
+   "hp": "100",
+   "eta": 90
+  }
+ ],
+ "lookup_rule": "Entrar con la potencia en HP; para potencias intermedias usar el valor tabulado inmediato inferior (criterio conservador) o interpolar.",
+ "notes": "Tabla VII NP 68. El original imprime '3' en la segunda columna, pero por la secuencia y el valor 63 corresponde a 1/3 HP (verificado en la pagina renderizada)."
+}

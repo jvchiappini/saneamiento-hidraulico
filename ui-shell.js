@@ -170,12 +170,24 @@
         setTimeout(refresh, 300);
     }
 
+    // Botón flotante para abrir el asistente con el contexto de esta página
+    function askFab() {
+        const page = document.body && document.body.dataset.page;
+        const CALC = ["index", "auto", "potab", "potab-auto", "red", "tanque", "cloacal", "predial"];
+        if (!page || !CALC.includes(page) || document.querySelector(".ask-fab")) return;
+        const a = document.createElement("a");
+        a.className = "ask-fab"; a.href = "chat.html?from=" + encodeURIComponent(page);
+        a.setAttribute("aria-label", "Preguntar al asistente sobre esta página");
+        a.innerHTML = "✦ <span>Preguntar al asistente</span>";
+        document.body.appendChild(a);
+    }
+
     // La rueda del mouse no debe cambiar valores numéricos por accidente
     document.addEventListener("wheel", (e) => {
         const el = document.activeElement;
         if (el && el.type === "number" && e.target === el) el.blur();
     }, { passive: true });
 
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => setTimeout(build, 50));
-    else setTimeout(build, 50);
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => { setTimeout(build, 50); askFab(); });
+    else { setTimeout(build, 50); askFab(); }
 })();

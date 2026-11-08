@@ -1,0 +1,52 @@
+{
+ "id": "acal-tabla-ii-pesos",
+ "title": "Tabla II: caudales y pesos relativos de puntos de agua caliente",
+ "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+ "page": 10,
+ "columns": [
+  {
+   "key": "punto",
+   "label": "Punto de utilizacion",
+   "unit": ""
+  },
+  {
+   "key": "q",
+   "label": "Caudal",
+   "unit": "L/s"
+  },
+  {
+   "key": "peso",
+   "label": "Peso",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "punto": "Ducha",
+   "q": 0.2,
+   "peso": 0.5
+  },
+  {
+   "punto": "Lavatorio",
+   "q": 0.2,
+   "peso": 0.5
+  },
+  {
+   "punto": "Bidet",
+   "q": 0.1,
+   "peso": 0.1
+  },
+  {
+   "punto": "Banera",
+   "q": 0.3,
+   "peso": 1.0
+  },
+  {
+   "punto": "Pileta de cocina",
+   "q": 0.25,
+   "peso": 0.7
+  }
+ ],
+ "lookup_rule": "Sumar pesos y aplicar Q=c*sqrt(ΣP).",
+ "notes": "Tabla II Agua Caliente 2016. La tabla original incluye mas puntos; se listan los de uso tipico en el TP predial. Verificar la pagina 10 para filas adicionales."
+}

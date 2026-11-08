@@ -1,0 +1,107 @@
+{
+ "id": "np68-tabla-iii-pesos",
+ "title": "Tabla III: caudales y pesos relativos de los puntos de utilizacion",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 13,
+ "columns": [
+  {
+   "key": "punto",
+   "label": "Punto de utilizacion",
+   "unit": ""
+  },
+  {
+   "key": "q",
+   "label": "Caudal",
+   "unit": "L/s"
+  },
+  {
+   "key": "peso",
+   "label": "Peso",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "punto": "Bebedero",
+   "q": 0.05,
+   "peso": 0.1
+  },
+  {
+   "punto": "Bidet",
+   "q": 0.1,
+   "peso": 0.1
+  },
+  {
+   "punto": "Inodoro con cisterna de descarga",
+   "q": 0.15,
+   "peso": 0.3
+  },
+  {
+   "punto": "Inodoro con valvula de descarga",
+   "q": 1.9,
+   "peso": 40.0
+  },
+  {
+   "punto": "Mingitorio de descarga continua por metro o por aparato",
+   "q": 0.15,
+   "peso": 0.3
+  },
+  {
+   "punto": "Mingitorio de descarga discontinua o llave de paso",
+   "q": 0.15,
+   "peso": 0.3
+  },
+  {
+   "punto": "Mingitorio no aspirante con valvula de descarga o registro",
+   "q": 0.15,
+   "peso": 0.3
+  },
+  {
+   "punto": "Mingitorio autoaspirante con valvula de descarga",
+   "q": 0.5,
+   "peso": 2.8
+  },
+  {
+   "punto": "Ducha",
+   "q": 0.2,
+   "peso": 0.5
+  },
+  {
+   "punto": "Canilla de banera",
+   "q": 0.3,
+   "peso": 1.0
+  },
+  {
+   "punto": "Canilla o mezcladora (agua fria) de lavatorio",
+   "q": 0.2,
+   "peso": 0.5
+  },
+  {
+   "punto": "Canilla o mezcladora (agua fria) de pileta de cocina",
+   "q": 0.25,
+   "peso": 0.7
+  },
+  {
+   "punto": "Canilla de patio o de regado manual o uso varios",
+   "q": 0.25,
+   "peso": 0.7
+  },
+  {
+   "punto": "Canilla para regadora automatica de jardin",
+   "q": 0.3,
+   "peso": 1.0
+  },
+  {
+   "punto": "Canilla de pileta de desague o maquina lavarropas",
+   "q": 0.3,
+   "peso": 1.0
+  },
+  {
+   "punto": "Maquina lavavajillas o lavarropa",
+   "q": 0.3,
+   "peso": 1.0
+  }
+ ],
+ "lookup_rule": "Sumar los pesos de todos los artefactos del tramo y entrar a la Figura I para el diametro.",
+ "notes": "Tabla III NP 68. El inodoro con valvula de descarga es el de mayor peso (40)."
+}

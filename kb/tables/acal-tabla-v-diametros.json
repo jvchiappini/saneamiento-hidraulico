@@ -1,0 +1,50 @@
+{
+ "id": "acal-tabla-v-diametros",
+ "title": "Tabla V: diametro minimo de sub-ramales de agua caliente",
+ "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+ "page": 14,
+ "columns": [
+  {
+   "key": "pieza",
+   "label": "Pieza de utilizacion",
+   "unit": ""
+  },
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  }
+ ],
+ "rows": [
+  {
+   "pieza": "Ducha",
+   "dn": 15
+  },
+  {
+   "pieza": "Lavatorio",
+   "dn": 15
+  },
+  {
+   "pieza": "Bidet",
+   "dn": 15
+  },
+  {
+   "pieza": "Banera",
+   "dn": 15
+  },
+  {
+   "pieza": "Pileta de cocina",
+   "dn": 15
+  },
+  {
+   "pieza": "Calefon de alta presion",
+   "dn": 15
+  },
+  {
+   "pieza": "Calefon de baja presion",
+   "dn": 20
+  }
+ ],
+ "lookup_rule": "El sub-ramal no puede ser menor al diametro tabulado.",
+ "notes": "Tabla V Agua Caliente 2016. Verificar la pagina para piezas no listadas."
+}

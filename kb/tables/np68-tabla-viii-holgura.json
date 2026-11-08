@@ -1,0 +1,42 @@
+{
+ "id": "np68-tabla-viii-holgura",
+ "title": "Tabla VIII: holgura para motores electricos",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 24,
+ "columns": [
+  {
+   "key": "holgura",
+   "label": "Holgura",
+   "unit": "%"
+  },
+  {
+   "key": "rango",
+   "label": "Tipo de bomba",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "holgura": 50,
+   "rango": "Para bombas de hasta 2 HP"
+  },
+  {
+   "holgura": 30,
+   "rango": "Para bombas de 2 a 5 HP"
+  },
+  {
+   "holgura": 20,
+   "rango": "Para bombas de 5 a 10 HP"
+  },
+  {
+   "holgura": 15,
+   "rango": "Para bombas de 10 a 20 HP"
+  },
+  {
+   "holgura": 10,
+   "rango": "Para bombas de mas de 20 HP"
+  }
+ ],
+ "lookup_rule": "Entrar con la potencia del motor; aplicar el porcentaje al valor PMB.",
+ "notes": "Tabla VIII NP 68."
+}

@@ -1,0 +1,306 @@
+{
+ "id": "parshall-dimensiones",
+ "title": "Dimensiones estandarizadas del medidor Parshall y caudales",
+ "file": "CLASE 3 (4).pdf",
+ "page": 24,
+ "columns": [
+  {
+   "key": "w_in",
+   "label": "Garganta W",
+   "unit": "pulg"
+  },
+  {
+   "key": "w_m",
+   "label": "W",
+   "unit": "m"
+  },
+  {
+   "key": "a",
+   "label": "A",
+   "unit": "cm"
+  },
+  {
+   "key": "b",
+   "label": "B",
+   "unit": "cm"
+  },
+  {
+   "key": "c",
+   "label": "C",
+   "unit": "cm"
+  },
+  {
+   "key": "d",
+   "label": "D",
+   "unit": "cm"
+  },
+  {
+   "key": "e",
+   "label": "E",
+   "unit": "cm"
+  },
+  {
+   "key": "f",
+   "label": "F",
+   "unit": "cm"
+  },
+  {
+   "key": "g",
+   "label": "G",
+   "unit": "cm"
+  },
+  {
+   "key": "k",
+   "label": "K",
+   "unit": "cm"
+  },
+  {
+   "key": "n",
+   "label": "N",
+   "unit": "cm"
+  },
+  {
+   "key": "qmin",
+   "label": "Caudal minimo",
+   "unit": "L/s"
+  },
+  {
+   "key": "qmax",
+   "label": "Caudal maximo",
+   "unit": "L/s"
+  },
+  {
+   "key": "qmed",
+   "label": "Caudal medio",
+   "unit": "L/s"
+  }
+ ],
+ "rows": [
+  {
+   "w_in": "1",
+   "w_m": 0.025,
+   "a": 36.3,
+   "b": 35.6,
+   "c": 9.3,
+   "d": 16.8,
+   "e": 22.9,
+   "f": 7.6,
+   "g": 20.3,
+   "k": 1.9,
+   "n": 2.9,
+   "qmin": 0.85,
+   "qmax": 53.8,
+   "qmed": 27.33
+  },
+  {
+   "w_in": "3",
+   "w_m": 0.076,
+   "a": 46.6,
+   "b": 45.7,
+   "c": 17.8,
+   "d": 25.9,
+   "e": 45.7,
+   "f": 25.9,
+   "g": 25.7,
+   "k": 2.5,
+   "n": 5.7,
+   "qmin": 1.52,
+   "qmax": 110.4,
+   "qmed": 55.96
+  },
+  {
+   "w_in": "6",
+   "w_m": 0.152,
+   "a": 61.0,
+   "b": 61.0,
+   "c": 39.4,
+   "d": 40.3,
+   "e": 61.0,
+   "f": 30.5,
+   "g": 61.0,
+   "k": 7.6,
+   "n": 11.4,
+   "qmin": 2.55,
+   "qmax": 251.9,
+   "qmed": 127.23
+  },
+  {
+   "w_in": "9",
+   "w_m": 0.229,
+   "a": 88.0,
+   "b": 86.4,
+   "c": 38.0,
+   "d": 57.5,
+   "e": 76.3,
+   "f": 30.5,
+   "g": 45.7,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 3.11,
+   "qmax": 455.6,
+   "qmed": 229.36
+  },
+  {
+   "w_in": "1 pie",
+   "w_m": 0.305,
+   "a": 137.2,
+   "b": 134.4,
+   "c": 61.0,
+   "d": 102.6,
+   "e": 91.5,
+   "f": 61.0,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 4.25,
+   "qmax": 696.2,
+   "qmed": 350.23
+  },
+  {
+   "w_in": "1 1/2 pies",
+   "w_m": 0.457,
+   "a": 144.9,
+   "b": 142.0,
+   "c": 76.2,
+   "d": 114.3,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 11.89,
+   "qmax": 936.7,
+   "qmed": 474.3
+  },
+  {
+   "w_in": "2 pies",
+   "w_m": 0.61,
+   "a": 152.5,
+   "b": 149.6,
+   "c": 91.5,
+   "d": 120.7,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 17.26,
+   "qmax": 1426.3,
+   "qmed": 721.78
+  },
+  {
+   "w_in": "3 pies",
+   "w_m": 0.915,
+   "a": 167.7,
+   "b": 164.5,
+   "c": 122.0,
+   "d": 157.2,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 36.79,
+   "qmax": 1921.5,
+   "qmed": 979.15
+  },
+  {
+   "w_in": "4 pies",
+   "w_m": 1.22,
+   "a": 183.0,
+   "b": 179.5,
+   "c": 152.5,
+   "d": 193.8,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 62.8,
+   "qmax": 2422.0,
+   "qmed": 1242.4
+  },
+  {
+   "w_in": "5 pies",
+   "w_m": 1.525,
+   "a": 198.3,
+   "b": 194.1,
+   "c": 183.0,
+   "d": 230.3,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 74.4,
+   "qmax": 2929.0,
+   "qmed": 1501.7
+  },
+  {
+   "w_in": "6 pies",
+   "w_m": 1.83,
+   "a": 213.3,
+   "b": 209.0,
+   "c": 213.5,
+   "d": 266.7,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 115.4,
+   "qmax": 3440.0,
+   "qmed": 1777.7
+  },
+  {
+   "w_in": "7 pies",
+   "w_m": 2.135,
+   "a": 228.8,
+   "b": 224.0,
+   "c": 244.0,
+   "d": 303.0,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 130.7,
+   "qmax": 3950.0,
+   "qmed": 2040.35
+  },
+  {
+   "w_in": "8 pies",
+   "w_m": 2.44,
+   "a": 244.0,
+   "b": 239.2,
+   "c": 274.5,
+   "d": 340.0,
+   "e": 91.5,
+   "f": 91.5,
+   "g": 91.5,
+   "k": 7.6,
+   "n": 22.9,
+   "qmin": 200.0,
+   "qmax": 5660.0,
+   "qmed": 2930.0
+  },
+  {
+   "w_in": "10 pies",
+   "w_m": 3.05,
+   "a": 274.5,
+   "b": 427.0,
+   "c": 366.0,
+   "d": 475.9,
+   "e": 122.0,
+   "f": 91.5,
+   "g": 183.0,
+   "k": 15.3,
+   "n": 34.3,
+   "qmin": 200.0,
+   "qmax": 5660.0,
+   "qmed": 2930.0
+  }
+ ],
+ "lookup_rule": "Entrar con el caudal en L/s y elegir el ancho de garganta W cuyo rango minimo-maximo contenga el caudal; las dimensiones A-N salen de la misma fila.",
+ "notes": "Cuadro 2-3 del Manual de Hidraulica de Azevedo & Acosta, reproducido en la Clase 3 pagina 24. Las filas de 8 y 10 pies tienen caudales identicos en el original. Verificar visualmente si se usa una garganta grande."
+}

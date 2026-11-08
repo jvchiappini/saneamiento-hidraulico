@@ -511,5 +511,6 @@
 
     root.RedCalc = { DEF, calc, D_RED };
     if (typeof module !== "undefined") module.exports = root.RedCalc;
-    if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", ui);
+    // La interfaz arranca solo en su propia página: así el cálculo se puede cargar desde otra (p. ej. chat.html).
+    if (typeof document !== "undefined") document.addEventListener("DOMContentLoaded", () => { if (document.body && document.body.dataset.page === "red" && document.getElementById("app")) ui(); });
 })(typeof window !== "undefined" ? window : globalThis);

@@ -1,0 +1,116 @@
+{
+ "id": "trat-tabla-i-contribuciones",
+ "title": "Tabla I: contribuciones unitarias de desechos y lodo fresco",
+ "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+ "page": 7,
+ "columns": [
+  {
+   "key": "tipo",
+   "label": "Tipo de edificacion",
+   "unit": ""
+  },
+  {
+   "key": "unidad",
+   "label": "Unidad",
+   "unit": ""
+  },
+  {
+   "key": "c",
+   "label": "Desechos C",
+   "unit": "L/dia"
+  },
+  {
+   "key": "lf",
+   "label": "Lodo fresco Lf",
+   "unit": "L/dia"
+  }
+ ],
+ "rows": [
+  {
+   "tipo": "Hospitales",
+   "unidad": "cama",
+   "c": 250,
+   "lf": 1
+  },
+  {
+   "tipo": "Departamentos",
+   "unidad": "persona",
+   "c": 200,
+   "lf": 1
+  },
+  {
+   "tipo": "Viviendas",
+   "unidad": "persona",
+   "c": 150,
+   "lf": 1
+  },
+  {
+   "tipo": "Escuelas - internados",
+   "unidad": "persona",
+   "c": 150,
+   "lf": 1
+  },
+  {
+   "tipo": "Viviendas rurales",
+   "unidad": "persona",
+   "c": 120,
+   "lf": 1
+  },
+  {
+   "tipo": "Hoteles con cocina y lavanderia",
+   "unidad": "persona",
+   "c": 250,
+   "lf": 1
+  },
+  {
+   "tipo": "Hoteles sin cocina ni lavanderia",
+   "unidad": "persona",
+   "c": 120,
+   "lf": 1
+  },
+  {
+   "tipo": "Alojamientos provisorios",
+   "unidad": "persona",
+   "c": 80,
+   "lf": 1
+  },
+  {
+   "tipo": "Fabricas",
+   "unidad": "operario",
+   "c": 70,
+   "lf": 0.3
+  },
+  {
+   "tipo": "Oficinas",
+   "unidad": "persona",
+   "c": 50,
+   "lf": 0.2
+  },
+  {
+   "tipo": "Edificios publicos o comerciales",
+   "unidad": "persona",
+   "c": 50,
+   "lf": 0.2
+  },
+  {
+   "tipo": "Escuelas",
+   "unidad": "persona",
+   "c": 50,
+   "lf": 0.2
+  },
+  {
+   "tipo": "Restaurantes",
+   "unidad": "comida",
+   "c": 25,
+   "lf": 0.1
+  },
+  {
+   "tipo": "Cines, teatros, iglesias",
+   "unidad": "asiento",
+   "c": 2,
+   "lf": 0.02
+  }
+ ],
+ "lookup_rule": "Caudal diario = N*C; lodo fresco = N*Lf.",
+ "notes": "Tabla I norma de tratamiento 2016."
+}

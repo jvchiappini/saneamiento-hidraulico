@@ -1,0 +1,70 @@
+{
+ "id": "np68-tabla-ix-alturas",
+ "title": "Tabla IX: altura minima para servicio de artefactos sanitarios",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 27,
+ "columns": [
+  {
+   "key": "artefacto",
+   "label": "Artefacto sanitario",
+   "unit": ""
+  },
+  {
+   "key": "altura",
+   "label": "Altura",
+   "unit": "m"
+  }
+ ],
+ "rows": [
+  {
+   "artefacto": "Lavatorio",
+   "altura": "0,60 a 0,65"
+  },
+  {
+   "artefacto": "Banera",
+   "altura": "0,35 a 0,65"
+  },
+  {
+   "artefacto": "Ducha",
+   "altura": "2,00 a 2,20"
+  },
+  {
+   "artefacto": "Bidet",
+   "altura": "0,15 a 0,20"
+  },
+  {
+   "artefacto": "Inodoro con valvula de descarga",
+   "altura": "0,90 a 1,10"
+  },
+  {
+   "artefacto": "Inodoro con caja de descarga",
+   "altura": "1,30 a 1,40"
+  },
+  {
+   "artefacto": "Inodoro con cisterna",
+   "altura": "1,75 a 2,15"
+  },
+  {
+   "artefacto": "Inodoro con mochila",
+   "altura": "0,15 a 0,20"
+  },
+  {
+   "artefacto": "Mingitorio",
+   "altura": "1,00 a 1,10"
+  },
+  {
+   "artefacto": "Pileta de cocina",
+   "altura": "1,10 a 1,20"
+  },
+  {
+   "artefacto": "Pileta de lavar ropa",
+   "altura": "1,10 a 1,20"
+  },
+  {
+   "artefacto": "Canilla de patio o para lavado de piso",
+   "altura": "0,60"
+  }
+ ],
+ "lookup_rule": "Altura medida desde el piso hasta la caneria de alimentacion.",
+ "notes": "Tabla IX NP 68."
+}

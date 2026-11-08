@@ -1,0 +1,42 @@
+{
+ "id": "ord38-tabla-caudal-presion",
+ "title": "Caudal y presion de hidrantes por clase de riesgo",
+ "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+ "page": 13,
+ "columns": [
+  {
+   "key": "clase",
+   "label": "Clase de riesgo",
+   "unit": ""
+  },
+  {
+   "key": "caudal",
+   "label": "Caudal",
+   "unit": "L/min"
+  },
+  {
+   "key": "presion",
+   "label": "Presion dinamica",
+   "unit": "mca"
+  }
+ ],
+ "rows": [
+  {
+   "clase": "Clase I",
+   "caudal": 250,
+   "presion": 6
+  },
+  {
+   "clase": "Clase II",
+   "caudal": 500,
+   "presion": 15
+  },
+  {
+   "clase": "Clase III",
+   "caudal": 750,
+   "presion": 30
+  }
+ ],
+ "lookup_rule": "Entrar con la clase de riesgo del Art. 14; usar caudal y presion para 2 bocas simultaneas.",
+ "notes": "Ordenanza 038 Art. 50.1. 0,6 kg/cm2 = 6 mca; 1,5 kg/cm2 = 15 mca; 3,0 kg/cm2 = 30 mca."
+}

@@ -1,0 +1,3567 @@
+[
+ {
+  "id": "c1-agua-impurezas",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "5-6",
+  "title": "Agua potable e impurezas",
+  "section": "Unidad I - Salud publica y abastecimiento",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "agua potable",
+   "impurezas",
+   "calidad"
+  ],
+  "keywords": [
+   "agua potable",
+   "OMS",
+   "inodora",
+   "insipida",
+   "incolora",
+   "impurezas fisicas",
+   "quimicas",
+   "biologicas",
+   "radiactivas",
+   "turbidez",
+   "color",
+   "metales pesados",
+   "bacterias",
+   "virus",
+   "protozoos",
+   "helmintos"
+  ],
+  "summary": "Definicion OMS de agua potable y clasificacion de impurezas (fisicas, quimicas, biologicas, radiactivas) y sus fuentes.",
+  "chars": 585
+ },
+ {
+  "id": "c1-enfermedades-hidricas",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "7-8",
+  "title": "Enfermedades transmitidas por el agua",
+  "section": "Unidad I - Salud publica",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "salud",
+   "enfermedades",
+   "agua"
+  ],
+  "keywords": [
+   "colera",
+   "fiebre tifoidea",
+   "disenteria",
+   "diarrea",
+   "hepatitis A",
+   "hepatitis E",
+   "malaria",
+   "dengue",
+   "transmision hidrica",
+   "vectores",
+   "aerosoles",
+   "contacto dermico"
+  ],
+  "summary": "Clasificacion de enfermedades ligadas al agua: transmision hidrica directa, saneamiento deficiente y vectores; mecanismos de transmision.",
+  "chars": 402
+ },
+ {
+  "id": "c1-contaminantes-persistencia",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "10-11",
+  "title": "Contaminantes inorganicos, organicos y persistencia",
+  "section": "Unidad I - Salud publica",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "contaminantes",
+   "persistencia",
+   "bioacumulacion"
+  ],
+  "keywords": [
+   "arsenico",
+   "plomo",
+   "mercurio",
+   "nitratos",
+   "fluoruro",
+   "pesticidas",
+   "hidrocarburos",
+   "detergentes",
+   "COP",
+   "persistencia ambiental",
+   "bioacumulacion",
+   "cadena alimentaria"
+  ],
+  "summary": "Contaminantes inorganicos y organicos, efectos en salud, persistencia ambiental y bioacumulacion en organismos y cadena alimentaria.",
+  "chars": 627
+ },
+ {
+  "id": "c1-constituyentes-aguas",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "12",
+  "title": "Constituyentes comunes de las aguas naturales",
+  "section": "Unidad I - Salud publica",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "aguas naturales",
+   "constituyentes"
+  ],
+  "keywords": [
+   "gases disueltos",
+   "oxigeno",
+   "CO2",
+   "nitrogeno",
+   "calcio",
+   "magnesio",
+   "sodio",
+   "cloruro",
+   "sulfato",
+   "bicarbonato",
+   "acidos humicos",
+   "microorganismos",
+   "corrosion",
+   "incrustaciones"
+  ],
+  "summary": "Constituyentes habituales del agua natural (gases, sales, materia organica natural, microorganismos) y su impacto en corrosion e incrustacion.",
+  "chars": 269
+ },
+ {
+  "id": "c1-caracteristicas-fuentes",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "15",
+  "title": "Caracteristicas de agua de rio, pozo y lluvia",
+  "section": "Unidad I - Fuentes",
+  "kind": "tabla",
+  "module": "general",
+  "tags": [
+   "fuentes",
+   "agua de rio",
+   "agua subterranea",
+   "agua de lluvia"
+  ],
+  "keywords": [
+   "turbidez NTU",
+   "color aparente",
+   "pH",
+   "dureza total",
+   "solidos disueltos",
+   "hierro",
+   "nitratos",
+   "coliformes totales",
+   "cloro residual",
+   "agua de rio",
+   "agua de pozo",
+   "agua de lluvia"
+  ],
+  "summary": "Rangos tipicos de turbidez, color, pH, dureza, solidos, hierro, nitratos y coliformes para agua de rio, pozo y lluvia.",
+  "chars": 811
+ },
+ {
+  "id": "c1-normas-calidad",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "17-18",
+  "title": "Normas nacionales e internacionales de calidad de agua",
+  "section": "Unidad II - Legislaciones",
+  "kind": "norma",
+  "module": "general",
+  "tags": [
+   "normativa",
+   "calidad de agua",
+   "NP 24 001 80"
+  ],
+  "keywords": [
+   "NP 24 001 80",
+   "INTN",
+   "OMS",
+   "EPA",
+   "Directiva 98/83/CE",
+   "turbidez",
+   "color",
+   "olor",
+   "temperatura",
+   "pH",
+   "alcalinidad",
+   "dureza",
+   "metales pesados",
+   "bacterias",
+   "virus"
+  ],
+  "summary": "Norma paraguaya NP 24 001 80 (INTN) y referencias internacionales OMS, EPA y Directiva 98/83/CE; caracteristicas fisicas, quimicas y biologicas.",
+  "chars": 550
+ },
+ {
+  "id": "c1-situacion-paraguay",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "21-24",
+  "title": "Situacion del abastecimiento de agua en Paraguay",
+  "section": "Unidad II - Legislaciones",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "Paraguay",
+   "abastecimiento",
+   "cobertura"
+  ],
+  "keywords": [
+   "ESSAP",
+   "SENASA",
+   "juntas de saneamiento",
+   "perdidas en red",
+   "tratamiento insuficiente",
+   "contaminacion de fuentes",
+   "ODS",
+   "gobernanza",
+   "cobertura",
+   "zonas urbanas",
+   "zonas rurales"
+  ],
+  "summary": "Cobertura mixta en Paraguay, actores (ESSAP, SENASA, juntas), desafios (perdidas, tratamiento, contaminacion) y recomendaciones de inversion y gobernanza.",
+  "chars": 620
+ },
+ {
+  "id": "c1-gobernabilidad-agua",
+  "file": "CLASE 1 (4).pdf",
+  "source": "Clase 1",
+  "pages": "26-32",
+  "title": "Gobernabilidad del agua y Acuifero Guarani",
+  "section": "Unidad III - Gobernabilidad",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "gobernabilidad",
+   "acuifero guarani",
+   "gestion"
+  ],
+  "keywords": [
+   "gobernanza",
+   "procesos",
+   "instituciones",
+   "actores",
+   "America Latina",
+   "Acuifero Guarani",
+   "Argentina",
+   "Brasil",
+   "Paraguay",
+   "Uruguay",
+   "cooperacion transfronteriza",
+   "participacion publica",
+   "monitoreo"
+  ],
+  "summary": "Concepto de gobernabilidad del agua (procesos, instituciones, actores), importancia en America Latina y gestion transfronteriza del Acuifero Guarani.",
+  "chars": 876
+ },
+ {
+  "id": "c2-consumo-percapita",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "5-7",
+  "title": "Uso del agua y consumo medio per capita",
+  "section": "Unidad IV - Consumo del agua",
+  "kind": "criterio",
+  "module": "general",
+  "tags": [
+   "consumo",
+   "per capita",
+   "usos"
+  ],
+  "keywords": [
+   "litros por habitante por dia",
+   "rural 50-100",
+   "urbana 150-300",
+   "paises desarrollados 400",
+   "consumo domestico 10%",
+   "industrial 20%",
+   "agricola 70%",
+   "recreativo 1%",
+   "clima",
+   "habitos",
+   "perdidas"
+  ],
+  "summary": "Valores tipicos de consumo (rural 50-100, urbana 150-300, hasta 400 L/hab/dia) y reparto mundial del uso: domestico 10%, industrial 20%, agricola 70%, recreativo <1%.",
+  "chars": 686
+ },
+ {
+  "id": "c2-proyeccion-poblacion",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "8",
+  "title": "Proyeccion poblacional y volumen a distribuir",
+  "section": "Unidad IV - Consumo del agua",
+  "kind": "procedimiento",
+  "module": "general",
+  "tags": [
+   "proyeccion",
+   "poblacion",
+   "volumen"
+  ],
+  "keywords": [
+   "metodo aritmetico",
+   "metodo geometrico",
+   "regresion",
+   "volumen",
+   "poblacion proyectada",
+   "consumo per capita",
+   "perdidas en red",
+   "margen de seguridad"
+  ],
+  "summary": "Metodos de proyeccion poblacional (aritmetico, geometrico, regresion) y formula basica Volumen = Poblacion proyectada x Consumo per capita, con perdidas y margen de seguridad.",
+  "chars": 297
+ },
+ {
+  "id": "c2-aguas-superficiales",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "10",
+  "title": "Aguas superficiales: captacion y proteccion",
+  "section": "Unidad V - Fuentes de agua",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "aguas superficiales",
+   "captacion",
+   "cuencas"
+  ],
+  "keywords": [
+   "rios",
+   "lagos",
+   "embalses",
+   "cantidad",
+   "calidad",
+   "continuidad",
+   "toma directa",
+   "represas",
+   "canales",
+   "reforestacion",
+   "zonas de amortiguamiento",
+   "sedimentacion",
+   "eutrofizacion"
+  ],
+  "summary": "Fuentes superficiales (rios, lagos, embalses), condiciones (cantidad, calidad, continuidad), captacion, proteccion de cuencas y riesgos de embalses.",
+  "chars": 460
+ },
+ {
+  "id": "c2-aguas-subterraneas",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "11",
+  "title": "Aguas subterraneas y pozos",
+  "section": "Unidad V - Fuentes de agua",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "aguas subterraneas",
+   "acuiferos",
+   "pozos"
+  ],
+  "keywords": [
+   "porosidad",
+   "permeabilidad",
+   "capas confinadas",
+   "no confinadas",
+   "calidad microbiologica",
+   "nitratos",
+   "metales pesados",
+   "intrusion salina",
+   "recarga natural",
+   "recarga artificial",
+   "ubicacion de pozos",
+   "proteccion sanitaria"
+  ],
+  "summary": "Formacion de acuiferos, ventajas microbiologicas, riesgos (nitratos, metales, intrusion salina), recarga y criterios de construccion de pozos.",
+  "chars": 377
+ },
+ {
+  "id": "c2-tp-ubicacion",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "14-22",
+  "title": "Criterios de ubicacion del barrio, toma y planta",
+  "section": "Trabajo practico - Saneamiento publico",
+  "kind": "criterio",
+  "module": "general",
+  "tags": [
+   "trabajo practico",
+   "ubicacion",
+   "toma de agua",
+   "planta"
+  ],
+  "keywords": [
+   "Google Earth",
+   "rio caudaloso",
+   "playa sedimentacion",
+   "Rio Parana",
+   "Rio Paraguay",
+   "500 m",
+   "curva convexa",
+   "zona alta",
+   "pendiente minima 0,5%",
+   "planta de aguas residuales aguas abajo",
+   "cuneta",
+   "tanque en el punto mas alto",
+   "cotas"
+  ],
+  "summary": "Criterios de emplazamiento: rio caudaloso, toma en margen convexo, >=500 m toma-planta, barrio en zona alta con pendiente >=0,5%, PTAR aguas abajo y tanque en la cota maxima.",
+  "chars": 1390
+ },
+ {
+  "id": "c2-k1-k2-k3",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "25",
+  "title": "Coeficientes K1, K2 y K3",
+  "section": "Trabajo practico - Sistema de impulsion",
+  "kind": "criterio",
+  "module": "impulsion",
+  "tags": [
+   "K1",
+   "K2",
+   "K3",
+   "caudales"
+  ],
+  "keywords": [
+   "K1 1,2",
+   "maximo consumo diario",
+   "20%",
+   "K2 1,5",
+   "maximo consumo horario",
+   "50%",
+   "K3 1,05",
+   "lavado de filtros",
+   "5%",
+   "linea de impulsion",
+   "planta de tratamiento"
+  ],
+  "summary": "K1=1,2 (maximo diario, +20%), K2=1,5 (maximo horario, +50%), K3=1,05 (lavado de filtros, +5%, solo impulsion y planta).",
+  "chars": 641
+ },
+ {
+  "id": "c2-diametro-impulsion",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "26-27",
+  "title": "Diametro de impulsion y succion (Bresse)",
+  "section": "Trabajo practico - Sistema de impulsion",
+  "kind": "procedimiento",
+  "module": "impulsion",
+  "tags": [
+   "diametro",
+   "Bresse",
+   "succion",
+   "impulsion"
+  ],
+  "keywords": [
+   "tres alternativas",
+   "diametro inferior",
+   "diametro superior",
+   "costo de tuberia",
+   "formula de Bresse",
+   "succion mayor que impulsion",
+   "velocidad 0,7 a 4,0 m/s"
+  ],
+  "summary": "Se proponen 3 diametros (uno inferior y uno superior); Bresse D=1,3*Qb^0,5*(X)^0,25 con X=horas/24; la succion siempre debe ser mayor que la impulsion.",
+  "chars": 689
+ },
+ {
+  "id": "c2-perdidas-longitud",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "28-29",
+  "title": "Perdidas localizadas y longitud de tuberia",
+  "section": "Trabajo practico - Sistema de impulsion",
+  "kind": "procedimiento",
+  "module": "impulsion",
+  "tags": [
+   "perdidas localizadas",
+   "longitud",
+   "Tabla 3"
+  ],
+  "keywords": [
+   "accesorios",
+   "tabla 3 Norma 68",
+   "tuberia de 125",
+   "registro de globo",
+   "valvula de cierre",
+   "Hs 2 m",
+   "longitud de impulsion",
+   "cota PTA",
+   "cota TA",
+   "+4 m"
+  ],
+  "summary": "Perdidas localizadas con Tabla 3 de la NP 68 (no se usa DN 125 en la practica); succion Hs=2 m fijo y altura topografica = Cota PTA - Cota TA + 4 m.",
+  "chars": 756
+ },
+ {
+  "id": "c2-presion-llegada",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "30",
+  "title": "Presion de llegada al reservorio",
+  "section": "Trabajo practico - Sistema de impulsion",
+  "kind": "criterio",
+  "module": "impulsion",
+  "tags": [
+   "presion de llegada",
+   "reservorio"
+  ],
+  "keywords": [
+   "presion de llegada",
+   "Ps 0,50 m",
+   "factor de seguridad",
+   "reservorio"
+  ],
+  "summary": "Se adopta una presion de llegada al reservorio Ps = 0,50 m como pequena presion de seguridad para asegurar que el agua llegue.",
+  "chars": 246
+ },
+ {
+  "id": "c2-potencia-bomba",
+  "file": "CLASE 2 (4).pdf",
+  "source": "Clase 2",
+  "pages": "31-32",
+  "title": "Potencia de la bomba y pozo de bombeo",
+  "section": "Trabajo practico - Sistema de impulsion",
+  "kind": "formula",
+  "module": "impulsion",
+  "tags": [
+   "potencia",
+   "bomba",
+   "holgura",
+   "pozo"
+  ],
+  "keywords": [
+   "densidad 1000 kg/m3",
+   "caudal de bombeo",
+   "altura manometrica",
+   "rendimiento bomba Tabla VI",
+   "rendimiento motor Tabla VII",
+   "holgura Tabla VIII",
+   "10 CV",
+   "5 a 25 HP",
+   "pozo 50 cm",
+   "HP = 1,014 CV"
+  ],
+  "summary": "Potencia P=gamma*Q*H/(75*eta); rendimientos de Tabla VI y VII, holgura de Tabla VIII; bombas de 5 a 25 HP suelen ser las mas economicas y el pozo de bombeo deja 50 cm de seguridad.",
+  "chars": 1006
+ },
+ {
+  "id": "c3-procesos-tratamiento",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "5-12",
+  "title": "Procesos de tratamiento de agua para consumo",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "texto",
+  "module": "potabilizadora",
+  "tags": [
+   "tratamiento",
+   "coagulacion",
+   "floculacion",
+   "filtracion",
+   "desinfeccion"
+  ],
+  "keywords": [
+   "aireacion",
+   "coagulacion",
+   "floculacion",
+   "sedimentacion",
+   "decantacion",
+   "filtracion",
+   "desinfeccion",
+   "sulfato de aluminio",
+   "turbidez baja",
+   "tratamiento convencional",
+   "tratamiento avanzado",
+   "carbon activado",
+   "osmosis inversa",
+   "ozonizacion"
+  ],
+  "summary": "Procesos principales (aireacion, coagulacion, floculacion, decantacion, filtracion, desinfeccion), clasificacion del agua segun contaminacion y etapas del sistema.",
+  "chars": 1314
+ },
+ {
+  "id": "c3-funcionamiento-planta",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "13-17",
+  "title": "Funcionamiento de una planta potabilizadora",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "texto",
+  "module": "potabilizadora",
+  "tags": [
+   "planta potabilizadora",
+   "aquietador",
+   "floculador",
+   "sedimentador",
+   "filtro"
+  ],
+  "keywords": [
+   "aquietador",
+   "aforador",
+   "sulfato de aluminio",
+   "floculos",
+   "floculador",
+   "laberintos",
+   "gradiente",
+   "sedimentador",
+   "vertedor",
+   "arena",
+   "carbon activado",
+   "retrolavado",
+   "lodo",
+   "flujo laminar"
+  ],
+  "summary": "Recorrido del agua: aquietador, aforador con sulfato de aluminio, floculador de laberintos, sedimentador con vertedor, filtro de arena y carbon activado, cloracion y retrolavado.",
+  "chars": 1235
+ },
+ {
+  "id": "c3-parshall-o-vertedero",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "18",
+  "title": "Aforador Parshall o vertedero en V",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "Parshall",
+   "vertedero en V",
+   "aforo"
+  ],
+  "keywords": [
+   "caudales pequenos",
+   "vertedero en V",
+   "caudales grandes",
+   "Parshall",
+   "ciudades",
+   "caudal por altura",
+   "velocidad minima",
+   "mezcla"
+  ],
+  "summary": "Para caudales pequenos conviene vertedero en V; para caudales grandes (ciudades), aforador Parshall. El caudal se mide por la altura del agua.",
+  "chars": 311
+ },
+ {
+  "id": "c3-aquietador",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "21-23",
+  "title": "Camara de aquietamiento: criterios de dimensionado",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "aquietador",
+   "camara de aquietamiento"
+  ],
+  "keywords": [
+   "velocidad de entrada 4 a 10 cm/s",
+   "profundidad 1 a 3 m",
+   "lados 0,6 m",
+   "solera",
+   "30 cm",
+   "50 cm",
+   "1 m",
+   "igual a E del Parshall",
+   "escalera"
+  ],
+  "summary": "Velocidad de entrada 4-10 cm/s; profundidad 1-3 m por tanteo; lados aptos para ingreso humano (>0,6 m); solera de 30 cm a 1 m, igual a E del Parshall cuando sea posible.",
+  "chars": 696
+ },
+ {
+  "id": "c3-parshall-dimensiones",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "24-26",
+  "title": "Canal aforador Parshall: seleccion y dimensiones",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "Parshall",
+   "garganta",
+   "dimensiones"
+  ],
+  "keywords": [
+   "pulgadas de garganta",
+   "caudal en l/s",
+   "A diagonal",
+   "B longitud de aproximacion",
+   "C salida",
+   "D ancho de entrada",
+   "E altura del canal",
+   "K perdida",
+   "altura maxima",
+   "velocidad mayor a 2 m/s",
+   "medidor de caudal"
+  ],
+  "summary": "Se elige por pulgadas de garganta segun el caudal en L/s; A, B, C, D, E y K definen la geometria; la altura de llegada no debe superar la maxima; para mezclar se exige v>2 m/s.",
+  "chars": 846
+ },
+ {
+  "id": "c3-vertedero-v",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "27-29",
+  "title": "Vertedero en V: criterios y gradiente",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "vertedero en V",
+   "gradiente",
+   "mezcla"
+  ],
+  "keywords": [
+   "angulo 90",
+   "Hmax",
+   "doble de la altura",
+   "B 2Hmax",
+   "gradiente G",
+   "gradiente minimo Gr",
+   "vertedor mecanico"
+  ],
+  "summary": "Vertedero en V de 90 grados; Hmax debe superar la altura de agua (conviene el doble) y B=2Hmax redondeado; se exige G>Gr o se pasa a mezclador mecanico.",
+  "chars": 687
+ },
+ {
+  "id": "c3-mezclador-rapido",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "30-31",
+  "title": "Mezclador rapido para coagulantes",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "mezclador rapido",
+   "coagulante",
+   "paleta"
+  ],
+  "keywords": [
+   "tiempo de retencion",
+   "volumen",
+   "altura",
+   "eficiencia del motor",
+   "potencias de tabla",
+   "brazo 2/3 de la altura",
+   "diametro de paleta 80%"
+  ],
+  "summary": "El tiempo de retencion define el volumen y la altura; la eficiencia del motor se toma del fabricante; brazo del mezclador = 2/3 de la altura y diametro de paleta = 80% del diametro total.",
+  "chars": 514
+ },
+ {
+  "id": "c3-floculador",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "32-34",
+  "title": "Floculador o mezclador lento: criterios de diseno",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "floculador",
+   "gradiente",
+   "bafles"
+  ],
+  "keywords": [
+   "viscosidad",
+   "temperatura",
+   "periodo de retencion 30 min",
+   "profundidad por tanteo",
+   "gradiente 30 a 60",
+   "velocidad canales 0,15 a 0,20 m/s",
+   "velocidad curvas 0,40 a 0,45 m/s",
+   "separacion de canales",
+   "ancho del paso 1,5",
+   "bafles 1 cm",
+   "Manning 0,01"
+  ],
+  "summary": "Retencion tipica 30 min; G entre 30 y 60 s-1; canales 0,15-0,20 m/s y curvas 0,40-0,45 m/s; paso 1,5 veces el ancho del canal; X/Y 2-3; Manning 0,01 para chapa lisa.",
+  "chars": 1090
+ },
+ {
+  "id": "c3-sedimentador",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "35-40",
+  "title": "Sedimentador: dimensionado y dispositivos",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "sedimentador",
+   "compuertas",
+   "cortina",
+   "drenaje"
+  ],
+  "keywords": [
+   "numero de filtros par",
+   "N sedimentador = Nf/2",
+   "volumen total",
+   "volumen diario",
+   "tiempo de retencion",
+   "valor promedio",
+   "medidas internas",
+   "paredes 20 cm",
+   "canaleta",
+   "cortina de distribucion",
+   "0,6 a 0,8 m",
+   "area de orificio",
+   "vertedor de salida",
+   "purgar 10%",
+   "altura total",
+   "Cd 0,61",
+   "tiempo de vaciado"
+  ],
+  "summary": "N filtros par y Nsed=Nf/2; volumen diario por tiempo de retencion; medidas internas y paredes de 20 cm; cortina con separacion >=0,6-0,8 m; purga 10% de la altura; Cd=0,61.",
+  "chars": 1793
+ },
+ {
+  "id": "c3-filtracion",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "41-45",
+  "title": "Filtracion rapida y lavado",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "filtracion",
+   "tasa de filtración",
+   "lavado",
+   "arena"
+  ],
+  "keywords": [
+   "limpieza diaria",
+   "filtro rapido",
+   "filtro lento",
+   "numero de filtros",
+   "tasa 120",
+   "area de filtro",
+   "30%",
+   "30 cm",
+   "20 a 50%",
+   "arena 0,3 a 0,5 mm",
+   "0,7 mm",
+   "velocidad 0,70 a 0,75 m/min",
+   "canaletas",
+   "bomba de lavado"
+  ],
+  "summary": "Limpieza 1-2 veces/dia; filtro rapido con tasa recomendada 120 m3/m2/d; lavado con 30% de expansion (min 30 cm); arena 0,3-0,5 mm de rio o 0,7 mm de arroyo; velocidad 0,70-0,75 m/min.",
+  "chars": 1301
+ },
+ {
+  "id": "c3-cloracion",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "46-47",
+  "title": "Sistema de cloracion",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "cloracion",
+   "hipoclorito",
+   "dosificacion"
+  ],
+  "keywords": [
+   "hipoclorito de sodio liquido",
+   "cloruro de sodio solido",
+   "relacion de disolucion 1/4",
+   "1/3",
+   "tanque de disolucion",
+   "750 a 20000 L",
+   "poliestireno",
+   "fibra de vidrio",
+   "hormigon atacado por cloro"
+  ],
+  "summary": "Se usan valores predefinidos para hipoclorito de sodio liquido; la dilucion puede ser 1/4 o 1/3; tanques de 750 a 20.000 L de poliestireno o fibra de vidrio (el cloro ataca el hormigon).",
+  "chars": 542
+ },
+ {
+  "id": "c3-reservorio-tratada",
+  "file": "CLASE 3 (4).pdf",
+  "source": "Clase 3",
+  "pages": "48",
+  "title": "Reservorio de acumulacion de agua tratada",
+  "section": "Unidad VIII - Tratamiento",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "reservorio",
+   "agua tratada"
+  ],
+  "keywords": [
+   "volumen por formula",
+   "profundidad",
+   "diametro comodo",
+   "altura de construccion 30 cm",
+   "50 cm",
+   "enterrado"
+  ],
+  "summary": "El volumen sale por formula; la profundidad se busca para un diametro comodo; la altura de construccion es de 30 cm o mas (puede ser 50 cm) y debe ir enterrado.",
+  "chars": 243
+ },
+ {
+  "id": "c4-bombas-clasificacion",
+  "file": "CLASE 4 (2).pdf",
+  "source": "Clase 4",
+  "pages": "5-12",
+  "title": "Estaciones de bombeo y clasificacion de bombas",
+  "section": "Unidad VI - Estaciones de bombeo",
+  "kind": "texto",
+  "module": "impulsion",
+  "tags": [
+   "bombas",
+   "estaciones de bombeo"
+  ],
+  "keywords": [
+   "bombas centrifugas",
+   "desplazamiento positivo",
+   "piston",
+   "diafragma",
+   "horizontales",
+   "verticales",
+   "sumergibles",
+   "superficie",
+   "cavitacion",
+   "caudal",
+   "altura manometrica",
+   "rendimiento",
+   "potencia"
+  ],
+  "summary": "Clasificacion de bombas (dinamicas/centrifugas y desplazamiento positivo; horizontales/verticales; sumergibles/superficie) y parametros Q, H, rendimiento y potencia.",
+  "chars": 1093
+ },
+ {
+  "id": "c4-acueductos-esfuerzos",
+  "file": "CLASE 4 (2).pdf",
+  "source": "Clase 4",
+  "pages": "17-23",
+  "title": "Acueductos, esfuerzos y golpe de ariete",
+  "section": "Unidad VII - Acueductos y tuberias",
+  "kind": "texto",
+  "module": "red",
+  "tags": [
+   "acueducto",
+   "tuberias",
+   "golpe de ariete"
+  ],
+  "keywords": [
+   "acueducto",
+   "gravedad",
+   "bombeo",
+   "presion interna",
+   "PN10",
+   "esfuerzos longitudinales",
+   "golpe de ariete",
+   "tanque hidroneumático",
+   "valvulas de cierre lento",
+   "PVC",
+   "hierro ductil",
+   "acero",
+   "PEAD",
+   "hormigon"
+  ],
+  "summary": "Acueducto como conduccion principal; sistemas por gravedad o bombeo; presion interna y PN, esfuerzos longitudinales, golpe de ariete y materiales usuales.",
+  "chars": 1228
+ },
+ {
+  "id": "c5-reservorio",
+  "file": "CLASE 5 (3).pdf",
+  "source": "Clase 5",
+  "pages": "5-11",
+  "title": "Reservorio de almacenamiento: finalidades y volumen",
+  "section": "Unidad IX - Reservorio",
+  "kind": "texto",
+  "module": "tanque",
+  "tags": [
+   "reservorio",
+   "regulacion",
+   "incendio",
+   "emergencia"
+  ],
+  "keywords": [
+   "regulacion de caudales",
+   "reserva contra incendios",
+   "reserva de emergencia",
+   "1 galon 4 litros",
+   "cada seis meses",
+   "elevados",
+   "superficiales",
+   "enterrados",
+   "V regulacion",
+   "V emergencia",
+   "V incendio"
+  ],
+  "summary": "Finalidades (regulacion, incendio, emergencia); V=Vreg+Vemerg+Vincendio; tipos elevados, superficiales y enterrados con sus ventajas y costos.",
+  "chars": 829
+ },
+ {
+  "id": "c5-red-distribucion",
+  "file": "CLASE 5 (3).pdf",
+  "source": "Clase 5",
+  "pages": "13-15",
+  "title": "Red de distribucion de agua",
+  "section": "Unidad X - Redes de distribucion",
+  "kind": "texto",
+  "module": "red",
+  "tags": [
+   "red de distribucion",
+   "sectorizacion",
+   "perimetro urbano"
+  ],
+  "keywords": [
+   "tuberias",
+   "valvulas",
+   "bombas",
+   "tanques",
+   "seccion llena",
+   "sectorizacion",
+   "perimetro urbano",
+   "conductores principales",
+   "secundarios",
+   "terciarios",
+   "tomas domiciliarias",
+   "hidrantes"
+  ],
+  "summary": "Red de distribucion a presion y seccion llena; sectorizacion con valvulas, perimetro urbano, conductores principales/secundarios/terciarios, tomas, hidrantes y valvulas.",
+  "chars": 838
+ },
+ {
+  "id": "c5-tp-impulsion-tanque",
+  "file": "CLASE 5 (3).pdf",
+  "source": "Clase 5",
+  "pages": "17-24",
+  "title": "Impulsion al tanque: cotas, diametros y perdidas",
+  "section": "Trabajo practico - Red",
+  "kind": "procedimiento",
+  "module": "tanque",
+  "tags": [
+   "impulsion",
+   "tanque",
+   "cotas",
+   "perdidas"
+  ],
+  "keywords": [
+   "cota base motobomba",
+   "centro de boca de succion",
+   "30 cm",
+   "pedestal 50 cm",
+   "diametro optimo",
+   "diametro inferior y superior",
+   "Tabla I PVC",
+   "Tabla II HG",
+   "Tabla III cualquiera",
+   "succion +2 m",
+   "altura topografica succion +1,5 m",
+   "presion de llegada 1 m"
+  ],
+  "summary": "Cota de bomba en el terreno (succion <=30 cm, pedestal <=50 cm); diametros con una opcion inferior y una superior; Tabla III para perdidas; succion +2 m y presion de llegada 1 m.",
+  "chars": 1286
+ },
+ {
+  "id": "c5-hardy-cross",
+  "file": "CLASE 5 (3).pdf",
+  "source": "Clase 5",
+  "pages": "25-32",
+  "title": "Redes malladas y metodo de Hardy Cross",
+  "section": "Trabajo practico - Red",
+  "kind": "procedimiento",
+  "module": "red",
+  "tags": [
+   "Hardy Cross",
+   "mallas",
+   "caudales",
+   "iteracion"
+  ],
+  "keywords": [
+   "mallas",
+   "cotas de la malla",
+   "mas de 100 manzanas",
+   "subsectores",
+   "Qc",
+   "Qa",
+   "Qcorr",
+   "direccion mayor a menor",
+   "perfil 10 veces",
+   "profundidad 1,20 m",
+   "0,90 m",
+   "suma de perdidas cero",
+   "sexta iteracion",
+   "mas de 10 iteraciones"
+  ],
+  "summary": "La malla garantiza presion constante y permite aislar sectores; Qc/Qa/Qcorr; diametros de mayor a menor; iterar hasta suma de perdidas cero (~6 iteraciones; si pasa de 10, cambiar tuberia).",
+  "chars": 1476
+ },
+ {
+  "id": "c5-presiones",
+  "file": "CLASE 5 (3).pdf",
+  "source": "Clase 5",
+  "pages": "33-34",
+  "title": "Verificacion de presiones en la red",
+  "section": "Trabajo practico - Red",
+  "kind": "procedimiento",
+  "module": "red",
+  "tags": [
+   "presiones",
+   "verificacion",
+   "tanque"
+  ],
+  "keywords": [
+   "presion minima 10 m",
+   "presion maxima 13,50 m",
+   "perdida 3,49",
+   "cota de tanque",
+   "Qcorregido manual"
+  ],
+  "summary": "Se verifica presion minima >=10 m y maxima 13,50 m en el ejemplo; se ajustan cotas y base del tanque y los Qcorregido se copian manualmente.",
+  "chars": 410
+ },
+ {
+  "id": "c6-alcantarillado",
+  "file": "CLASE 6 (2).pdf",
+  "source": "Clase 6",
+  "pages": "4-8",
+  "title": "Alcantarillado: generalidades y sistemas",
+  "section": "Unidad XI - Alcantarillado",
+  "kind": "texto",
+  "module": "cloacal",
+  "tags": [
+   "alcantarillado",
+   "sistema publico",
+   "combinado",
+   "separado"
+  ],
+  "keywords": [
+   "recoleccion",
+   "transporte",
+   "disposicion final",
+   "aguas residuales domesticas",
+   "industriales",
+   "pluviales",
+   "gravedad",
+   "corrosion",
+   "abrasion",
+   "conexiones domiciliarias",
+   "colectores secundarios",
+   "emisarios",
+   "planta de tratamiento",
+   "combinado",
+   "separado"
+  ],
+  "summary": "Alcantarillado como conjunto de obras de recoleccion, transporte y disposicion final; tipos de agua; principios de diseno; sistema publico y comparacion combinado/separado.",
+  "chars": 1123
+ },
+ {
+  "id": "c6-red-colectores",
+  "file": "CLASE 6 (2).pdf",
+  "source": "Clase 6",
+  "pages": "9-12",
+  "title": "Red de colectores, tratamiento y drenaje urbano",
+  "section": "Unidad XI - Alcantarillado",
+  "kind": "texto",
+  "module": "cloacal",
+  "tags": [
+   "colectores",
+   "tratamiento",
+   "drenaje urbano"
+  ],
+  "keywords": [
+   "trazado por calles",
+   "pendientes naturales",
+   "diametros",
+   "pozos de inspeccion",
+   "ventilacion",
+   "Manning",
+   "Chezy",
+   "pretratamiento",
+   "rejas",
+   "desarenadores",
+   "sedimentacion",
+   "lodos activados",
+   "biodiscos",
+   "desinfeccion",
+   "cunetas",
+   "sumideros",
+   "bocas de tormenta",
+   "periodo de retorno",
+   "coeficiente de escurrimiento"
+  ],
+  "summary": "Trazado de colectores, formulas Manning/Chezy, etapas de tratamiento (preliminar, primario, secundario, terciario) y elementos/criterios del drenaje urbano.",
+  "chars": 1036
+ },
+ {
+  "id": "c6-tp-caudales",
+  "file": "CLASE 6 (2).pdf",
+  "source": "Clase 6",
+  "pages": "14-21",
+  "title": "Red cloacal: caudales, infiltracion y velocidades",
+  "section": "Trabajo practico - Red cloacal",
+  "kind": "procedimiento",
+  "module": "cloacal",
+  "tags": [
+   "caudales",
+   "infiltracion",
+   "Bazin",
+   "velocidades"
+  ],
+  "keywords": [
+   "cotas",
+   "registros",
+   "caudal por edificio",
+   "coeficiente de retorno 80% a 90%",
+   "100%",
+   "K1 K2",
+   "longitud total",
+   "caudal maximo de desague",
+   "tasa de infiltracion 0,05 l/s/km",
+   "velocidad minima 0,6 m/s",
+   "velocidad maxima 5 m/s",
+   "Bazin",
+   "Manning",
+   "radio hidraulico",
+   "norma brasilera",
+   "tramo 112 m",
+   "calles 12 m",
+   "caudal minimo 1,5 l/s"
+  ],
+  "summary": "Caudal por edificio con retorno 80-90% (100% por seguridad); K1 y K2 iguales; infiltracion 0,05 L/s/km; v 0,6-5 m/s con Bazin; tramo tipico 112 m; caudal minimo 1,5 L/s.",
+  "chars": 1965
+ },
+ {
+  "id": "c6-bazin",
+  "file": "CLASE 6 (2).pdf",
+  "source": "Clase 6",
+  "pages": "17-18",
+  "title": "Formula de Bazin y verificacion hidraulica",
+  "section": "Trabajo practico - Red cloacal",
+  "kind": "formula",
+  "module": "cloacal",
+  "tags": [
+   "Bazin",
+   "velocidad",
+   "radio hidraulico"
+  ],
+  "keywords": [
+   "v = 87/(1+gamma/sqrt(RH))*sqrt(RH*I)",
+   "gamma 0,22",
+   "0,14",
+   "RH",
+   "coeficiente de rugosidad",
+   "escurrimiento",
+   "seccion"
+  ],
+  "summary": "Bazin: v=(87/(1+gamma/sqrt(RH)))*sqrt(RH*I); la planilla declara gamma=0,22 pero la formula usa 0,14 (ver errata).",
+  "chars": 614
+ },
+ {
+  "id": "c7-tanque-inferior",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "14",
+  "title": "Ejemplo resuelto: tanque de reserva inferior",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "tanque",
+  "tags": [
+   "tanque inferior",
+   "volumen",
+   "dimensiones"
+  ],
+  "keywords": [
+   "Vd 185.460 l",
+   "3/5",
+   "111.276 l",
+   "Nmax 1,50 m",
+   "area 74,184 m2",
+   "a 6,10 m",
+   "b 12,2 m",
+   "a 6,50 m",
+   "b 12,00 m",
+   "altura 1,50 m",
+   "Nmin 0,22 m",
+   "0,50 m"
+  ],
+  "summary": "Con Vd=185.460 L, Vtinf=3/5 Vd=111,276 m3; area=74,184 m2 con Nmax=1,50 m; a=6,10 m y b=12,2 m, adoptando 6,50 x 12,00 x 1,50 m; Nmin=0,22 m, adopta 0,50 m.",
+  "chars": 757
+ },
+ {
+  "id": "c7-tanque-superior-incendio",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "16",
+  "title": "Ejemplo resuelto: tanque superior y tanque de incendio",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "tanque",
+  "tags": [
+   "tanque superior",
+   "tanque incendio",
+   "volumen"
+  ],
+  "keywords": [
+   "2/5 Vd",
+   "74.184 l",
+   "a 3 m",
+   "b 6 m",
+   "h 4,12 m",
+   "Vi 37.092 m3",
+   "h 2,06 m"
+  ],
+  "summary": "Tanque superior = 2/5 Vd = 74.184 L; con 3 x 6 m resulta h=4,12 m. Tanque de incendio Vi=37,092 m3; con 3 x 6 m resulta h=2,06 m.",
+  "chars": 471
+ },
+ {
+  "id": "c7-ventilacion-rebosadero",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "19",
+  "title": "Ejemplo resuelto: ventilacion, rebosaderos y limpieza",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "tanque",
+  "tags": [
+   "ventilacion",
+   "rebosadero",
+   "limpieza"
+  ],
+  "keywords": [
+   "ventilacion inferior 150 mm 6 pulgadas",
+   "rebosadero inferior 2 1/2",
+   "rebosadero superior 2 1/2",
+   "volumen total 111,276 m3",
+   "tiempo total 18 h",
+   "TLL 2 h",
+   "TLav 2 h",
+   "Tdescanso 1 h",
+   "TVLimp 13 h",
+   "diametro 35 mm",
+   "40 mm 1 1/2"
+  ],
+  "summary": "Ventilacion inferior 150 mm (6\"), rebosaderos 2 1/2\"; VT=111,276 m3; con 18 h de trabajo, llenado 2 h, lavado 2 h y descanso 1 h quedan 13 h de vaciado; D=35 mm, adopta 40 mm.",
+  "chars": 812
+ },
+ {
+  "id": "c7-puente-empalme",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "20",
+  "title": "Ejemplo resuelto: puente de empalme y ruptor de vacio",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "puente de empalme",
+   "ruptor de vacio",
+   "columnas"
+  ],
+  "keywords": [
+   "Ap = Amax + suma An/2",
+   "6,28 pulg2",
+   "2,83 pulgadas",
+   "3 pulgadas",
+   "ventilacion superior 4 pulgadas",
+   "ruptor de vacio 3 pulgadas",
+   "columna de bajada 2 pulgadas"
+  ],
+  "summary": "Ap=Amax+suma(An)/2=6,28 pulg2; diametro 2,83\" -> 3\". Ventilacion superior 4\"; ruptor de vacio 3\" (mayor que la columna de bajada de 2\").",
+  "chars": 578
+ },
+ {
+  "id": "c7-perdidas-succion",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "22-23",
+  "title": "Ejemplo resuelto: perdidas por succion",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "succion",
+   "Flamant",
+   "perdidas"
+  ],
+  "keywords": [
+   "altura topografica 0,70 m",
+   "125 mm",
+   "curva 90 2,70",
+   "valvula de pie 30,00",
+   "tee 2 salidas 8,40",
+   "longitud real 2,40",
+   "perdida total 46,20",
+   "Flamant",
+   "gamma 0,0032",
+   "JM 0,148 mca",
+   "HMAN 0,848 mca"
+  ],
+  "summary": "Succion DN125: perdida localizada total 46,20 m; Flamant da 0,0032 m/m; JM=0,148 mca y HMANsucc=0,70+0,148=0,848 mca.",
+  "chars": 720
+ },
+ {
+  "id": "c7-perdidas-impulsion",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "24",
+  "title": "Ejemplo resuelto: perdidas por impulsion",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "impulsion",
+   "Flamant",
+   "perdidas"
+  ],
+  "keywords": [
+   "altura topografica 76,00 m",
+   "100 mm",
+   "curva 90 2,10",
+   "valvula retencion vertical 6,40",
+   "valvula cierre globo 0,70",
+   "tee una salida 6,70",
+   "tee 2 salidas 6,70",
+   "longitud real 78,00",
+   "perdida total 104,80",
+   "gamma 0,0093",
+   "JM 0,975 mca",
+   "HMAN 76,975 mca",
+   "HMAN total 77,82 mca"
+  ],
+  "summary": "Impulsion DN100: perdida total 104,80 m; Flamant 0,0093 m/m; JM=0,975 mca; HMANimp=76,975 mca y HMAN total=0,848+76,975=77,82 mca.",
+  "chars": 648
+ },
+ {
+  "id": "c7-potencia-electrobomba",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "25",
+  "title": "Ejemplo resuelto: potencia de la electrobomba",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "electrobomba",
+   "potencia",
+   "holgura"
+  ],
+  "keywords": [
+   "PB formula",
+   "Qb 0,0077 m3/s",
+   "7,70 l/s",
+   "eta bomba 66%",
+   "PB 12,11 CV",
+   "11,94 HP",
+   "eta motor 84%",
+   "PMB 14,217 HP",
+   "holgura 15%",
+   "16,35 HP",
+   "20 HP"
+  ],
+  "summary": "Qb=0,0077 m3/s (7,70 L/s), eta_b=66%, PB=12,11 CV=11,94 HP; eta_m=84%, PMB=14,217 HP; holgura 15% -> 16,35 HP, adopta 20 HP.",
+  "chars": 687
+ },
+ {
+  "id": "c7-agua-caliente",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "26",
+  "title": "Ejemplo resuelto: agua caliente",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "agua caliente",
+   "consumo",
+   "termotanque"
+  ],
+  "keywords": [
+   "ducha 280 l",
+   "lavatorio 8 l",
+   "total 288 l",
+   "coeficiente 0,27",
+   "VTC 77,76 l",
+   "80 l",
+   "T 60 C"
+  ],
+  "summary": "Ducha 280 L + lavatorio 8 L = 288 L a 60 C; VTC=0,27*288=77,76 L, se adopta 80 L.",
+  "chars": 406
+ },
+ {
+  "id": "c7-incendio-bies",
+  "file": "CLASE 7.pdf",
+  "source": "Clase 7",
+  "pages": "27-29",
+  "title": "Ejemplo resuelto: prevencion de incendios (BIE/BIS y bomba)",
+  "section": "Trabajo practico - Predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "incendio",
+   "BIE",
+   "BIS",
+   "bomba principal",
+   "jockey"
+  ],
+  "keywords": [
+   "tuberia distribucion 3 pulgadas",
+   "conexion BIE 1 1/2",
+   "una BIE por piso",
+   "manguera 30 m",
+   "una BIS planta baja",
+   "Clase I",
+   "250 l/min",
+   "6 mca",
+   "2 BIE",
+   "30 m3/h",
+   "0,00833 m3/s",
+   "2,52 CV",
+   "2,49 HP",
+   "3,23 HP",
+   "holgura 30%",
+   "5 HP",
+   "jockey 0,9 kW 1,1 HP"
+  ],
+  "summary": "BIE 1 1/2\" una por piso, BIS en PB; Clase I: 250 L/min y 6 mca; con 2 BIE Q=30 m3/h; P=2,52 CV=2,49 HP, PMB=3,23 HP, holgura 30% -> 5 HP; jockey 0,9 kW (1,1 HP).",
+  "chars": 1230
+ },
+ {
+  "id": "np68-consumo-diario",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "11",
+  "title": "Tabla I: estimacion del consumo diario",
+  "section": "6.3 Calculo del consumo domiciliario diario",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "consumo diario",
+   "Tabla I",
+   "dotacion"
+  ],
+  "keywords": [
+   "consumo minimo litros por dia",
+   "emergencia 20 por persona",
+   "alojamientos provisorios 80",
+   "casas populares 120",
+   "residencias clase media 150",
+   "clase alta 250",
+   "departamentos 200",
+   "hoteles 120 250 300",
+   "escuelas",
+   "oficinas 50",
+   "restaurantes 25 por servicio",
+   "mercados 5 por m2"
+  ],
+  "summary": "Consumos minimos de la NP 68 por tipo de inmueble: departamentos 200, clase media 150, clase alta 250, oficinas 50, emergencia 20 L/persona/dia.",
+  "chars": 1305
+ },
+ {
+  "id": "np68-acometida",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "12",
+  "title": "Dimensionamiento de la acometida o alimentador predial",
+  "section": "6.4 Acometida predial",
+  "kind": "procedimiento",
+  "module": "predial",
+  "tags": [
+   "acometida",
+   "alimentador predial",
+   "Tabla II"
+  ],
+  "keywords": [
+   "presion minima disponible",
+   "consumo maximo diario",
+   "Q = Cd/TM",
+   "TM 7200 s",
+   "2 horas",
+   "Tabla II diametros maximos",
+   "1/2",
+   "3/4",
+   "1",
+   "1 1/4",
+   "1 1/2",
+   "2 pulgadas",
+   "Pd kPa"
+  ],
+  "summary": "Q=Cd/TM con TM normalmente 7200 s (2 h); el diametro de acometida no puede ser menor al de Tabla II, que cruza presion disponible (50-350 kPa) con diametros de 1/2 a 2\".",
+  "chars": 712
+ },
+ {
+  "id": "np68-pesos-tabla-iii",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "13",
+  "title": "Tabla III: caudales y pesos relativos de los puntos de utilizacion",
+  "section": "6.5 Consumo de los puntos de utilizacion",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "pesos relativos",
+   "Tabla III",
+   "artefactos"
+  ],
+  "keywords": [
+   "bebedero 0,05 0,1",
+   "bidet 0,10 0,1",
+   "inodoro cisterna 0,15 0,3",
+   "inodoro valvula 1,90 40",
+   "mingitorio",
+   "ducha 0,20 0,5",
+   "banera 0,30 1,0",
+   "lavatorio 0,20 0,5",
+   "pileta cocina 0,25 0,7",
+   "canilla patio 0,25 0,7",
+   "lavarropas 0,30 1,0"
+  ],
+  "summary": "Pesos y caudales de artefactos: inodoro con cisterna 0,3 (0,15 L/s), con valvula 40 (1,90 L/s), ducha 0,5 (0,20), lavatorio 0,5 (0,20), pileta cocina 0,7 (0,25).",
+  "chars": 1102
+ },
+ {
+  "id": "np68-caudal-suma-pesos",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "13-14",
+  "title": "Caudal en funcion de la suma de pesos",
+  "section": "6.6 Funcionamiento de los artefactos",
+  "kind": "formula",
+  "module": "predial",
+  "tags": [
+   "suma de pesos",
+   "caudal",
+   "Figura I"
+  ],
+  "keywords": [
+   "Q = c sqrt(SP)",
+   "c 0,30 l/s",
+   "suma de pesos",
+   "Figura I",
+   "gasto probable"
+  ],
+  "summary": "Q = c*sqrt(ΣP), con c=0,30 L/s y ΣP la suma de pesos de todas las piezas alimentadas por el tramo; la Figura I del Anexo C relaciona ΣP con el diametro.",
+  "chars": 446
+ },
+ {
+  "id": "np68-presiones",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "14",
+  "title": "Presion minima y presion estatica maxima",
+  "section": "6.7-6.8 Presiones",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "presion minima",
+   "presion maxima"
+  ],
+  "keywords": [
+   "100 kPa",
+   "10 mH2O",
+   "presion minima disponible",
+   "400 kPa",
+   "40 mH2O",
+   "presion estatica maxima",
+   "75% del tiempo"
+  ],
+  "summary": "Presion minima disponible 100 kPa (10 mH2O) y presion estatica maxima 400 kPa (40 mH2O), disponible el 75% del tiempo.",
+  "chars": 427
+ },
+ {
+  "id": "np68-velocidad-max",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "14-15",
+  "title": "Velocidad maxima en tuberias",
+  "section": "6.9 Velocidad",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "velocidad maxima",
+   "Tabla IV"
+  ],
+  "keywords": [
+   "V = 14 sqrt(D)",
+   "V en m/s",
+   "D en m",
+   "2,50 m/s",
+   "edificios",
+   "hospitales",
+   "residencias",
+   "ruido",
+   "Tabla IV"
+  ],
+  "summary": "Vmax=14*sqrt(D) (D en m) y nunca mayor a 2,50 m/s en edificios, hospitales, residencias, hoteles y oficinas por ruido; la Tabla IV tabula los maximos por diametro.",
+  "chars": 523
+ },
+ {
+  "id": "np68-flamant",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "16",
+  "title": "Formula de Flamant para PVC rigido",
+  "section": "6.10.2.2 Perdidas de carga",
+  "kind": "formula",
+  "module": "predial",
+  "tags": [
+   "Flamant",
+   "PVC",
+   "perdida de carga"
+  ],
+  "keywords": [
+   "Flamant",
+   "PVC rigido",
+   "J = 4*0,000135*V^1,75/D^1,25",
+   "V m/s",
+   "D m",
+   "J m/m",
+   "perdida unitaria"
+  ],
+  "summary": "Flamant para PVC: J = 4*0,000135*V^1,75/D^1,25, con V en m/s, D en m y J en m/m.",
+  "chars": 331
+ },
+ {
+  "id": "np68-fair-whipple",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "15-16",
+  "title": "Formula de Fair-Whipple-Hsiao para acero galvanizado",
+  "section": "6.10.2.1 Perdidas de carga",
+  "kind": "formula",
+  "module": "predial",
+  "tags": [
+   "Fair-Whipple-Hsiao",
+   "acero galvanizado",
+   "perdida de carga"
+  ],
+  "keywords": [
+   "Fair Whipple Hsiao",
+   "acero galvanizado",
+   "Q = 27,113 D^2,596 J^0,532",
+   "Q m3/s",
+   "D m",
+   "J m/m"
+  ],
+  "summary": "Fair-Whipple-Hsiao para acero galvanizado: Q = 27,113*D^2,596*J^0,532 (Q en m3/s, D en m, J en m/m).",
+  "chars": 382
+ },
+ {
+  "id": "np68-tabla-v-explicada",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "16-17",
+  "title": "Tabla V: diametro minimo de sub-ramales",
+  "section": "6.11 Diametro minimo de ramales secundarios",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Tabla V",
+   "diametro minimo",
+   "sub-ramales"
+  ],
+  "keywords": [
+   "calefon alta presion 15",
+   "calefon baja presion 20",
+   "inodoro cisterna 15",
+   "inodoro valvula 40",
+   "banera 15",
+   "bebedero 15",
+   "bidet 15",
+   "ducha 15",
+   "filtro presion 15",
+   "lavatorio 15",
+   "lavavajillas 20",
+   "lavarropas 20",
+   "mingitorio 15",
+   "pileta cocina 15",
+   "pileta lavar ropa 20",
+   "valvula descarga 32"
+  ],
+  "summary": "Diametros minimos: inodoro con valvula 40 mm (1 1/2\"), valvula de descarga 32 mm (1 1/4\"), calefon baja presion y lavavajillas/lavarropas 20 mm (3/4\"), resto 15 mm (1/2\").",
+  "chars": 612
+ },
+ {
+  "id": "np68-bomba-rendimientos",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "23-24",
+  "title": "Potencia de equipo elevatorio, rendimientos y holgura",
+  "section": "6.23 Calculo de la potencia",
+  "kind": "formula",
+  "module": "predial",
+  "tags": [
+   "potencia",
+   "rendimiento",
+   "holgura",
+   "Tablas VI VII VIII"
+  ],
+  "keywords": [
+   "P = gamma Q H / 75 eta",
+   "potencia cv",
+   "rendimiento bombas centrifugas Tabla VI",
+   "rendimiento motores Tabla VII",
+   "holgura Tabla VIII",
+   "HP = 1,014 cv",
+   "50% hasta 2 HP",
+   "30% 2 a 5 HP",
+   "20% 5 a 10 HP",
+   "15% 10 a 20 HP",
+   "10% mas de 20 HP"
+  ],
+  "summary": "P[CV]=gamma*Q*Hman/(75*eta); rendimientos en Tablas VI y VII; holgura Tabla VIII (50% hasta 2 HP, 30% 2-5, 20% 5-10, 15% 10-20, 10% >20).",
+  "chars": 721
+ },
+ {
+  "id": "np68-tabla-ix-explicada",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "27",
+  "title": "Tabla IX: altura minima de servicio de artefactos",
+  "section": "8.7 Detalles constructivos",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Tabla IX",
+   "altura de artefactos"
+  ],
+  "keywords": [
+   "lavatorio 0,60 a 0,65",
+   "banera 0,35 a 0,65",
+   "ducha 2,00 a 2,20",
+   "bidet 0,15 a 0,20",
+   "inodoro valvula 0,90 a 1,10",
+   "inodoro caja 1,30 a 1,40",
+   "inodoro cisterna 1,75 a 2,15",
+   "mingitorio 1,00 a 1,10",
+   "pileta cocina 1,10 a 1,20",
+   "canilla patio 0,60"
+  ],
+  "summary": "Alturas minimas de alimentacion: lavatorio 0,60-0,65 m; ducha 2,00-2,20 m; inodoro con cisterna 1,75-2,15 m; pileta de cocina 1,10-1,20 m.",
+  "chars": 606
+ },
+ {
+  "id": "np68-figura-i-explicada",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "31",
+  "title": "Figura I: caudal y diametro en funcion de la suma de pesos",
+  "section": "Anexo C - Figura I",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Figura I",
+   "suma de pesos",
+   "diametro"
+  ],
+  "keywords": [
+   "SP 0,44 1/2",
+   "3,4 3/4",
+   "15 1",
+   "44 1 1/4",
+   "107 1 1/2",
+   "460 2",
+   "1400 2 1/2",
+   "3900 3",
+   "12000 4",
+   "29500 5",
+   "60000 6",
+   "DPPR 20 25 32 40 50 63 75 90"
+  ],
+  "summary": "Figura I: ΣP<=0,44 -> 1/2\"; 3,4 -> 3/4\"; 15 -> 1\"; 44 -> 1 1/4\"; 107 -> 1 1/2\"; 460 -> 2\"; 1400 -> 2 1/2\"; 3900 -> 3\"; 12000 -> 4\"; 29500 -> 5\"; 60000 -> 6\".",
+  "chars": 578
+ },
+ {
+  "id": "np68-anexo-c-longitudes",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "source": "NP 68",
+  "pages": "32-34",
+  "title": "Anexo C: tablas I, II y III de longitudes equivalentes",
+  "section": "Anexo C - Perdidas localizadas",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "longitudes equivalentes",
+   "Anexo C",
+   "Tabla I",
+   "Tabla II",
+   "Tabla III"
+  ],
+  "keywords": [
+   "longitud equivalente",
+   "PVC",
+   "hierro galvanizado",
+   "codo 90",
+   "codo 45",
+   "curva 90",
+   "curva 45",
+   "te 90 pasaje directo",
+   "te salida de lado",
+   "entrada normal",
+   "valvula de pie",
+   "valvula de retencion",
+   "registro de globo",
+   "llave de exclusa",
+   "registro de angulo"
+  ],
+  "summary": "Tres tablas de longitud equivalente: I para PVC, II para hierro galvanizado y III generica (la que debe usarse); cubren DN 15-150 (I y II) y DN 13-350 (III).",
+  "chars": 1301
+ },
+ {
+  "id": "np44-unidades-descarga",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "8",
+  "title": "Tabla I: unidades de descarga y diametro de ramales",
+  "section": "6.1-6.2 Contribucion de artefactos",
+  "kind": "tabla",
+  "module": "cloacal",
+  "tags": [
+   "unidades de descarga",
+   "Hunter",
+   "Tabla I",
+   "artefactos"
+  ],
+  "keywords": [
+   "unidad de descarga 28 l/min",
+   "banera 3 4 6",
+   "bebedero 0,50",
+   "bidet 2",
+   "ducha 2 4",
+   "lavatorio 1 2",
+   "mingitorio 6 5 2",
+   "pileta cocina 3 4 5",
+   "lavavajillas 4",
+   "rejilla piso 1",
+   "lavarropas 10 12",
+   "inodoro 6",
+   "DN 40 50 75 100"
+  ],
+  "summary": "Tabla I de Hunter: inodoro 6 UD/DN100, lavatorio 1 UD/DN40, ducha 2 UD/DN40, banera 3-4 UD/DN40, lavarropas 30-60 kg 12 UD/DN100.",
+  "chars": 1003
+ },
+ {
+  "id": "np44-ramales-columnas",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "9",
+  "title": "Tablas II y III: ramales de desague y columnas de bajada",
+  "section": "6.3-6.4 Ramales y columnas",
+  "kind": "tabla",
+  "module": "cloacal",
+  "tags": [
+   "Tabla II",
+   "Tabla III",
+   "ramales",
+   "columnas de bajada"
+  ],
+  "keywords": [
+   "pendiente minima 2%",
+   "DN 40 50 75 100 150 200 250 300 400",
+   "UD 216 250 700 840 1000 1400 1600 1920 2300",
+   "columna 3 pisos",
+   "mas de 3 pisos",
+   "DN 100 240 90 500",
+   "DN 150 960 350 1900"
+  ],
+  "summary": "Tabla II: ramales con pendiente minima 2% hasta DN100; DN100 con 2%=216 UD y 4%=250 UD. Tabla III: columnas; DN100 admite 240 UD (<=3 pisos) y 500 UD en toda la columna.",
+  "chars": 951
+ },
+ {
+  "id": "np44-camaras-inspeccion",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "14-15",
+  "title": "Camaras de inspeccion: dimensiones y ubicacion",
+  "section": "6.11 Camara de inspeccion",
+  "kind": "norma",
+  "module": "cloacal",
+  "tags": [
+   "camara de inspeccion",
+   "dimensiones",
+   "registros"
+  ],
+  "keywords": [
+   "0,40 x 0,40",
+   "hasta 0,60 m",
+   "0,60 x 0,60",
+   "hasta 1,00 m",
+   "0,60 x 1,00",
+   "0,80 x 0,80",
+   "mayor a 1,00 m",
+   "desnivel 0,05",
+   "0,10",
+   "ventilacion 75 mm",
+   "maximo 15 m",
+   "4 m del lindero"
+  ],
+  "summary": "Camaras: 0,40x0,40 hasta 0,60 m; 0,60x0,60 hasta 1,00 m; 0,60x1,00 u 0,80x0,80 para mas de 1,00 m; fondo con desnivel 0,05/0,10 m; camara mas alta ventilada con DN75.",
+  "chars": 1044
+ },
+ {
+  "id": "np44-ventilacion",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "16-18",
+  "title": "Ventilacion: tabla IV y V",
+  "section": "6.14 Tuberia de ventilacion",
+  "kind": "tabla",
+  "module": "cloacal",
+  "tags": [
+   "ventilacion",
+   "Tabla IV",
+   "Tabla V",
+   "sifon"
+  ],
+  "keywords": [
+   "distancia maxima 1,00 m DN40",
+   "1,20 m DN50",
+   "1,80 m DN75",
+   "2,40 m DN100",
+   "DN minimo 75 mm",
+   "0,30 m sobre techo",
+   "2,00 m terraza accesible",
+   "1,00 m sobre dintel",
+   "4,00 m"
+  ],
+  "summary": "Distancia maxima sifon-ventilacion: DN40 1,00 m; DN50 1,20 m; DN75 1,80 m; DN100 2,40 m. La ventilacion primaria es DN>=75 mm y se prolonga 0,30 m sobre techo (2,00 m si es accesible).",
+  "chars": 1108
+ },
+ {
+  "id": "np44-interceptores-grasa",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "12-13",
+  "title": "Interceptores de grasa",
+  "section": "6.9 Interceptores de grasa",
+  "kind": "procedimiento",
+  "module": "cloacal",
+  "tags": [
+   "interceptor de grasa",
+   "cocina"
+  ],
+  "keywords": [
+   "V = 20 litros + N x 2 litros",
+   "N personas servidas",
+   "IGP 0,30 m 18 litros",
+   "IGS 0,40 m 31 litros",
+   "IGD 0,60 m 120 litros",
+   "IGE prismatico",
+   "DN 75",
+   "DN 100"
+  ],
+  "summary": "Volumen del interceptor V=20 L + N*2 L (N personas servidas); tipos IGP (0,30 m, 18 L), IGS (0,40 m, 31 L), IGD (0,60 m, 120 L) e IGE prismatico.",
+  "chars": 867
+ },
+ {
+  "id": "np44-velocidades-pendientes",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "source": "NP 44",
+  "pages": "8-10",
+  "title": "Velocidades, pendientes y diametros minimos",
+  "section": "6.2-6.5 Criterios hidraulicos",
+  "kind": "criterio",
+  "module": "cloacal",
+  "tags": [
+   "velocidad",
+   "pendiente",
+   "diametro minimo"
+  ],
+  "keywords": [
+   "2% hasta 100 mm",
+   "velocidad 0,60 m/s",
+   "3,00 m/s",
+   "a media seccion",
+   "ramal domiciliario 100 mm",
+   "camara cada 15 m",
+   "cierre hidraulico 50 mm"
+  ],
+  "summary": "Pendiente minima 2% para DN<=100; velocidad 0,60-3,00 m/s a media seccion; ramal domiciliario DN minimo 100 mm; camaras cada 15 m como maximo; cierre hidraulico >=50 mm.",
+  "chars": 657
+ },
+ {
+  "id": "pluv-columnas",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "source": "Desagues Pluviales 2012",
+  "pages": "5",
+  "title": "Tabla II: columnas de bajada de aguas pluviales",
+  "section": "5.7 Desagues verticales",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Tabla II",
+   "columnas de bajada",
+   "area de cobertura"
+  ],
+  "keywords": [
+   "50 mm 39 25",
+   "63 mm 62 41",
+   "75 mm 88 55",
+   "100 mm 156 100",
+   "125 mm 256 165",
+   "150 mm 342 219",
+   "200 mm 646 414",
+   "baja exigencia",
+   "alta exigencia",
+   "arboles 150 mm"
+  ],
+  "summary": "Tabla II: area maxima de cobertura por bajada; 100 mm admite 156 m2 (baja exigencia) y 100 m2 (alta); 150 mm 342/219 m2; 200 mm 646/414 m2.",
+  "chars": 578
+ },
+ {
+  "id": "pluv-runoff",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "source": "Desagues Pluviales 2012",
+  "pages": "5",
+  "title": "Tabla III: coeficiente de runoff",
+  "section": "5.9 Coeficiente de Runoff",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "runoff",
+   "escurrimiento",
+   "Tabla III"
+  ],
+  "keywords": [
+   "tejados o losas 1,00",
+   "asfalto 0,85 a 0,90",
+   "pavimentado 0,75 a 0,85",
+   "empedrado 0,25 a 0,60",
+   "no pavimentado 0,15 a 0,30",
+   "descampado 0,10 a 0,30",
+   "parques 0,05 a 0,20"
+  ],
+  "summary": "Coeficiente de runoff: tejados/losas 1,00; asfalto 0,85-0,90; pavimentado 0,75-0,85; empedrado 0,25-0,60; no pavimentado 0,15-0,30; jardines 0,05-0,20.",
+  "chars": 578
+ },
+ {
+  "id": "pluv-ramales",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "source": "Desagues Pluviales 2012",
+  "pages": "6",
+  "title": "Tabla IV: ramales horizontales de aguas pluviales",
+  "section": "5.13 Ramales y subramales",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Tabla IV",
+   "ramales horizontales",
+   "area maxima"
+  ],
+  "keywords": [
+   "100 mm 144 199 288",
+   "150 mm 278 390 557 780",
+   "200 mm 548 808 1105 1816",
+   "250 mm 910 1412 1807 2824",
+   "pendiente 0,5 1 2 4%",
+   "diametro minimo 100 mm"
+  ],
+  "summary": "Tabla IV: area maxima drenada por ramal horizontal; 100 mm a 2%=199 m2, 150 mm a 2%=557 m2, 200 mm a 2%=1105 m2; diametro minimo 100 mm.",
+  "chars": 621
+ },
+ {
+  "id": "pluv-canaletas",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "source": "Desagues Pluviales 2012",
+  "pages": "4",
+  "title": "Tabla I: canaletas de desagues pluviales",
+  "section": "5.5 Canaletas",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "Tabla I",
+   "canaletas",
+   "seccion mojada"
+  ],
+  "keywords": [
+   "area drenada 20 a 600 m2",
+   "pendiente 0,2 0,3 0,5 1 1,5 2%",
+   "seccion mojada S",
+   "diametro canaleta D",
+   "canaleta semicircular",
+   "seccion artistica"
+  ],
+  "summary": "Tabla I: para cada area drenada (20 a 600 m2) y pendiente (0,2 a 2%) da la seccion mojada S (cm2) y el diametro D (cm) de la canaleta semicircular.",
+  "chars": 695
+ },
+ {
+  "id": "pluv-camaras-desarenador",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "source": "Desagues Pluviales 2012",
+  "pages": "6",
+  "title": "Camaras de inspeccion y desarenadores pluviales",
+  "section": "6-7 Camaras y desarenadores",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "camara de inspeccion",
+   "desarenador",
+   "pluvial"
+  ],
+  "keywords": [
+   "0,40 x 0,40 hasta 0,60 m",
+   "0,60 x 0,60 hasta 1,00 m",
+   "0,60 x 1,00 mayor a 1,00 m",
+   "desnivel 0,05",
+   "0,10",
+   "desarenador 0,05 m",
+   "limpiar luego de cada lluvia"
+  ],
+  "summary": "Camaras pluviales: 0,40x0,40 hasta 0,60 m; 0,60x0,60 hasta 1,00 m; 0,60x1,00 para mas de 1,00 m; desarenadores son piletas de 0,05 m a evacuar tras cada lluvia.",
+  "chars": 752
+ },
+ {
+  "id": "acal-consumo",
+  "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+  "source": "Agua Caliente 2016",
+  "pages": "9",
+  "title": "Tabla I: estimacion del consumo diario de agua caliente",
+  "section": "Consumo de agua caliente",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "agua caliente",
+   "Tabla I",
+   "consumo"
+  ],
+  "keywords": [
+   "T 60 C",
+   "consumo minimo litros por dia",
+   "hospital",
+   "departamentos",
+   "viviendas",
+   "escuelas",
+   "hoteles",
+   "oficinas",
+   "restaurantes"
+  ],
+  "summary": "Consumo diario de agua caliente a 60 C por tipo de inmueble, en litros/dia; se usa para dimensionar el termotanque y la alimentacion.",
+  "chars": 556
+ },
+ {
+  "id": "acal-pesos",
+  "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+  "source": "Agua Caliente 2016",
+  "pages": "10",
+  "title": "Tabla II: caudales y pesos relativos de puntos de agua caliente",
+  "section": "Pesos relativos",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "agua caliente",
+   "Tabla II",
+   "pesos"
+  ],
+  "keywords": [
+   "ducha",
+   "lavatorio",
+   "pileta cocina",
+   "bidet",
+   "banera",
+   "caudal l/s",
+   "peso relativo"
+  ],
+  "summary": "Tabla II: caudales y pesos relativos de los puntos de utilizacion de agua caliente; se usan para calcular el caudal de proyecto de los ramales.",
+  "chars": 292
+ },
+ {
+  "id": "acal-consumo-punto",
+  "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+  "source": "Agua Caliente 2016",
+  "pages": "11",
+  "title": "Tabla III: consumo de agua por punto de utilizacion a 60 C",
+  "section": "Consumo por punto",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "agua caliente",
+   "Tabla III",
+   "consumo por artefacto"
+  ],
+  "keywords": [
+   "ducha 280",
+   "lavatorio 8",
+   "total 288",
+   "T 60 C",
+   "litros por aparato"
+  ],
+  "summary": "Tabla III: consumo de agua caliente a 60 C por punto de utilizacion; en el ejemplo, ducha 280 L y lavatorio 8 L (total 288 L).",
+  "chars": 441
+ },
+ {
+  "id": "acal-tanques",
+  "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+  "source": "Agua Caliente 2016",
+  "pages": "7",
+  "title": "Capacidades comerciales de termotanques",
+  "section": "Tanques de agua caliente",
+  "kind": "texto",
+  "module": "predial",
+  "tags": [
+   "termotanque",
+   "capacidades"
+  ],
+  "keywords": [
+   "15 30 50 80 100 150 200 litros",
+   "termotanque",
+   "deposito de reserva"
+  ],
+  "summary": "Se comercializan termotanques de 15, 30, 50, 80, 100, 150 y 200 litros; los cuatro primeros con canerias de distinto diametro.",
+  "chars": 259
+ },
+ {
+  "id": "acal-caudal-proyecto",
+  "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+  "source": "Agua Caliente 2016",
+  "pages": "10-12",
+  "title": "Caudal de proyecto de agua caliente",
+  "section": "Calculo de canerias",
+  "kind": "formula",
+  "module": "predial",
+  "tags": [
+   "caudal",
+   "suma de pesos",
+   "agua caliente"
+  ],
+  "keywords": [
+   "Q = c sqrt(SP)",
+   "caudal de proyecto",
+   "velocidad maxima",
+   "diametros comunes",
+   "Tabla IV",
+   "Tabla V"
+  ],
+  "summary": "El caudal de proyecto se estima con la suma de pesos de la Tabla II; se verifica con la Tabla IV de velocidades y caudales maximos y la Tabla V de diametros minimos.",
+  "chars": 455
+ },
+ {
+  "id": "trat-camara-septica",
+  "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+  "source": "Tratamiento Aguas Residuales 2016",
+  "pages": "7-10",
+  "title": "Camaras septicas: contribuciones y periodo de retencion",
+  "section": "5.1 Camaras septicas",
+  "kind": "tabla",
+  "module": "cloacal",
+  "tags": [
+   "camara septica",
+   "Tabla I",
+   "Tabla II"
+  ],
+  "keywords": [
+   "hospitales 250",
+   "departamentos 200",
+   "viviendas 150",
+   "rurales 120",
+   "hoteles 250 120",
+   "alojamientos 80",
+   "fabricas 70",
+   "oficinas 50",
+   "lodo fresco 1",
+   "periodo de retencion 24 h a 12 h",
+   "volumen minimo 1250 l",
+   "500 l",
+   "10 meses"
+  ],
+  "summary": "Tabla I: contribucion de desechos por tipo de edificacion (departamentos 200 L/persona/dia, lodo fresco 1 L/persona/dia). Tabla II: retencion de 1 dia (<6000 L/dia) a 0,5 dia (>14000 L/dia).",
+  "chars": 1395
+ },
+ {
+  "id": "trat-camara-formula",
+  "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+  "source": "Tratamiento Aguas Residuales 2016",
+  "pages": "9-10",
+  "title": "Volumen util de camara septica simple",
+  "section": "5.1.10 Dimensionamiento",
+  "kind": "formula",
+  "module": "cloacal",
+  "tags": [
+   "camara septica",
+   "volumen util"
+  ],
+  "keywords": [
+   "V = 1000 + N(C T + Lf)",
+   "volumen util",
+   "N contribuyentes",
+   "C contribucion",
+   "T retencion",
+   "Lf lodo fresco",
+   "1250 litros"
+  ],
+  "summary": "Volumen util de camara septica simple: V = 1000 + N*(C*T + Lf), con V en litros; minimo 1250 L.",
+  "chars": 453
+ },
+ {
+  "id": "trat-lechos",
+  "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+  "source": "Tratamiento Aguas Residuales 2016",
+  "pages": "15-17",
+  "title": "Sumideros, lechos de infiltracion y filtros anaerobicos",
+  "section": "5.1.17-5.1.20 Disposicion final",
+  "kind": "texto",
+  "module": "cloacal",
+  "tags": [
+   "sumidero",
+   "lecho de infiltracion",
+   "filtro anaerobico"
+  ],
+  "keywords": [
+   "pozo absorbente",
+   "zanjas de infiltracion",
+   "lechos filtrantes",
+   "filtro anaerobico",
+   "coeficiente de infiltracion",
+   "Figura XIII",
+   "Tabla III"
+  ],
+  "summary": "Alternativas de disposicion final: sumidero o pozo absorbente, zanjas/lechos de infiltracion, lechos filtrantes y filtro anaerobico; el coeficiente de infiltracion se toma de Tabla III o Figura XIII.",
+  "chars": 575
+ },
+ {
+  "id": "ord38-hidrantes",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "source": "Ordenanza 038",
+  "pages": "12-13",
+  "title": "Hidrantes: caudal y presion por clase de riesgo",
+  "section": "Titulo IX - Art. 50",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "hidrantes",
+   "BIE",
+   "caudal",
+   "presion",
+   "riesgo"
+  ],
+  "keywords": [
+   "Clase I 250 l/min 0,6 kg/cm2 6 mca",
+   "Clase II 500 l/min 1,5 kg/cm2 15 mca",
+   "Clase III 750 l/min 3,0 kg/cm2 30 mca",
+   "manguera 30 m",
+   "dos bocas simultaneas",
+   "reserva minima 5000 l",
+   "presion maxima 10 kg/cm2"
+  ],
+  "summary": "Hidrantes por clase: I 250 L/min y 6 mca; II 500 L/min y 15 mca; III 750 L/min y 30 mca. Reserva para 2 bocas simultaneas; minimo 5000 L; presion maxima 10 kg/cm2.",
+  "chars": 1339
+ },
+ {
+  "id": "ord38-reserva",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "source": "Ordenanza 038",
+  "pages": "13",
+  "title": "Reserva tecnica de incendio: duracion",
+  "section": "Titulo IX - Art. 50.2",
+  "kind": "tabla",
+  "module": "predial",
+  "tags": [
+   "reserva de incendio",
+   "duracion",
+   "area construida"
+  ],
+  "keywords": [
+   "30 minutos hasta 20000 m2",
+   "45 minutos 20001 a 30000",
+   "60 minutos 30001 a 50000 y refinerias",
+   "120 minutos mas de 50000",
+   "5000 litros minimo"
+  ],
+  "summary": "Duracion de la reserva para 2 bocas simultaneas: 30 min hasta 20.000 m2; 45 min hasta 30.000; 60 min hasta 50.000 y refinerias; 120 min para mas de 50.000 m2.",
+  "chars": 489
+ },
+ {
+  "id": "ord38-extintores",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "source": "Ordenanza 038",
+  "pages": "10-12",
+  "title": "Extintores: capacidad, cobertura y agente segun clase de fuego",
+  "section": "Titulo VIII - Art. 44-46",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "extintores",
+   "cobertura",
+   "agente extintor"
+  ],
+  "keywords": [
+   "unidad extintora",
+   "AP 10 litros",
+   "EQ EM 10 litros",
+   "CO2 6 kg",
+   "PQS PQH 4 kg",
+   "halon 3 kg",
+   "AN 3 kg",
+   "Clase I 400 m2 20 m",
+   "Clase II 250 m2 15 m",
+   "Clase III 150 m2 12 m",
+   "altura maxima 1,70 m"
+  ],
+  "summary": "Una unidad extintora cubre 400 m2/20 m (Clase I), 250 m2/15 m (II) y 150 m2/12 m (III); capacidades minimas AP 10 L, CO2 6 kg, PQS 4 kg; parte superior a <=1,70 m.",
+  "chars": 1110
+ },
+ {
+  "id": "ma2-mez-criterios",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "source": "Manual Mezcladores",
+  "pages": "2-6",
+  "title": "Mezcladores: parametros generales y de resalto hidraulico",
+  "section": "Capitulo 2 - Mezcladores",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "mezcla rapida",
+   "gradiente",
+   "resalto hidraulico"
+  ],
+  "keywords": [
+   "G 700 a 1300 s-1",
+   "3000 a 5000 s-1",
+   "tiempo de retencion decimas de segundo a 7 s",
+   "Froude 4,5 a 9,0",
+   "Parshall Froude 2 a 3",
+   "Parshall Q >= 500 L/s",
+   "vertedero triangular < 30 L/s",
+   "coagulante en el punto de mayor turbulencia",
+   "Belanger",
+   "Smetana"
+  ],
+  "summary": "Mezcla rapida: G 700-1300 s-1 (3000-5000 en linea), retencion de decimas de segundo a 7 s, Froude 4,5-9 (Parshall 2-3); Parshall para Q>=500 L/s y vertedero triangular para Q<30 L/s.",
+  "chars": 1693
+ },
+ {
+  "id": "ma2-mez-rampa",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "source": "Manual Mezcladores",
+  "pages": "6-8",
+  "title": "Canal rectangular con cambio de pendiente",
+  "section": "Capitulo 2 - Modelos de comprobacion",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "rampa",
+   "resalto",
+   "mezclador"
+  ],
+  "keywords": [
+   "ecuacion de momentos",
+   "K factor de resolucion",
+   "altura de rampa",
+   "tirante",
+   "perdida de carga",
+   "verificar",
+   "modificar datos"
+  ],
+  "summary": "En la rampa se calculan h1 y V1 con la ecuacion de momentos y el factor K; luego se verifica que altura de rampa + tirante = perdida + tirante aguas abajo, iterando si no cumple.",
+  "chars": 864
+ },
+ {
+  "id": "ma2-mez-parshall",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "source": "Manual Mezcladores",
+  "pages": "3",
+  "title": "Uso de la canaleta Parshall como mezclador",
+  "section": "Capitulo 2 - Unidades hidraulicas",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "Parshall",
+   "mezclador",
+   "caudal"
+  ],
+  "keywords": [
+   "Parshall Q >= 500 L/s",
+   "Froude 2 a 3",
+   "resalto",
+   "medicion de caudal",
+   "plantas medianas a grandes"
+  ],
+  "summary": "La canaleta Parshall es adecuada para plantas medianas a grandes (Q>=500 L/s); trabaja con Froude 2-3 y sirve simultaneamente como medidor de caudal y mezclador.",
+  "chars": 456
+ },
+ {
+  "id": "ma2-floc-criterios",
+  "file": "ma2_cap3_FLOCULADOR.pdf",
+  "source": "Manual Floculador",
+  "pages": "2-4",
+  "title": "Floculadores: parametros y recomendaciones de diseno",
+  "section": "Capitulo 3 - Floculadores",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "floculacion",
+   "gradiente",
+   "tiempo de retencion"
+  ],
+  "keywords": [
+   "G 70 a 20 s-1",
+   "decreciente",
+   "tiempo de retencion 10 a 30 min",
+   "tropical 15 min",
+   "frio 20 min",
+   "primer tramo no mayor que mezclador",
+   "minimo dos unidades",
+   "caudal menor a 50 L/s",
+   "profundidad 1,00 a 2,00 m",
+   "flujo de piston"
+  ],
+  "summary": "Floculacion: G decreciente de 70 a 20 s-1, retencion 10-30 min (15 min en clima tropical, >=20 min en frio), primer tramo no mayor que el mezclador, minimo 2 unidades.",
+  "chars": 1309
+ },
+ {
+  "id": "ma2-floc-ejemplo",
+  "file": "ma2_cap3_FLOCULADOR.pdf",
+  "source": "Manual Floculador",
+  "pages": "8-12",
+  "title": "Ejemplo de floculador de pantallas",
+  "section": "Capitulo 3 - Ejemplo",
+  "kind": "ejemplo",
+  "module": "potabilizadora",
+  "tags": [
+   "floculador",
+   "pantallas",
+   "ejemplo"
+  ],
+  "keywords": [
+   "gradiente 25 s-1 ultimo tramo",
+   "3 m ancho",
+   "1 m profundidad",
+   "gradientes 27 a 2,5 s-1",
+   "profundidad 1,70 m"
+  ],
+  "summary": "Ejemplo de floculador de pantallas: ultimo tramo con G=25 s-1; unidad de 3 m de ancho y 1 m de profundidad; otra unidad con G entre 27 y 2,5 s-1 y profundidad inicial 1,70 m.",
+  "chars": 531
+ },
+ {
+  "id": "ma2-dec-criterios",
+  "file": "ma2_cap4_DECANTADORES.pdf",
+  "source": "Manual Decantadores",
+  "pages": "2-5",
+  "title": "Decantadores laminares: cargas superficiales y velocidades",
+  "section": "Capitulo 4 - Decantadores",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "decantacion",
+   "carga superficial",
+   "placas"
+  ],
+  "keywords": [
+   "flujo laminar Nr < 500",
+   "cargas superficiales 120 a 185 m3/m2/d",
+   "remocion > 90%",
+   "2 UN turbiedad residual",
+   "velocidad longitudinal 10 a 25 cm/min",
+   "Vo max = sqrt(Nr/8) Vsc",
+   "placas 1,20 x 2,40 m"
+  ],
+  "summary": "Decantadores laminares con Nr<500 y cargas superficiales de 120-185 m3/m2/d (remocion >90%, turbiedad residual 2 UN); velocidad longitudinal 10-25 cm/min.",
+  "chars": 1205
+ },
+ {
+  "id": "ma2-dec-flujo",
+  "file": "ma2_cap4_DECANTADORES.pdf",
+  "source": "Manual Decantadores",
+  "pages": "5-9",
+  "title": "Decantadores de flujo ascendente y distribucion",
+  "section": "Capitulo 4 - Flujo ascendente",
+  "kind": "texto",
+  "module": "potabilizadora",
+  "tags": [
+   "decantador ascendente",
+   "distribucion"
+  ],
+  "keywords": [
+   "flujo ascendente",
+   "estructuras de entrada",
+   "salida",
+   "extraccion de lodos",
+   "canal de distribucion",
+   "compuertas",
+   "orificios",
+   "gradiente"
+  ],
+  "summary": "En decantadores de flujo ascendente son criticas las estructuras de entrada, salida, almacenamiento y extraccion de lodos; la distribucion uniforme por compuertas/orificios condiciona la eficiencia.",
+  "chars": 659
+ },
+ {
+  "id": "ma2-fil-criterios",
+  "file": "ma2_cap5_FILTRACION_RAPIDA.pdf",
+  "source": "Manual Filtracion Rapida",
+  "pages": "7-12",
+  "title": "Bateria de filtros de tasa declinante: criterios de diseno",
+  "section": "Capitulo 5 - Filtracion rapida",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "filtracion",
+   "tasa declinante",
+   "lecho filtrante"
+  ],
+  "keywords": [
+   "minimo 4 filtros",
+   "Af = Q/VL",
+   "At = Q/Vf",
+   "N = At/Af",
+   "tasas 120 a 150 m3/m2/d",
+   "240 a 360 m3/m2/d",
+   "arena 0,50 a 0,60 mm",
+   "espesor 0,80 m",
+   "expansion 30%",
+   "falso fondo 0,40 m",
+   "Vffo/Vo <= 0,46",
+   "grava"
+  ],
+  "summary": "Minimo 4 filtros; Af=Q/VL, At=Q/Vf, N=At/Af; tasas 120-150 m3/m2/d (arena sola) o 240-360 (medio grueso/doble); expansion 30%, falso fondo >=0,40 m y Vffo/Vo<=0,46.",
+  "chars": 1564
+ },
+ {
+  "id": "ma2-fil-lavado",
+  "file": "ma2_cap5_FILTRACION_RAPIDA.pdf",
+  "source": "Manual Filtracion Rapida",
+  "pages": "13-18",
+  "title": "Lavado de filtros y expansion del lecho",
+  "section": "Capitulo 5 - Lavado",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "lavado",
+   "retrolavado",
+   "expansion"
+  ],
+  "keywords": [
+   "expansion 30%",
+   "retrolavado",
+   "lavado mutuo",
+   "agua de lavado",
+   "canaletas",
+   "tasa de lavado",
+   "lecho"
+  ],
+  "summary": "El lavado se disena para expandir 30% el lecho; la bateria de tasa declinante usa lavado mutuo con agua filtrada por las otras unidades.",
+  "chars": 639
+ },
+ {
+  "id": "ma2-clo-criterios",
+  "file": "ma2_cap6_CLORACION.pdf",
+  "source": "Manual Cloracion",
+  "pages": "2-4",
+  "title": "Cloracion: criterios generales y almacenamiento",
+  "section": "Capitulo 6 - Sala de cloracion",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "cloracion",
+   "dosis",
+   "almacenamiento de cloro"
+  ],
+  "keywords": [
+   "cilindros 50 a 1000 kg",
+   "consumo 5 mg/L",
+   "minimo 1,0 mg/L",
+   "almacenamiento 10 dias",
+   "30 dias si <10000 m3/d",
+   "100 L/s",
+   "ventilacion",
+   "seguridad"
+  ],
+  "summary": "Consumo de cloro para desinfeccion estimado en 5 mg/L con minimo 1,0 mg/L; almacenar al menos 10 dias de consumo maximo (30 dias si la planta es <10.000 m3/d o 100 L/s).",
+  "chars": 1108
+ },
+ {
+  "id": "ma2-clo-dosificacion",
+  "file": "ma2_cap6_CLORACION.pdf",
+  "source": "Manual Cloracion",
+  "pages": "10-16",
+  "title": "Dosificacion y equipos de cloracion",
+  "section": "Capitulo 6 - Dosificacion",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "dosificacion",
+   "cloro",
+   "equipos"
+  ],
+  "keywords": [
+   "dosis minima",
+   "dosis maxima",
+   "dosis promedio",
+   "caudal",
+   "equipo",
+   "rotametro",
+   "inyector",
+   "dosis 1 a 3 mg/L",
+   "dosis normal 1,5 mg/L",
+   "punto de quiebre"
+  ],
+  "summary": "La dosis se fija entre minima y maxima segun la curva de demanda; el equipo se calcula con el caudal y la dosis maxima; rango tipico 1-3 mg/L y dosis normal 1,5 mg/L.",
+  "chars": 682
+ },
+ {
+  "id": "ma2-om-criterios",
+  "file": "ma2_cap7_OPERACION_Y_MANTENIMIENTO.pdf",
+  "source": "Manual O&M",
+  "pages": "2-12",
+  "title": "Operacion y mantenimiento: dosis optima, tasa declinante y cloro",
+  "section": "Capitulo 7 - O&M",
+  "kind": "criterio",
+  "module": "potabilizadora",
+  "tags": [
+   "operacion",
+   "mantenimiento",
+   "dosis optima"
+  ],
+  "keywords": [
+   "dosis optima de coagulante",
+   "curva turbiedad-dosis",
+   "prueba de jarra",
+   "tasa declinante",
+   "cloro 1,0 a 1,5 mg/L",
+   "calibracion del vertedero",
+   "lavado de filtros"
+  ],
+  "summary": "La dosis optima de coagulante se obtiene de la curva turbiedad-dosis (jar test); la tasa declinante se instala y controla; el cloro usual a la salida es 1,0-1,5 mg/L.",
+  "chars": 837
+ },
+ {
+  "id": "parshall-criterios",
+  "file": "ma2_AFORADOR_PARSHALL.doc",
+  "source": "Manual Aforador Parshall",
+  "pages": "1",
+  "title": "Aforador Parshall: formula y uso",
+  "section": "Medidor de caudales",
+  "kind": "formula",
+  "module": "potabilizadora",
+  "tags": [
+   "Parshall",
+   "aforo",
+   "Q=K H^n"
+  ],
+  "keywords": [
+   "Q = K H^n",
+   "regla graduada",
+   "2/3 de la seccion convergente",
+   "altura H",
+   "garganta",
+   "medidor de caudales"
+  ],
+  "summary": "El caudal del Parshall se calcula con Q=K H^n; la regla graduada se coloca a 2/3 de la seccion convergente (entrada) para medir la altura H.",
+  "chars": 695
+ },
+ {
+  "id": "une-resumen",
+  "file": "UNE 23-500-90.pdf",
+  "source": "UNE 23-500-90",
+  "pages": "2",
+  "title": "UNE 23-500-90: grupos contra incendios",
+  "section": "Generalidades",
+  "kind": "norma",
+  "module": "predial",
+  "tags": [
+   "UNE",
+   "grupo contra incendios",
+   "bomba principal",
+   "jockey"
+  ],
+  "keywords": [
+   "deposito exclusivo incendio",
+   "equipo de bombeo principal",
+   "equipo auxiliar",
+   "jockey",
+   "arranque automatico",
+   "presion constante",
+   "velocidad de succion 1,8 m/s",
+   "1,5 m/s",
+   "alarma 60%",
+   "arranque 40%"
+  ],
+  "summary": "Norma UNE 23-500-90: deposito exclusivo, bomba principal + auxiliar/jockey que mantiene presion y repone fugas, arranque automatico; succion <=1,8 m/s (carga) o 1,5 m/s (sin cebado).",
+  "chars": 1413
+ },
+ {
+  "id": "guia-predial-datos",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "1-2",
+  "title": "Datos de entrada del sistema predial",
+  "section": "Datos de entrada",
+  "kind": "texto",
+  "module": "predial",
+  "tags": [
+   "datos de entrada",
+   "consumo",
+   "poblacion"
+  ],
+  "keywords": [
+   "12 manzanas",
+   "6 lotes por manzana",
+   "22 pisos",
+   "6 departamentos por piso",
+   "3 dormitorios",
+   "2 personas por dormitorio",
+   "1 personal de servicio",
+   "10% logistica",
+   "200 l/persona/dia",
+   "50 l/oficina",
+   "QD 185.460 l/dia"
+  ],
+  "summary": "Datos del edificio: 12 manzanas, 6 lotes/manzana, 22 pisos, 6 deptos/piso, 3 dormitorios, 2 personas/dormitorio, 1 servicio, 10% logistica; QD=185.460 L/dia/edificio.",
+  "chars": 696
+ },
+ {
+  "id": "guia-predial-pesos",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "2-4",
+  "title": "Pesos relativos por ambiente, piso y departamento",
+  "section": "1. Pesos relativos",
+  "kind": "procedimiento",
+  "module": "predial",
+  "tags": [
+   "pesos relativos",
+   "banos",
+   "cocina",
+   "departamento"
+  ],
+  "keywords": [
+   "bano tipo 1 1,3",
+   "bano tipo 2 0,8",
+   "lavadero 1,0",
+   "cocina 2,7",
+   "planta baja 6,4",
+   "planta tipo 39,4",
+   "departamento tipo 1 6,3",
+   "departamento tipo 2 7,1",
+   "Tabla III NP68",
+   "Tabla V NP68"
+  ],
+  "summary": "Pesos: bano tipo 1 = 1,3; bano tipo 2 = 0,8; lavadero = 1,0; cocina = 2,7; planta baja = 6,4; planta tipo = 39,4; depto tipo 1 = 6,3; depto tipo 2 = 7,1.",
+  "chars": 740
+ },
+ {
+  "id": "guia-predial-columnas",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "4-8",
+  "title": "Columnas de bajada y diametros por tramo",
+  "section": "2. Columnas de bajada por piso",
+  "kind": "procedimiento",
+  "module": "predial",
+  "tags": [
+   "columnas de bajada",
+   "diametros",
+   "Figura I"
+  ],
+  "keywords": [
+   "3 columnas",
+   "columna 1 y 3",
+   "columna 2",
+   "297,2",
+   "278,8",
+   "2 pulgadas",
+   "1 1/4",
+   "1 1/2",
+   "planta baja 2,4",
+   "13,4 por piso",
+   "12,6 por piso"
+  ],
+  "summary": "Se adoptan 3 columnas; columna 1 y 3 acumulan 297,2 (2\") y columna 2 acumula 278,8 (2\"), con diametros crecientes piso a piso segun Figura I.",
+  "chars": 760
+ },
+ {
+  "id": "guia-predial-acometida",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "9",
+  "title": "Calculo de la tuberia predial o acometida",
+  "section": "Calculo de tuberia predial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "acometida",
+   "QP",
+   "Tabla II"
+  ],
+  "keywords": [
+   "TLL 6 horas",
+   "21.600 s",
+   "QP 8,59 l/s",
+   "Pmin 100 kPa",
+   "10 mca",
+   "2 pulgadas",
+   "Tabla II NP68"
+  ],
+  "summary": "TLL=6 h=21.600 s; QP=185.460/21.600=8,59 L/s con Pmín=100 kPa; como no hay diametro tabulado, se adopta 2\" para la acometida.",
+  "chars": 473
+ },
+ {
+  "id": "guia-predial-impulsion",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "9-10",
+  "title": "Diametros de impulsion y succion del predio",
+  "section": "Tuberia de impulsion y succion",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "impulsion",
+   "succion",
+   "Bresse"
+  ],
+  "keywords": [
+   "QB 27.819 l/h",
+   "0,0077 m3/s",
+   "X 0,2775",
+   "D 83 mm",
+   "100 mm",
+   "4 pulgadas",
+   "V 0,98 m/s",
+   "succion 125 mm",
+   "5 pulgadas",
+   "V 0,63 m/s"
+  ],
+  "summary": "QB=0,15*QD=27.819 L/h=0,0077 m3/s; X=6,66/24=0,2775; Bresse da 83 mm, se adopta 100 mm (4\") con V=0,98 m/s; succion 125 mm con V=0,63 m/s.",
+  "chars": 576
+ },
+ {
+  "id": "guia-predial-tanques",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "10-14",
+  "title": "Tanques de reserva y volumen de incendio",
+  "section": "Tanque de agua",
+  "kind": "ejemplo",
+  "module": "tanque",
+  "tags": [
+   "tanque inferior",
+   "tanque superior",
+   "incendio",
+   "volumen"
+  ],
+  "keywords": [
+   "V1 10 l/m2 22.050 l",
+   "V2 20% QD 37.092 l",
+   "V3 30 m3 30.000 l",
+   "VI 37.092 l",
+   "VTotal 222.552 l",
+   "1,20 dias",
+   "VTinf 111.276 l",
+   "VTsup 74.184 l",
+   "3/5",
+   "2/5"
+  ],
+  "summary": "VI=max(10 L/m2*2205=22.050; 20%QD=37.092; 30 m3=30.000)=37.092 L; VTotal=222.552 L (1,20 dias<2); Vinf=111.276 L (3/5) y Vsup=74.184 L (2/5).",
+  "chars": 764
+ },
+ {
+  "id": "guia-predial-electrobomba",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "17-20",
+  "title": "Calculo de electrobombas del predio",
+  "section": "Calculo de electrobombas",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "electrobomba",
+   "succion",
+   "impulsion",
+   "potencia"
+  ],
+  "keywords": [
+   "perdida succion 46,20",
+   "gamma 0,0032",
+   "JM 0,148",
+   "HMANsucc 0,848",
+   "perdida impulsion 104,80",
+   "gamma 0,0093",
+   "JM 0,975",
+   "HMANimp 76,975",
+   "HMAN total 77,82",
+   "PB 12,11 CV",
+   "11,94 HP",
+   "20 HP"
+  ],
+  "summary": "Succion: 46,20 m de perdida, JM=0,148, HMAN=0,848. Impulsion: 104,80 m, JM=0,975, HMAN=76,975. Total 77,82 mca; PB=12,11 CV=11,94 HP; PMB=14,217; holgura 15% -> 20 HP.",
+  "chars": 902
+ },
+ {
+  "id": "guia-predial-incendio",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "20-22",
+  "title": "Prevencion de incendios en el predio",
+  "section": "Prevencion de incendios",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "incendio",
+   "BIE",
+   "BIS",
+   "bomba principal",
+   "jockey"
+  ],
+  "keywords": [
+   "distribucion 3 pulgadas",
+   "BIE 1 1/2",
+   "una BIE por piso",
+   "manguera 30 m",
+   "BIS planta baja",
+   "Clase I",
+   "250 l/min",
+   "6 mca",
+   "2 BIE",
+   "30 m3/h",
+   "5 HP",
+   "jockey 0,9 kW"
+  ],
+  "summary": "Red de distribucion 3\", BIE 1 1/2\" una por piso (manguera 30 m) y BIS en PB; Clase I 250 L/min y 6 mca; con 2 BIE Q=30 m3/h; bomba 5 HP y jockey 0,9 kW (1,1 HP).",
+  "chars": 878
+ },
+ {
+  "id": "guia-predial-pluvial",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "22-26",
+  "title": "Desague pluvial del predio",
+  "section": "Desague pluvial",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "pluvial",
+   "azotea",
+   "patio",
+   "ramales",
+   "registros"
+  ],
+  "keywords": [
+   "At1 184,65",
+   "At4 184,43",
+   "At5 292,14",
+   "At6 301,17",
+   "f 1,00",
+   "f 0,20",
+   "150 mm",
+   "200 mm",
+   "A 241,832",
+   "591,166",
+   "775,816",
+   "596,014",
+   "780,444",
+   "registros 0,60 x 0,60 x 1,00",
+   "4 tuberias de 100 mm"
+  ],
+  "summary": "Azotea: areas 184,65-301,17 m2, f=1; bajadas 150 mm (A1-A4) y 200 mm (A5-A6). Patio: f=0,2; ramales de 150 a 200 mm. Registros 0,60x0,60x1,00 m; salida con 4 tuberias de 100 mm.",
+  "chars": 1392
+ },
+ {
+  "id": "guia-predial-residuos",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "26-29",
+  "title": "Residuos solidos: generacion, almacenamiento y area",
+  "section": "Residuos solidos",
+  "kind": "ejemplo",
+  "module": "predial",
+  "tags": [
+   "residuos solidos",
+   "PPC",
+   "contenedor",
+   "compactador"
+  ],
+  "keywords": [
+   "PPC 1,4 kg/hab/d",
+   "gamma 0,2",
+   "gamma R 0,4",
+   "gamma org 0,333",
+   "gamma PH 0,05",
+   "PPCorg 0,84",
+   "PPCPH 0,07",
+   "924 hab",
+   "7 hab/depto",
+   "frecuencia 2/semana",
+   "4 dias",
+   "5174,4 kg",
+   "25872 l",
+   "12936 l",
+   "1035 bolsas",
+   "130 m2"
+  ],
+  "summary": "PPC=1,4 kg/hab/d; 924 hab/edificio; almacenamiento 4 dias; SS general 5.174,4 kg y 25.872 L; compactador 12.936 L; 1.035 bolsas y 130 m2.",
+  "chars": 1029
+ },
+ {
+  "id": "guia-predial-cloacal",
+  "file": "GUÍA_MEMORIA_DE_CALCULO_PREDIAL.docx",
+  "source": "Guia Predial",
+  "pages": "29-36",
+  "title": "Desague cloacal predial: unidades de descarga y columnas",
+  "section": "Desague cloacal",
+  "kind": "ejemplo",
+  "module": "cloacal",
+  "tags": [
+   "cloacal",
+   "unidades de descarga",
+   "columnas de bajada"
+  ],
+  "keywords": [
+   "bano tipo 1 9 UD",
+   "bano tipo 2 7 UD",
+   "lavadero 12 UD",
+   "cocina 11 UD",
+   "CB1 374 UD",
+   "CB2 506 UD",
+   "CB3 522 UD",
+   "DN 150",
+   "i 1%",
+   "Tabla I II III NP44"
+  ],
+  "summary": "Bano tipo 1 = 9 UD/DN100; tipo 2 = 7 UD/DN100; lavadero = 12 UD/DN100; cocina = 11 UD/DN75. Columnas CB1 374 UD, CB2 506 UD y CB3 522 UD, todas con DN150 e i=1%.",
+  "chars": 1199
+ },
+ {
+  "id": "excel-datos-inic",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Datos Inic",
+  "pages": "hoja Datos Inic",
+  "title": "Datos iniciales y caudales de la red (Excel)",
+  "section": "5- Datos iniciales",
+  "kind": "procedimiento",
+  "module": "red",
+  "tags": [
+   "Excel",
+   "caudales",
+   "K1",
+   "K2"
+  ],
+  "keywords": [
+   "72 lotes",
+   "12 manzanas",
+   "6 lotes por manzana",
+   "caudal medio 154,55 l/s",
+   "caudal maximo diario 185,46",
+   "caudal maximo horario 278,19",
+   "K1 1,2",
+   "K2 1,5",
+   "caudal por lote 2,1465 l/s",
+   "Qa",
+   "Qc",
+   "Qcorr"
+  ],
+  "summary": "Excel Datos Inic: 72 lotes, Qmed=154,55 L/s, Qmax diario=185,46 L/s, Qmax horario=278,19 L/s, K1=1,2, K2=1,5, caudal por lote 2,1465 L/s.",
+  "chars": 836
+ },
+ {
+  "id": "excel-caudales-hardy",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Caudales",
+  "pages": "hoja Caudales",
+  "title": "Hardy Cross en la hoja Caudales (Excel)",
+  "section": "4- Caudales",
+  "kind": "procedimiento",
+  "module": "red",
+  "tags": [
+   "Hardy Cross",
+   "iteraciones",
+   "Hazen-Williams"
+  ],
+  "keywords": [
+   "Hazen-Williams",
+   "J = 10,643 C^-1,85 D^-4,87 Q^1,85",
+   "C 140",
+   "correccion -sum Hi/(1,851 sum Hi/Qi)",
+   "6 iteraciones",
+   "suma de perdidas cero",
+   "error comun tramo compartido"
+  ],
+  "summary": "Hardy Cross con Hazen-Williams (C=140): J=10,643*C^-1,85*D^-4,87*Q^1,85; correccion=-ΣHi/(1,851*ΣHi/Qi); converge en ~6 iteraciones a ΣHi=0.",
+  "chars": 824
+ },
+ {
+  "id": "excel-impulsion-rio",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Impulsion Rio",
+  "pages": "hoja DATOS Y SISTEMA IMPULSION RIO",
+  "title": "Sistema de impulsion del rio (Excel)",
+  "section": "1- Datos y sistema de impulsion rio",
+  "kind": "procedimiento",
+  "module": "impulsion",
+  "tags": [
+   "impulsion",
+   "Bresse",
+   "perdidas",
+   "potencia"
+  ],
+  "keywords": [
+   "Qmedio 13.353,12 m3/d",
+   "Qb 0,19473 m3/s",
+   "Bresse 0,482 m",
+   "alternativas 500 450 300",
+   "HMAN 13,795 15,216 38,118",
+   "perdida succion 129,7",
+   "perdida impulsion 51,9",
+   "presion llegada 0,5 m"
+  ],
+  "summary": "Qmedio=13.353,12 m3/d; Qb=K1*K3*Qmed/86400=0,19473 m3/s; Bresse D=0,482 m; alternativas 500/450/300 mm; HMAN total 13,80/15,22/38,12 mca.",
+  "chars": 878
+ },
+ {
+  "id": "excel-impulsion-tanque",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Impulsion Tanque",
+  "pages": "hoja SISTEMA DE IMPULSION AL TANQUE",
+  "title": "Sistema de impulsion al tanque (Excel)",
+  "section": "3- Sistema de impulsion al tanque",
+  "kind": "procedimiento",
+  "module": "tanque",
+  "tags": [
+   "impulsion",
+   "tanque",
+   "Bresse"
+  ],
+  "keywords": [
+   "Qmedio 13.353,12 m3/d",
+   "Qb 0,18546 m3/s",
+   "12 horas",
+   "Bresse 0,4708 m",
+   "HMAN 29,656 33,278 90,224",
+   "cota bomba 97",
+   "cota tanque 97",
+   "succion 5,347",
+   "impulsion 23,309"
+  ],
+  "summary": "Qb=K1*Qmed/86400=0,18546 m3/s (12 h); Bresse D=0,4708 m; alternativas 500/450/300; HMAN total 29,66/33,28/90,22 mca.",
+  "chars": 791
+ },
+ {
+  "id": "excel-potabilizadora",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Potabilizadora",
+  "pages": "hoja POTABILIZADORA",
+  "title": "Planta potabilizadora en el Excel: aquietador, Parshall y floculador",
+  "section": "2- Potabilizadora",
+  "kind": "procedimiento",
+  "module": "potabilizadora",
+  "tags": [
+   "Excel",
+   "aquietador",
+   "Parshall",
+   "vertedero V",
+   "floculador"
+  ],
+  "keywords": [
+   "Qcap 194,733 l/s",
+   "aquietador v 8,6 cm/s",
+   "area 2,264 m2",
+   "lado 1,505 m",
+   "t 31,6 s",
+   "profundidad 2,718 m",
+   "Parshall W 0,305",
+   "H 0,438",
+   "V 2,43 m/s",
+   "vertedero Hmax 0,3728",
+   "G 435,3 s-1",
+   "Gr 46,6",
+   "floculador t 1800 s",
+   "h 1,7 m",
+   "v1 0,175",
+   "v2 0,425",
+   "b 0,7 m"
+  ],
+  "summary": "Qcap=194,733 L/s; aquietador v=8,6 cm/s, area 2,264 m2, lado 1,505 m, t=31,6 s, h=2,718 m; Parshall W=0,305 m, H=0,438 m, V=2,43 m/s; vertedero G=435,3 s-1 > Gr=46,6; floculador t=1800 s, h=1,7 m, b=0,7 m.",
+  "chars": 1572
+ },
+ {
+  "id": "excel-red-cloacal",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Red Cloacal",
+  "pages": "hoja RED CLOACAL",
+  "title": "Red cloacal en el Excel: caudales, Bazin e infiltracion",
+  "section": "Red cloacal",
+  "kind": "procedimiento",
+  "module": "cloacal",
+  "tags": [
+   "Excel",
+   "Bazin",
+   "infiltracion",
+   "red cloacal"
+  ],
+  "keywords": [
+   "Qmax 235,12 l/s",
+   "Qmedio 130,62",
+   "Qmin 65,31",
+   "retorno 80%",
+   "K1 1,2",
+   "K2 1,5",
+   "infiltracion 0,05 l/s/km",
+   "Bazin 0,14",
+   "v min 0,6",
+   "v max 5",
+   "DN 0,25",
+   "pendiente 0,5%",
+   "caudal minimo 1,5 l/s"
+  ],
+  "summary": "Qmax=235,12 L/s, Qmedio=130,62, Qmin=65,31; retorno 80%, K1=1,2, K2=1,5; infiltracion 0,05 L/s/km; Bazin con 0,14; v 0,6-5 m/s; DN 0,25 m; pendiente 0,5%; Qmin 1,5 L/s.",
+  "chars": 968
+ },
+ {
+  "id": "excel-laguna",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Laguna",
+  "pages": "hoja LAGUNA FACULTATIVA",
+  "title": "Laguna facultativa: criterios y dimensionamiento (Excel)",
+  "section": "9- Laguna facultativa",
+  "kind": "procedimiento",
+  "module": "cloacal",
+  "tags": [
+   "laguna facultativa",
+   "DBO",
+   "Sáenz",
+   "tiempo de detencion"
+  ],
+  "keywords": [
+   "poblacion 66.528",
+   "Qmedio 19.246,29 m3/d",
+   "DBO5 186,66 mg/l",
+   "carga 3.592,51 kg/d",
+   "Cosm Sáenz 184,57 kg/ha/d",
+   "Cos 147,66",
+   "area 243.301,7 m2",
+   "Lm 697,57",
+   "Bm 348,78",
+   "h 2 m",
+   "Hu 2,4746",
+   "Ho 0,49",
+   "Ht 2,9646",
+   "V total 602.081,19 m3",
+   "Td 31,28 d",
+   "eficiencia 90,65%",
+   "DBO efluente 17,45 mg/l"
+  ],
+  "summary": "Poblacion 66.528; Qmed=19.246,29 m3/d; DBO5=186,66 mg/L; carga 3.592,51 kg/d; Cosm Sáenz 184,57 kg/ha/d; Cos=147,66; area 243.301,7 m2; h=2 m; V=602.081,19 m3; Td=31,28 d; eficiencia 90,65%.",
+  "chars": 1234
+ },
+ {
+  "id": "excel-tratamiento-preliminar",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Tratamiento Preliminar",
+  "pages": "hoja TRATAMIENTO PRELIMINAR",
+  "title": "Tratamiento preliminar: rejas y desarenador (Excel)",
+  "section": "8- Tratamiento preliminar",
+  "kind": "procedimiento",
+  "module": "cloacal",
+  "tags": [
+   "rejas",
+   "desarenador",
+   "tratamiento preliminar"
+  ],
+  "keywords": [
+   "Qmax 0,23512 m3/s",
+   "Qmed 0,13062",
+   "Qmin 0,06531",
+   "canal b 2 m",
+   "v 0,3 m/s",
+   "Hmax 0,3919",
+   "reja 45",
+   "barra 0,3 cm",
+   "separacion 1 cm",
+   "eficiencia 0,769",
+   "100 barras",
+   "perdida 0,0107",
+   "0,0894",
+   "desarenador L 9,4 m",
+   "A 18,8 m2",
+   "T 600,3 m3/m2/d"
+  ],
+  "summary": "Qmax=0,23512 m3/s; canal b=2 m y v=0,3 m/s; Hmax=0,3919 m; rejas a 45° con 100 barras, perdida 0,0107 m limpia y 0,0894 m 50% sucia; desarenador L=9,4 m, A=18,8 m2, T=600,3 m3/m2/d.",
+  "chars": 1189
+ },
+ {
+  "id": "excel-presiones",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "source": "Excel Presiones",
+  "pages": "hoja Presiones",
+  "title": "Verificacion de presiones (Excel)",
+  "section": "Presiones",
+  "kind": "procedimiento",
+  "module": "red",
+  "tags": [
+   "presiones",
+   "verificacion",
+   "red"
+  ],
+  "keywords": [
+   "presion maxima 13,50 m",
+   "presion minima 10 m",
+   "perdida 3,49 m",
+   "Qcorregido manual",
+   "cota tanque",
+   "verifica"
+  ],
+  "summary": "Verificacion de presiones: maxima 13,50 m, minima 10,00 m y perdida 3,49 m; los Qcorregido se copian manualmente de la iteracion seleccionada.",
+  "chars": 487
+ },
+ {
+  "id": "pond-predial",
+  "file": "2026_Sistema_de_ponderación_del_trabajo_práctico_SANEAMIENTO Y MEDIO AMBIENTE.pdf",
+  "source": "Ponderacion 2026",
+  "pages": "1",
+  "title": "Ponderacion del TP predial: alcance de la memoria y los disenos",
+  "section": "TP predial",
+  "kind": "texto",
+  "module": "predial",
+  "tags": [
+   "ponderacion",
+   "checklist",
+   "predial"
+  ],
+  "keywords": [
+   "edificio",
+   "memoria de calculo",
+   "provision de agua",
+   "tanques",
+   "impulsion",
+   "agua caliente",
+   "incendio",
+   "cloacal",
+   "pluvial",
+   "residuos solidos",
+   "planos",
+   "planta tipo",
+   "axonometria"
+  ],
+  "summary": "El TP predial exige memoria (provision, tanques, impulsion, agua caliente, incendio, cloacal, pluvial, residuos) y disenos (ubicacion, cortes, tanques, planta tipo, unidades humedas, axonometria, BIE/BIS, registros).",
+  "chars": 1529
+ },
+ {
+  "id": "pond-publico",
+  "file": "2026_Sistema_de_ponderación_del_trabajo_práctico_SANEAMIENTO Y MEDIO AMBIENTE.pdf",
+  "source": "Ponderacion 2026",
+  "pages": "2",
+  "title": "Ponderacion del TP publico: alcance de la memoria y los disenos",
+  "section": "TP publico",
+  "kind": "texto",
+  "module": "general",
+  "tags": [
+   "ponderacion",
+   "checklist",
+   "publico"
+  ],
+  "keywords": [
+   "10 manzanas",
+   "1 ha",
+   "densidad",
+   "planta potabilizadora convencional",
+   "red de abastecimiento",
+   "red cloacal",
+   "lagunas de estabilizacion",
+   "flujograma",
+   "perfiles",
+   "cortes"
+  ],
+  "summary": "El TP publico exige barrio de 10 manzanas proximo a un rio, memoria de planta potabilizadora, red, cloaca y lagunas, y disenos con flujogramas, plantas, perfiles y cortes.",
+  "chars": 1604
+ }
+]

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Asistente de Saneamiento Hidráulico</title>
+    <meta name="description" content="Asistente de saneamiento hidráulico con los cálculos de la web y la base de conocimiento.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="chat.css">
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]'], ['$$', '$$']] },
+            svg: { fontCache: 'global' },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+</head>
+<body data-page="chat" class="chat-page">
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="nav-links">
+            <li class="nav-dd"><a href="index.html">Impulsión</a><ul class="dd-menu"><li><a href="index.html">Manual</a></li><li><a href="auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="potabilizadora.html">Potabilizadora</a><ul class="dd-menu"><li><a href="potabilizadora.html">Manual</a></li><li><a href="potabilizadora-auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="red.html">Red pública</a><ul class="dd-menu"><li><a href="red.html">Red de distribución</a></li><li><a href="tanque.html">Impulsión al tanque</a></li><li><a href="cloacal.html">Red cloacal</a></li></ul></li>
+            <li class="nav-dd"><a href="predial.html">Predial</a><ul class="dd-menu"><li><a href="predial.html">Agua del edificio</a></li></ul></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+            <li><a href="chat.html" class="active">Asistente</a></li>
+        </ul>
+    </nav>
+
+    <div class="chat-app" id="chat-app">
+        <!-- Conversaciones -->
+        <aside class="cv-side drawer" id="cv-side" aria-label="Conversaciones">
+            <div class="side-head">
+                <button type="button" class="btn-new" id="btn-new">＋ Nueva conversación</button>
+                <button type="button" class="icon-btn only-mobile" data-close="cv-side" aria-label="Cerrar conversaciones">✕</button>
+            </div>
+            <label class="sr-only" for="cv-search">Buscar conversaciones</label>
+            <input type="search" id="cv-search" class="cv-search" placeholder="Buscar…" autocomplete="off">
+            <ul class="cv-list" id="cv-list"></ul>
+            <p class="side-foot" id="db-note"></p>
+        </aside>
+
+        <!-- Conversación -->
+        <main class="cv-main" id="cv-main">
+            <header class="cv-head">
+                <button type="button" class="icon-btn only-mobile" id="open-cv" aria-label="Abrir conversaciones" aria-controls="cv-side">☰</button>
+                <h1 class="cv-title" id="cv-title">Asistente de Saneamiento Hidráulico</h1>
+                <div class="ctx-meter" id="ctx-meter" title="Uso de contexto">
+                    <div class="ctx-bar"><div class="ctx-fill" id="ctx-fill"></div></div>
+                    <span class="ctx-label" id="ctx-label">0 tokens</span>
+                </div>
+                <span class="chip-mode" id="chip-mode"></span>
+                <button type="button" class="icon-btn" id="btn-print" aria-label="Imprimir conversación" title="Imprimir conversación">⎙</button>
+                <button type="button" class="icon-btn" id="btn-settings" aria-label="Configuración" title="Configuración">⚙</button>
+                <button type="button" class="icon-btn" id="open-pj" aria-label="Mostrar u ocultar el panel del proyecto" aria-controls="pj-side" title="Proyecto">▤</button>
+            </header>
+
+            <div class="cv-scroll" id="cv-scroll">
+                <div class="cv-msgs" id="cv-msgs"></div>
+            </div>
+
+            <form class="composer" id="composer" autocomplete="off">
+                <p class="prov-note" id="prov-note" role="status" hidden></p>
+                <div class="ctx-chip" id="ctx-chip" hidden></div>
+                <div class="composer-box">
+                    <label class="sr-only" for="prompt">Mensaje para el asistente</label>
+                    <textarea id="prompt" rows="1" placeholder="Preguntá sobre tus cálculos o la norma…"></textarea>
+                    <button type="submit" class="btn-send" id="btn-send" aria-label="Enviar">↑</button>
+                    <button type="button" class="btn-stop" id="btn-stop" aria-label="Detener" hidden>■</button>
+                </div>
+                <p class="composer-foot" id="composer-foot">Enter envía · Shift+Enter nueva línea. El asistente puede equivocarse: verificá con la memoria de cálculo y la norma.</p>
+            </form>
+        </main>
+
+        <!-- Proyecto -->
+        <aside class="pj-side drawer" id="pj-side" aria-label="Proyecto">
+            <div class="side-head">
+                <h2>Proyecto</h2>
+                <button type="button" class="icon-btn" id="pj-refresh" aria-label="Actualizar estado del proyecto" title="Actualizar">↻</button>
+                <button type="button" class="icon-btn" data-close="pj-side" aria-label="Cerrar panel del proyecto">✕</button>
+            </div>
+            <div id="pj-body" class="pj-body"></div>
+        </aside>
+        <div class="backdrop" id="backdrop" hidden></div>
+    </div>
+
+    <!-- Configuración -->
+    <dialog id="dlg-settings" class="dlg" aria-labelledby="set-title">
+        <form method="dialog" id="set-form">
+            <h2 id="set-title">Configuración</h2>
+            <fieldset>
+                <legend>Conexión</legend>
+                <label class="radio"><input type="radio" name="mode" value="gemini"> Gemini (key gratuita de Google AI Studio, con límites) — recomendado</label>
+                <label class="radio"><input type="radio" name="mode" value="key"> Claude (key de Anthropic, de pago)</label>
+                <label class="radio"><input type="radio" name="mode" value="demo"> Modo demo (sin conexión, respuestas simuladas)</label>
+                <div class="set-key" id="set-gkey">
+                    <label for="set-gapikey">API key de Gemini</label>
+                    <div class="row"><input type="password" id="set-gapikey" placeholder="AIza…" autocomplete="off" spellcheck="false">
+                        <button type="button" class="btn-sm" id="set-gshowkey" aria-pressed="false">Ver</button></div>
+                    <p class="hint"><b>Cómo sacarla:</b> entrá a <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> con tu cuenta de Google y tocá «Create API key». Es tuya: se guarda solo en este navegador, se envía únicamente a <code>generativelanguage.googleapis.com</code> y la podés borrar cuando quieras. Los límites del plan gratuito son por proyecto y se ven en <a href="https://aistudio.google.com/rate-limit" target="_blank" rel="noopener">aistudio.google.com/rate-limit</a>.</p>
+                    <p class="hint warn-hint"><b>Privacidad:</b> en el plan gratuito Google usa lo que enviás y las respuestas para mejorar sus productos y pueden leerlo revisores humanos: no envíes información sensible. En el Espacio Económico Europeo, Suiza y el Reino Unido Google exige plan pago.</p>
+                </div>
+                <div class="set-key" id="set-key">
+                    <label for="set-apikey">API key de Anthropic</label>
+                    <div class="row"><input type="password" id="set-apikey" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+                        <button type="button" class="btn-sm" id="set-showkey" aria-pressed="false">Ver</button></div>
+                    <p class="hint">Cada estudiante usa su propia key: se guarda solo en este navegador (localStorage), se envía únicamente a <code>api.anthropic.com</code> y la podés borrar cuando quieras. Anthropic no ofrece inicio de sesión con Google para apps de terceros: la key se crea en <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a> (el uso se cobra en esa cuenta).</p>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Modelo</legend>
+                <div id="set-model-wrap"><label for="set-model">Modelo</label>
+                <select id="set-model"></select></div>
+                <div class="grid2">
+                    <div><label for="set-effort">Esfuerzo de razonamiento</label>
+                        <select id="set-effort"><option value="low">Bajo (más rápido)</option><option value="medium">Medio</option><option value="high">Alto</option></select></div>
+                    <div><label for="set-maxtok">Máximo de tokens por respuesta</label>
+                        <input type="number" id="set-maxtok" min="1000" max="128000" step="1000"></div>
+                </div>
+                <label for="set-ctx">Resumir el contexto a partir de (tokens)</label>
+                <input type="number" id="set-ctx" min="20000" max="900000" step="10000">
+            </fieldset>
+            <div class="set-test"><button type="button" class="btn-sm" id="set-test">Probar conexión</button><span id="set-test-out" role="status"></span></div>
+            <fieldset class="danger">
+                <legend>Datos</legend>
+                <button type="button" class="btn-sm" id="set-gdelkey">Borrar key de Gemini</button>
+                <button type="button" class="btn-sm" id="set-delkey">Borrar key de Anthropic</button>
+                <button type="button" class="btn-sm" id="set-delall">Borrar conversaciones y configuración</button>
+            </fieldset>
+            <div class="dlg-actions"><button value="cancel" class="btn-sm">Cancelar</button><button value="ok" class="btn-primary" id="set-save">Guardar</button></div>
+        </form>
+    </dialog>
+
+    <!-- Confirmación de cambios en el proyecto -->
+    <dialog id="dlg-confirm" class="dlg" aria-labelledby="cf-title">
+        <form method="dialog">
+            <h2 id="cf-title">¿Aplicar estos cambios?</h2>
+            <p id="cf-sub" class="hint"></p>
+            <div id="cf-diff"></div>
+            <div class="dlg-actions"><button value="no" class="btn-sm" id="cf-no">Rechazar</button><button value="yes" class="btn-primary" id="cf-yes">Aplicar cambios</button></div>
+        </form>
+    </dialog>
+
+    <div id="sr-status" class="sr-only" role="status" aria-live="polite"></div>
+
+    <script src="mod-core.js"></script>
+    <script src="red.js"></script>
+    <script src="tanque.js"></script>
+    <script src="cloacal.js"></script>
+    <script src="predial.js"></script>
+    <script src="kb.js"></script>
+    <script src="agent-tools.js"></script>
+    <script src="agent.js"></script>
+    <script src="gemini.js"></script>
+    <script src="demo.js"></script>
+    <script src="chat.js"></script>
+</body>
+</html>

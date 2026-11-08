@@ -23,6 +23,7 @@
 6. [Módulos de cálculo](#-módulos-de-cálculo)
    - [Sistema de impulsión](#sistema-de-impulsión)
    - [Planta potabilizadora](#planta-potabilizadora)
+7. [Asistente](#-asistente-chathtml)
 7. [Modo manual vs. automático](#-modo-manual-vs-automático)
 8. [Mapa de dependencias de la potabilizadora](#-mapa-de-dependencias-de-la-potabilizadora)
 9. [Informe técnico y PDF](#-informe-técnico-y-pdf)
@@ -224,6 +225,62 @@ el DOM, así que se pueden verificar con Node (`require("./red.js").calc(...)`).
 
 Índice lateral con el estado de cada sección, contador global de verificaciones (clic → primera que falla),
 resultados clave siempre visibles, secciones plegables y botón para volver arriba.
+
+## 🤖 Asistente (`chat.html`)
+
+Chat con un modelo (Gemini o Claude) que usa los cálculos de la web y la base de conocimiento (`kb/`) como
+herramientas. Interfaz tipo chat: conversaciones guardadas en el navegador (IndexedDB), respuestas en
+streaming con Markdown y LaTeX (MathJax), herramientas como chips plegables, panel **Proyecto** con el avance
+y el estado de cada módulo, y botón **Preguntar al asistente** en cada página de cálculo
+(abre `chat.html?from=<página>` con el resumen de esa página como contexto).
+
+### Configuración
+
+- **Gemini (recomendado, gratis con límites)**: cada estudiante saca su key en
+  [aistudio.google.com/apikey](https://aistudio.google.com/apikey) (cuenta de Google → «Create API key»).
+  Se guarda solo en el `localStorage` de su navegador y se envía únicamente a
+  `generativelanguage.googleapis.com` (en el encabezado `x-goog-api-key`, nunca en la URL). No hay inicio de
+  sesión con Google ni proxy: el cupo es el del proyecto de cada estudiante. Los límites del plan gratuito son
+  **por proyecto** (no por key), el cupo diario se reinicia a medianoche del Pacífico y los números vigentes
+  están en [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit). **Uso de datos:** en el plan
+  gratuito Google puede usar los prompts y las respuestas para mejorar sus productos y pueden leerlos revisores
+  humanos (no enviar información sensible); en el EEE, Suiza y Reino Unido exige plan pago. Modelos:
+  `gemini-3.6-flash` (por defecto), `gemini-3.5-flash-lite` y `gemini-3.8-flash`.
+- **Claude (key de Anthropic, de pago)**: cada estudiante usa su propia key de [console.anthropic.com](https://console.anthropic.com/)
+  (el uso se cobra en esa cuenta). Se guarda solo en el `localStorage` de su navegador, se envía únicamente a
+  `api.anthropic.com` y se borra desde Configuración. Anthropic no ofrece inicio de sesión con Google para
+  apps de terceros.
+- **Modo demo**: sin key; las respuestas son simuladas pero las herramientas y los cálculos se ejecutan de verdad.
+- Modelo (Claude Sonnet 5.5 por defecto, Opus 5.5 o Haiku 5.5), esfuerzo de razonamiento, máximo de tokens
+  por respuesta y umbral para resumir el contexto. **Probar conexión** usa el conteo de tokens (no genera texto).
+
+### Cómo funciona
+
+| Archivo | Qué hace |
+| ------- | -------- |
+| `agent.js` | Bucle de la API de Mensajes con streaming: ejecuta las herramientas en el navegador y repite (máx. 10 pasos por turno). Prompt de sistema fijo por conversación con `kb/catalog.md` y la errata, con caché. Historial "solo agregar"; al pasar el umbral resume los turnos viejos y conserva los últimos 4. |
+| `gemini.js` | Adaptador de Gemini (`generateContent` con streaming SSE por `fetch`, sin SDK). Mismo contrato de eventos y mismo bucle que `agent.js`; historial en formato nativo con `thoughtSignature` reenviado sin tocar. Cada conversación guarda su proveedor y se queda con él. |
+| `agent-tools.js` | Herramientas con JSON Schema estricto: `kb_search`, `kb_read`, `kb_table`, `kb_formula`, `kb_criteria`, `calc` (evaluador propio, sin `eval`), `run_module`, `module_memo`, `project_get`, `project_set` (pide confirmación con la diferencia), `checklist_get`, `checklist_update`, `open_page`. Resultados de hasta 4000 caracteres; los errores vuelven al modelo como resultado de error. |
+| `kb.js` | Carga de `kb/` y búsqueda BM25 sin tildes en el cliente. Si falta `kb/`, el chat funciona igual y avisa "base de conocimiento no disponible". |
+| `demo.js` | Cliente simulado para el modo demo. |
+| `chat.html` / `chat.css` / `chat.js` | Interfaz. |
+
+- El SDK oficial (`@anthropic-ai/sdk@1.3.0`) se carga por CDN solo cuando hay key, con
+  `dangerouslyAllowBrowser: true`.
+- `red.js`, `tanque.js`, `cloacal.js` y `predial.js` arrancan su interfaz solo en su propia página
+  (`data-page`), así el chat carga únicamente el cálculo.
+- El asistente lee (no modifica) los datos de la impulsión del río y la potabilizadora (`app.js`).
+- Para probar con otra base de conocimiento: `chat.html?kb=tests/fixtures/kb`.
+
+### Tests
+
+```bash
+node --test tests/agent.test.js tests/gemini.test.js
+```
+
+Cubren BM25 y la kb de prueba, `calc`, `run_module` con los 4 módulos (contra `XCalc.calc`), `project_set`
+con confirmación, truncado, el bucle del agente (herramientas en paralelo, errores, límite de pasos,
+rechazos, detener), el resumen de contexto y el modo demo. `tests/gemini.test.js` cubre el adaptador de Gemini con `fetch` simulado (SSE, firmas, funciones en paralelo, límite de pasos, `MAX_TOKENS`, `SAFETY`, errores 400/403/429/503, abortar, resumen).
 
 ## ⚙️ Modo manual vs. automático
 

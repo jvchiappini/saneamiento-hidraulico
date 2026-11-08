@@ -33,3 +33,8 @@ env/
 scratch/
 scratch_*
 
+
+# ===== Material de referencia (normas, clases, guías): no se publica =====
+/*.pdf
+/*.doc
+/*.docx

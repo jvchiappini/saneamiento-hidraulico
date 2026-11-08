@@ -1,0 +1,62 @@
+{
+ "id": "pluv-tabla-iii-runoff",
+ "title": "Tabla III: valores usuales de coeficiente de runoff f",
+ "file": "Norma_Desague_Pluvial_2012.pdf",
+ "page": 5,
+ "columns": [
+  {
+   "key": "superficie",
+   "label": "Caracteristica del area drenada",
+   "unit": ""
+  },
+  {
+   "key": "fmin",
+   "label": "f minimo",
+   "unit": ""
+  },
+  {
+   "key": "fmax",
+   "label": "f maximo",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "superficie": "Tejados o losas de techo",
+   "fmin": 1.0,
+   "fmax": 1.0
+  },
+  {
+   "superficie": "Superficies asfaltadas",
+   "fmin": 0.85,
+   "fmax": 0.9
+  },
+  {
+   "superficie": "Superficies pavimentadas o adoquinadas",
+   "fmin": 0.75,
+   "fmax": 0.85
+  },
+  {
+   "superficie": "Caminos empedrados",
+   "fmin": 0.25,
+   "fmax": 0.6
+  },
+  {
+   "superficie": "Caminos no pavimentados",
+   "fmin": 0.15,
+   "fmax": 0.3
+  },
+  {
+   "superficie": "Terrenos descampados",
+   "fmin": 0.1,
+   "fmax": 0.3
+  },
+  {
+   "superficie": "Parques, jardines, campos",
+   "fmin": 0.05,
+   "fmax": 0.2
+  }
+ ],
+ "lookup_rule": "A = Ai * f.",
+ "notes": "Tabla III Desagues Pluviales 2012."
+}

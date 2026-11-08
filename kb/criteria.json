@@ -1,0 +1,200 @@
+[
+ {
+  "id": "np68-crit-presion-min",
+  "module": "predial",
+  "param": "Presion minima de servicio",
+  "min": 100,
+  "max": null,
+  "unit": "kPa",
+  "rule": "No inferior a 100 kPa (10 mH2O) en la conexion del inmueble.",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 14
+ },
+ {
+  "id": "np68-crit-presion-max",
+  "module": "predial",
+  "param": "Presion estatica maxima",
+  "min": null,
+  "max": 400,
+  "unit": "kPa",
+  "rule": "No superar 400 kPa (40 mH2O); disponible el 75% del tiempo.",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 14
+ },
+ {
+  "id": "np68-crit-velocidad",
+  "module": "predial",
+  "param": "Velocidad maxima",
+  "min": null,
+  "max": 2.5,
+  "unit": "m/s",
+  "rule": "V=14/raiz(D) y nunca mayor a 2,50 m/s en edificios sensibles al ruido.",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 14
+ },
+ {
+  "id": "np44-crit-velocidad",
+  "module": "cloacal",
+  "param": "Velocidad en caneria principal",
+  "min": 0.6,
+  "max": 3.0,
+  "unit": "m/s",
+  "rule": "Calculada a media seccion.",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "page": 10
+ },
+ {
+  "id": "np44-crit-pendiente",
+  "module": "cloacal",
+  "param": "Pendiente minima de ramales",
+  "min": 2,
+  "max": null,
+  "unit": "%",
+  "rule": "Para diametros hasta 100 mm.",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "page": 9
+ },
+ {
+  "id": "np44-crit-cierre",
+  "module": "cloacal",
+  "param": "Cierre hidraulico minimo",
+  "min": 50,
+  "max": null,
+  "unit": "mm",
+  "rule": "Sifon desconector.",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "page": 11
+ },
+ {
+  "id": "pluv-crit-diametro-min",
+  "module": "predial",
+  "param": "Diametro minimo de ramal pluvial",
+  "min": 100,
+  "max": null,
+  "unit": "mm",
+  "rule": "No menor al de la columna de bajada que evacua.",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "page": 6
+ },
+ {
+  "id": "pluv-crit-arboles",
+  "module": "predial",
+  "param": "Diametro minimo de bajada con arboles",
+  "min": 150,
+  "max": null,
+  "unit": "mm",
+  "rule": "Para evitar obstrucciones.",
+  "file": "Norma_Desague_Pluvial_2012.pdf",
+  "page": 4
+ },
+ {
+  "id": "ord38-crit-hidrante-clase1",
+  "module": "predial",
+  "param": "Hidrante Clase I",
+  "min": 250,
+  "max": 250,
+  "unit": "L/min",
+  "rule": "Presion dinamica 6 mca (0,6 kg/cm2).",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "page": 13
+ },
+ {
+  "id": "ord38-crit-presion-max",
+  "module": "predial",
+  "param": "Presion maxima en hidrantes",
+  "min": null,
+  "max": 10,
+  "unit": "kg/cm2",
+  "rule": "No se admiten presiones superiores a 10 kg/cm2 (100 mca).",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "page": 13
+ },
+ {
+  "id": "ord38-crit-red-presion",
+  "module": "predial",
+  "param": "Presion de diseno de red de hidrantes",
+  "min": 18,
+  "max": null,
+  "unit": "kg/cm2",
+  "rule": "La red debe soportar como minimo 18 kg/cm2 (180 mca).",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "page": 13
+ },
+ {
+  "id": "ord38-crit-diametro-min",
+  "module": "predial",
+  "param": "Diametro interno minimo de red de hidrantes",
+  "min": 2.5,
+  "max": null,
+  "unit": "pulg",
+  "rule": "No inferior a 2 1/2 pulgadas (Art. 53).",
+  "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+  "page": 13
+ },
+ {
+  "id": "ma2-mez-crit-g",
+  "module": "potabilizadora",
+  "param": "Gradiente de mezcla rapida",
+  "min": 700,
+  "max": 1300,
+  "unit": "s^-1",
+  "rule": "Para unidades de resalto; 3000-5000 s-1 en mezcladores en linea.",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "page": 2
+ },
+ {
+  "id": "ma2-floc-crit-g",
+  "module": "potabilizadora",
+  "param": "Gradiente de floculacion",
+  "min": 20,
+  "max": 70,
+  "unit": "s^-1",
+  "rule": "Decreciente de 70 a 20 s-1; la catedra exige 30-60 s-1.",
+  "file": "ma2_cap3_FLOCULADOR.pdf",
+  "page": 2
+ },
+ {
+  "id": "ma2-floc-crit-t",
+  "module": "potabilizadora",
+  "param": "Tiempo de retencion de floculacion",
+  "min": 10,
+  "max": 30,
+  "unit": "min",
+  "rule": "15 min en climas tropicales; >=20 min en climas frios.",
+  "file": "ma2_cap3_FLOCULADOR.pdf",
+  "page": 2
+ },
+ {
+  "id": "ma2-dec-crit-carga",
+  "module": "potabilizadora",
+  "param": "Carga superficial de decantacion",
+  "min": 120,
+  "max": 185,
+  "unit": "m3/m2/d",
+  "rule": "Con remocion >90% y turbiedad residual ~2 UN.",
+  "file": "ma2_cap4_DECANTADORES.pdf",
+  "page": 3
+ },
+ {
+  "id": "ma2-fil-crit-tasa",
+  "module": "potabilizadora",
+  "param": "Tasa de filtración",
+  "min": 120,
+  "max": 150,
+  "unit": "m3/m2/d",
+  "rule": "Arena sola 0,50-0,60 mm y 0,80 m; medio doble o grueso 240-360.",
+  "file": "ma2_cap5_FILTRACION_RAPIDA.pdf",
+  "page": 9
+ },
+ {
+  "id": "ma2-clo-crit-dosis",
+  "module": "potabilizadora",
+  "param": "Dosis de cloro",
+  "min": 1.0,
+  "max": 5.0,
+  "unit": "mg/L",
+  "rule": "Consumo estimado 5 mg/L con minimo 1,0 mg/L.",
+  "file": "ma2_cap6_CLORACION.pdf",
+  "page": 3
+ }
+]

@@ -1,0 +1,100 @@
+{
+ "id": "np44-tabla-ii-ramales",
+ "title": "Tabla II: ramales de desague - diametros minimos",
+ "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+ "page": 9,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "DN",
+   "unit": "mm"
+  },
+  {
+   "key": "p05",
+   "label": "0,50%",
+   "unit": "UD"
+  },
+  {
+   "key": "p1",
+   "label": "1%",
+   "unit": "UD"
+  },
+  {
+   "key": "p2",
+   "label": "2%",
+   "unit": "UD"
+  },
+  {
+   "key": "p4",
+   "label": "4%",
+   "unit": "UD"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 40,
+   "p05": null,
+   "p1": null,
+   "p2": 4,
+   "p4": null
+  },
+  {
+   "dn": 50,
+   "p05": null,
+   "p1": null,
+   "p2": 7,
+   "p4": null
+  },
+  {
+   "dn": 75,
+   "p05": null,
+   "p1": null,
+   "p2": 24,
+   "p4": null
+  },
+  {
+   "dn": 100,
+   "p05": null,
+   "p1": null,
+   "p2": 216,
+   "p4": 250
+  },
+  {
+   "dn": 150,
+   "p05": null,
+   "p1": 700,
+   "p2": 840,
+   "p4": 1000
+  },
+  {
+   "dn": 200,
+   "p05": 1400,
+   "p1": 1600,
+   "p2": 1920,
+   "p4": 2300
+  },
+  {
+   "dn": 250,
+   "p05": 2500,
+   "p1": 2900,
+   "p2": 3500,
+   "p4": 4200
+  },
+  {
+   "dn": 300,
+   "p05": 3900,
+   "p1": 4600,
+   "p2": 5600,
+   "p4": 6700
+  },
+  {
+   "dn": 400,
+   "p05": 7000,
+   "p1": 8300,
+   "p2": 10000,
+   "p4": 12000
+  }
+ ],
+ "lookup_rule": "Entrar con DN y pendiente; el numero de UD no debe superarse.",
+ "notes": "Tabla II NP 44. Pendiente minima 2% para DN<=100."
+}

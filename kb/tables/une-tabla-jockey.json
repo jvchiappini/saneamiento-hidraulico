@@ -1,0 +1,506 @@
+{
+ "id": "une-tabla-jockey",
+ "title": "Tabla de dimensiones: grupo electrica + electrica + jockey (bomba principal a jockey)",
+ "file": "UNE 23-500-90.pdf",
+ "page": 20,
+ "columns": [
+  {
+   "key": "bomba",
+   "label": "Tamano de bomba",
+   "unit": ""
+  },
+  {
+   "key": "p_kw",
+   "label": "Potencia bomba principal",
+   "unit": "kW"
+  },
+  {
+   "key": "jockey_modelo",
+   "label": "Bomba jockey",
+   "unit": ""
+  },
+  {
+   "key": "jockey_kw",
+   "label": "Potencia jockey",
+   "unit": "kW"
+  }
+ ],
+ "rows": [
+  {
+   "bomba": "ENR 32-200",
+   "p_kw": 5.5,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 32-200",
+   "p_kw": 7.5,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 32-200",
+   "p_kw": 11,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 32-250",
+   "p_kw": 7.5,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 32-250",
+   "p_kw": 11,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 32-250",
+   "p_kw": 15,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 40-200",
+   "p_kw": 5.5,
+   "jockey_modelo": "CVM A/10",
+   "jockey_kw": 0.75
+  },
+  {
+   "bomba": "ENR 40-200",
+   "p_kw": 7.5,
+   "jockey_modelo": "CVM A/10",
+   "jockey_kw": 0.75
+  },
+  {
+   "bomba": "ENR 40-200",
+   "p_kw": 11,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 40-200",
+   "p_kw": 15,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 40-250",
+   "p_kw": 11,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 40-250",
+   "p_kw": 15,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 40-250",
+   "p_kw": 18.5,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 40-315",
+   "p_kw": 18.5,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 40-315",
+   "p_kw": 22,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 40-315",
+   "p_kw": 30,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 40-315",
+   "p_kw": 37,
+   "jockey_modelo": "EVMG 1014",
+   "jockey_kw": 5.5
+  },
+  {
+   "bomba": "ENR 50-200",
+   "p_kw": 11,
+   "jockey_modelo": "CVM A/10",
+   "jockey_kw": 0.75
+  },
+  {
+   "bomba": "ENR 50-200",
+   "p_kw": 15,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 50-200",
+   "p_kw": 18.5,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 50-200",
+   "p_kw": 22,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "ENR 50-250",
+   "p_kw": 15,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 50-250",
+   "p_kw": 18.5,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 50-250",
+   "p_kw": 22,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "ENR 50-250",
+   "p_kw": 30,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 50-315",
+   "p_kw": 30,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 50-315",
+   "p_kw": 37,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 50-315",
+   "p_kw": 45,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 50-315",
+   "p_kw": 55,
+   "jockey_modelo": "EVMG 1014",
+   "jockey_kw": 5.5
+  },
+  {
+   "bomba": "ENR 65-200",
+   "p_kw": 15,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 65-200",
+   "p_kw": 18.5,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 65-200",
+   "p_kw": 22,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 65-250",
+   "p_kw": 30,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 65-250 (30/22)",
+   "p_kw": 30,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 65-250 (40/30)",
+   "p_kw": 40,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 65-250 (50/37)",
+   "p_kw": 50,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 65-250 (60/45)",
+   "p_kw": 60,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 65-315",
+   "p_kw": 45,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 65-315",
+   "p_kw": 55,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 65-315",
+   "p_kw": 75,
+   "jockey_modelo": "EVMG 1014",
+   "jockey_kw": 5.5
+  },
+  {
+   "bomba": "ENR 65-315",
+   "p_kw": 90,
+   "jockey_modelo": "EVMG 1014",
+   "jockey_kw": 5.5
+  },
+  {
+   "bomba": "ENR 80-200",
+   "p_kw": 10.5,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 80-200",
+   "p_kw": 22,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-200",
+   "p_kw": 30,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-200",
+   "p_kw": 37,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-200",
+   "p_kw": 45,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-250",
+   "p_kw": 30,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-250",
+   "p_kw": 37,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 80-250",
+   "p_kw": 45,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 80-250",
+   "p_kw": 55,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 80-250",
+   "p_kw": 75,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 80-315",
+   "p_kw": 55,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 80-315",
+   "p_kw": 75,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 80-315",
+   "p_kw": 90,
+   "jockey_modelo": "EVMG 1014",
+   "jockey_kw": 5.5
+  },
+  {
+   "bomba": "ENR 100-200",
+   "p_kw": 30,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 100-200",
+   "p_kw": 37,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 100-200",
+   "p_kw": 45,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 100-250",
+   "p_kw": 55,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "ENR 100-250",
+   "p_kw": 75,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 100-250",
+   "p_kw": 90,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENR 100-315",
+   "p_kw": 110,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 100-315",
+   "p_kw": 90,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENR 125-200",
+   "p_kw": 55,
+   "jockey_modelo": "CVM A/12",
+   "jockey_kw": 0.9
+  },
+  {
+   "bomba": "ENR 125-200",
+   "p_kw": 75,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 125-200",
+   "p_kw": 90,
+   "jockey_modelo": "CVM A/15",
+   "jockey_kw": 1.1
+  },
+  {
+   "bomba": "ENR 125-250",
+   "p_kw": 75,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "ENR 125-250",
+   "p_kw": 90,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "PQ 125-250",
+   "p_kw": 75,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.7
+  },
+  {
+   "bomba": "PQ 125-250",
+   "p_kw": 90,
+   "jockey_modelo": "CVM B/23",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "PQ 125-250",
+   "p_kw": 110,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "PQ 125-315",
+   "p_kw": 132,
+   "jockey_modelo": "MVEX 125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "PQ 125-315",
+   "p_kw": 150,
+   "jockey_modelo": "MVEX 125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENI 100-250",
+   "p_kw": 75,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENI 100-250",
+   "p_kw": 90,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENI 100-250",
+   "p_kw": 110,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENI 125-250",
+   "p_kw": 90,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENI 125-250",
+   "p_kw": 110,
+   "jockey_modelo": "CVM B/25",
+   "jockey_kw": 1.85
+  },
+  {
+   "bomba": "ENI 125-250",
+   "p_kw": 132,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  },
+  {
+   "bomba": "ENI 125-250",
+   "p_kw": 160,
+   "jockey_modelo": "MVEX125/10",
+   "jockey_kw": 4
+  }
+ ],
+ "lookup_rule": "Entrar con el modelo y potencia de la bomba principal; la columna jockey da el modelo y la potencia del equipo auxiliar.",
+ "notes": "Tabla de dimensiones del catalogo EBARA, pagina 27 del original (PDF p. 20). Valores verificados visualmente. Reproduce el bloque 'Grupo ELECTRICA + ELECTRICA + JOCKEY'. Las paginas escaneadas no transcriptas se marcan [ILEGIBLE] en errata.md."
+}

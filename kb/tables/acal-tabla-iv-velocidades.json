@@ -1,0 +1,72 @@
+{
+ "id": "acal-tabla-iv-velocidades",
+ "title": "Tabla IV: velocidades y caudales maximos de agua caliente",
+ "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+ "page": 13,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  },
+  {
+   "key": "vmax",
+   "label": "Velocidad maxima",
+   "unit": "m/s"
+  },
+  {
+   "key": "qmax",
+   "label": "Caudal maximo",
+   "unit": "L/s"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 15,
+   "vmax": 1.6,
+   "qmax": 0.2
+  },
+  {
+   "dn": 20,
+   "vmax": 1.95,
+   "qmax": 0.6
+  },
+  {
+   "dn": 25,
+   "vmax": 2.25,
+   "qmax": 1.2
+  },
+  {
+   "dn": 32,
+   "vmax": 2.5,
+   "qmax": 2.5
+  },
+  {
+   "dn": 40,
+   "vmax": 2.5,
+   "qmax": 4.0
+  },
+  {
+   "dn": 50,
+   "vmax": 2.5,
+   "qmax": 5.7
+  },
+  {
+   "dn": 60,
+   "vmax": 2.5,
+   "qmax": 8.9
+  },
+  {
+   "dn": 75,
+   "vmax": 2.5,
+   "qmax": 12.0
+  },
+  {
+   "dn": 100,
+   "vmax": 2.5,
+   "qmax": 18.0
+  }
+ ],
+ "lookup_rule": "Entrar con el diametro; no superar el caudal maximo.",
+ "notes": "Tabla IV Agua Caliente 2016; misma estructura que la Tabla IV de NP 68."
+}

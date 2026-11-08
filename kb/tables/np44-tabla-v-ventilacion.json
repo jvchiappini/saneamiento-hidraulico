@@ -1,0 +1,252 @@
+{
+ "id": "np44-tabla-v-ventilacion",
+ "title": "Tabla V: dimensionamiento de columnas de ventilacion",
+ "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+ "page": 18,
+ "columns": [
+  {
+   "key": "dnb",
+   "label": "DN columna de bajada",
+   "unit": "mm"
+  },
+  {
+   "key": "ud",
+   "label": "UD",
+   "unit": "UD"
+  },
+  {
+   "key": "v40",
+   "label": "Largo max DN40",
+   "unit": "m"
+  },
+  {
+   "key": "v50",
+   "label": "Largo max DN50",
+   "unit": "m"
+  },
+  {
+   "key": "v75",
+   "label": "Largo max DN75",
+   "unit": "m"
+  },
+  {
+   "key": "v100",
+   "label": "Largo max DN100",
+   "unit": "m"
+  },
+  {
+   "key": "v150",
+   "label": "Largo max DN150",
+   "unit": "m"
+  },
+  {
+   "key": "v200",
+   "label": "Largo max DN200",
+   "unit": "m"
+  }
+ ],
+ "rows": [
+  {
+   "dnb": 40,
+   "ud": 8,
+   "v40": 46,
+   "v50": null,
+   "v75": null,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 40,
+   "ud": 10,
+   "v40": 30,
+   "v50": null,
+   "v75": null,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 50,
+   "ud": 12,
+   "v40": 23,
+   "v50": 61,
+   "v75": null,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 50,
+   "ud": 20,
+   "v40": 15,
+   "v50": 46,
+   "v75": null,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 75,
+   "ud": 10,
+   "v40": 13,
+   "v50": 46,
+   "v75": 317,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 75,
+   "ud": 21,
+   "v40": 10,
+   "v50": 33,
+   "v75": 247,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 75,
+   "ud": 53,
+   "v40": 8,
+   "v50": 29,
+   "v75": 207,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 75,
+   "ud": 102,
+   "v40": 8,
+   "v50": 26,
+   "v75": 189,
+   "v100": null,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 100,
+   "ud": 43,
+   "v40": null,
+   "v50": 11,
+   "v75": 76,
+   "v100": 299,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 100,
+   "ud": 140,
+   "v40": null,
+   "v50": 8,
+   "v75": 61,
+   "v100": 229,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 100,
+   "ud": 320,
+   "v40": null,
+   "v50": 7,
+   "v75": 52,
+   "v100": 195,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 100,
+   "ud": 530,
+   "v40": null,
+   "v50": 6,
+   "v75": 46,
+   "v100": 177,
+   "v150": null,
+   "v200": null
+  },
+  {
+   "dnb": 150,
+   "ud": 500,
+   "v40": null,
+   "v50": null,
+   "v75": 10,
+   "v100": 40,
+   "v150": 305,
+   "v200": null
+  },
+  {
+   "dnb": 150,
+   "ud": 1100,
+   "v40": null,
+   "v50": null,
+   "v75": 8,
+   "v100": 31,
+   "v150": 238,
+   "v200": null
+  },
+  {
+   "dnb": 150,
+   "ud": 2000,
+   "v40": null,
+   "v50": null,
+   "v75": 7,
+   "v100": 26,
+   "v150": 201,
+   "v200": null
+  },
+  {
+   "dnb": 150,
+   "ud": 2900,
+   "v40": null,
+   "v50": null,
+   "v75": 6,
+   "v100": 23,
+   "v150": 183,
+   "v200": null
+  },
+  {
+   "dnb": 200,
+   "ud": 1800,
+   "v40": null,
+   "v50": null,
+   "v75": null,
+   "v100": 10,
+   "v150": 73,
+   "v200": 286
+  },
+  {
+   "dnb": 200,
+   "ud": 3400,
+   "v40": null,
+   "v50": null,
+   "v75": null,
+   "v100": 7,
+   "v150": 57,
+   "v200": 219
+  },
+  {
+   "dnb": 200,
+   "ud": 5600,
+   "v40": null,
+   "v50": null,
+   "v75": null,
+   "v100": 6,
+   "v150": 49,
+   "v200": 186
+  },
+  {
+   "dnb": 200,
+   "ud": 7600,
+   "v40": null,
+   "v50": null,
+   "v75": null,
+   "v100": 5,
+   "v150": 43,
+   "v200": 171
+  }
+ ],
+ "lookup_rule": "Entrar con DN de columna de bajada y UD; elegir el DN de ventilacion cuyo largo maximo sea suficiente.",
+ "notes": "Tabla V NP 44. El largo maximo se mide desde la extremidad inferior hasta la superior de la ventilacion."
+}

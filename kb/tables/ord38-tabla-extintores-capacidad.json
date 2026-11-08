@@ -1,0 +1,46 @@
+{
+ "id": "ord38-tabla-extintores-capacidad",
+ "title": "Capacidad minima de una unidad extintora",
+ "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+ "page": 10,
+ "columns": [
+  {
+   "key": "agente",
+   "label": "Agente extintor",
+   "unit": ""
+  },
+  {
+   "key": "cap",
+   "label": "Capacidad minima",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "agente": "Agua Presurizada (AP)",
+   "cap": "10 litros"
+  },
+  {
+   "agente": "Espuma Quimica o Mecanica (EQ o EM)",
+   "cap": "10 litros"
+  },
+  {
+   "agente": "Gas Carbonico (CO2)",
+   "cap": "6 kg"
+  },
+  {
+   "agente": "Polvo Quimico Seco o Humedo (PQS o PQH)",
+   "cap": "4 kg"
+  },
+  {
+   "agente": "Gas Halogenado (Halon)",
+   "cap": "3 kg"
+  },
+  {
+   "agente": "Agua Nebulizada (AN)",
+   "cap": "3 kg"
+  }
+ ],
+ "lookup_rule": "Cada extintor debe alcanzar la capacidad minima para contar como unidad extintora.",
+ "notes": "Ordenanza 038 Art. 44.1."
+}

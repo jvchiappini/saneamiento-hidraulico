@@ -1,0 +1,77 @@
+{
+ "id": "trat-tabla-ii-retencion",
+ "title": "Tabla II: periodo de retencion de camaras septicas",
+ "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+ "page": 8,
+ "columns": [
+  {
+   "key": "caudal",
+   "label": "Caudal diario",
+   "unit": "L/dia"
+  },
+  {
+   "key": "horas",
+   "label": "Retencion",
+   "unit": "h"
+  },
+  {
+   "key": "dias",
+   "label": "Retencion",
+   "unit": "d"
+  }
+ ],
+ "rows": [
+  {
+   "caudal": "< 6000",
+   "horas": 24,
+   "dias": 1.0
+  },
+  {
+   "caudal": "6000 a 7000",
+   "horas": 21,
+   "dias": 0.875
+  },
+  {
+   "caudal": "7000 a 8000",
+   "horas": 19,
+   "dias": 0.79
+  },
+  {
+   "caudal": "8000 a 9000",
+   "horas": 18,
+   "dias": 0.75
+  },
+  {
+   "caudal": "9000 a 10000",
+   "horas": 17,
+   "dias": 0.71
+  },
+  {
+   "caudal": "10000 a 11000",
+   "horas": 16,
+   "dias": 0.67
+  },
+  {
+   "caudal": "11000 a 12000",
+   "horas": 15,
+   "dias": 0.625
+  },
+  {
+   "caudal": "12000 a 13000",
+   "horas": 14,
+   "dias": 0.585
+  },
+  {
+   "caudal": "13000 a 14000",
+   "horas": 13,
+   "dias": 0.54
+  },
+  {
+   "caudal": "> 14000",
+   "horas": 12,
+   "dias": 0.5
+  }
+ ],
+ "lookup_rule": "Entrar con el caudal diario y tomar el periodo de retencion correspondiente.",
+ "notes": "Tabla II norma de tratamiento 2016."
+}

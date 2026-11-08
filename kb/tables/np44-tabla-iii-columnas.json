@@ -1,0 +1,80 @@
+{
+ "id": "np44-tabla-iii-columnas",
+ "title": "Tabla III: columnas de bajada - diametros minimos",
+ "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+ "page": 9,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "DN",
+   "unit": "mm"
+  },
+  {
+   "key": "h3",
+   "label": "Edificios hasta 3 pisos",
+   "unit": "UD"
+  },
+  {
+   "key": "m3p1",
+   "label": ">3 pisos, en 1 piso",
+   "unit": "UD"
+  },
+  {
+   "key": "m3tot",
+   "label": ">3 pisos, toda la columna",
+   "unit": "UD"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 40,
+   "h3": 4,
+   "m3p1": 2,
+   "m3tot": 8
+  },
+  {
+   "dn": 50,
+   "h3": 10,
+   "m3p1": 6,
+   "m3tot": 24
+  },
+  {
+   "dn": 75,
+   "h3": 30,
+   "m3p1": 16,
+   "m3tot": 70
+  },
+  {
+   "dn": 100,
+   "h3": 240,
+   "m3p1": 90,
+   "m3tot": 500
+  },
+  {
+   "dn": 150,
+   "h3": 960,
+   "m3p1": 350,
+   "m3tot": 1900
+  },
+  {
+   "dn": 200,
+   "h3": 2200,
+   "m3p1": 600,
+   "m3tot": 3600
+  },
+  {
+   "dn": 250,
+   "h3": 3800,
+   "m3p1": 1000,
+   "m3tot": 5600
+  },
+  {
+   "dn": 300,
+   "h3": 6000,
+   "m3p1": 1500,
+   "m3tot": 8400
+  }
+ ],
+ "lookup_rule": "Entrar con DN y tipo de edificio; la columna no puede ser menor que la mayor caneria unida.",
+ "notes": "Tabla III NP 44."
+}

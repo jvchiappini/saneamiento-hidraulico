@@ -1,0 +1,21 @@
+[
+ {
+  "id": "bresse",
+  "name": "Fórmula de Bresse (recalque)",
+  "latex": "D = 1{,}3sqrt{Q},X^{1/4}",
+  "vars": {
+   "D": "diámetro (m)",
+   "Q": "caudal (m³/s)",
+   "X": "horas de funcionamiento / 24"
+  },
+  "source": "NP 68 (2016)",
+  "pages": [
+   20
+  ],
+  "keywords": [
+   "impulsion",
+   "recalque",
+   "diametro"
+  ]
+ }
+]

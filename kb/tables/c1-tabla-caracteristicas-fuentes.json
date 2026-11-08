@@ -1,0 +1,86 @@
+{
+ "id": "c1-tabla-caracteristicas-fuentes",
+ "title": "Caracteristicas de agua de rio, pozo y lluvia",
+ "file": "CLASE 1 (4).pdf",
+ "page": 15,
+ "columns": [
+  {
+   "key": "parametro",
+   "label": "Parametro",
+   "unit": ""
+  },
+  {
+   "key": "rio",
+   "label": "Agua de rio (superficial)",
+   "unit": ""
+  },
+  {
+   "key": "pozo",
+   "label": "Agua de pozo (subterranea)",
+   "unit": ""
+  },
+  {
+   "key": "lluvia",
+   "label": "Agua de lluvia",
+   "unit": ""
+  }
+ ],
+ "rows": [
+  {
+   "parametro": "Turbidez (NTU)",
+   "rio": "10 - 200",
+   "pozo": "< 5",
+   "lluvia": "< 1"
+  },
+  {
+   "parametro": "Color aparente (uH)",
+   "rio": "10 - 100",
+   "pozo": "< 15",
+   "lluvia": "< 5"
+  },
+  {
+   "parametro": "pH",
+   "rio": "6,5 - 8,0",
+   "pozo": "6,5 - 8,5",
+   "lluvia": "5,0 - 6,5"
+  },
+  {
+   "parametro": "Dureza total (mg/L CaCO3)",
+   "rio": "30 - 150",
+   "pozo": "100 - 500",
+   "lluvia": "< 10"
+  },
+  {
+   "parametro": "Solidos disueltos totales (mg/L)",
+   "rio": "50 - 500",
+   "pozo": "200 - 1000",
+   "lluvia": "< 50"
+  },
+  {
+   "parametro": "Hierro (mg/L)",
+   "rio": "< 0,5",
+   "pozo": "0,3 - 5,0",
+   "lluvia": "< 0,1"
+  },
+  {
+   "parametro": "Nitratos (mg/L)",
+   "rio": "< 5",
+   "pozo": "0 - 50",
+   "lluvia": "0"
+  },
+  {
+   "parametro": "Coliformes totales (NMP/100 mL)",
+   "rio": "10^3 - 10^6",
+   "pozo": "0 - 10^3",
+   "lluvia": "0 - 10^2"
+  },
+  {
+   "parametro": "Cloro residual (mg/L)",
+   "rio": "0",
+   "pozo": "0",
+   "lluvia": "0"
+  }
+ ],
+ "lookup_rule": "Comparar el parametro del agua cruda con el rango de la fuente correspondiente.",
+ "notes": "Tabla de la Clase 1 pagina 15. Agua de rio: afectada por lluvias y descargas, requiere tratamiento completo. Pozo: puede ser dura y con metales. Lluvia: muy blanda, riesgo microbiologico si se almacena mal."
+}

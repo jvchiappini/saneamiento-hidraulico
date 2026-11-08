@@ -1,0 +1,498 @@
+[
+ {
+  "id": "pub-potab-captacion",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Captacion y sistema de bombeo",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#captacion"
+ },
+ {
+  "id": "pub-potab-aquietamiento",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Camara de aquietamiento",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#aquietamiento"
+ },
+ {
+  "id": "pub-potab-medidor",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Medidor de caudal",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#parshall"
+ },
+ {
+  "id": "pub-potab-mezcla",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Mezcla rapida",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#vertedero"
+ },
+ {
+  "id": "pub-potab-floculador",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Floculador y mezcla lenta",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#floculador"
+ },
+ {
+  "id": "pub-potab-sedimentacion",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Sedimentacion",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#sedimentador"
+ },
+ {
+  "id": "pub-potab-filtracion",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Filtracion",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#filtracion"
+ },
+ {
+  "id": "pub-potab-lavado",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Tanque y caudal de lavado",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#filtracion"
+ },
+ {
+  "id": "pub-potab-cloracion",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Desinfeccion (cloracion)",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#cloracion"
+ },
+ {
+  "id": "pub-potab-reservorio",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Reservorio de almacenamiento de agua tratada",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#reservorio"
+ },
+ {
+  "id": "pub-potab-aductora",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Diametros de aductora y sistema de impulsion",
+  "kind": "memoria",
+  "page_hint": "potabilizadora.html#reservorio"
+ },
+ {
+  "id": "pub-red-topografia",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Topografia",
+  "kind": "memoria",
+  "page_hint": "red.html#datos"
+ },
+ {
+  "id": "pub-red-tanque",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Tanque de almacenamiento",
+  "kind": "memoria",
+  "page_hint": "red.html#tanque"
+ },
+ {
+  "id": "pub-red-diametros",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Diametros de la malla (valvulas, ventosas, etc.)",
+  "kind": "memoria",
+  "page_hint": "red.html#red"
+ },
+ {
+  "id": "pub-red-presiones",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Presiones (minimas, maximas)",
+  "kind": "memoria",
+  "page_hint": "red.html#presiones"
+ },
+ {
+  "id": "pub-cloacal-topografia",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Topografia",
+  "kind": "memoria",
+  "page_hint": "cloacal.html#base"
+ },
+ {
+  "id": "pub-cloacal-definicion",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Definicion de la red (material, registros, etc.)",
+  "kind": "memoria",
+  "page_hint": "cloacal.html#registros"
+ },
+ {
+  "id": "pub-cloacal-pendientes",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Pendientes y velocidades (minimas, maximas)",
+  "kind": "memoria",
+  "page_hint": "cloacal.html#planilla"
+ },
+ {
+  "id": "pub-cloacal-diametros",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Diametros (colectora principal, secundaria, etc.)",
+  "kind": "memoria",
+  "page_hint": "cloacal.html#planilla"
+ },
+ {
+  "id": "pub-lagunas-parametros",
+  "area": "publico",
+  "group": "Lagunas de estabilizacion en serie",
+  "item": "Definicion de los parametros de diseno",
+  "kind": "memoria",
+  "page_hint": null
+ },
+ {
+  "id": "pub-lagunas-preliminar",
+  "area": "publico",
+  "group": "Lagunas de estabilizacion en serie",
+  "item": "Dimensionamiento del tratamiento preliminar",
+  "kind": "memoria",
+  "page_hint": null
+ },
+ {
+  "id": "pub-lagunas-dimensionamiento",
+  "area": "publico",
+  "group": "Lagunas de estabilizacion en serie",
+  "item": "Dimensionamiento de la laguna de estabilizacion",
+  "kind": "memoria",
+  "page_hint": null
+ },
+ {
+  "id": "pub-dis-potab-flujograma",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Flujograma del proceso",
+  "kind": "diseno",
+  "page_hint": "potabilizadora.html#captacion"
+ },
+ {
+  "id": "pub-dis-potab-cortes",
+  "area": "publico",
+  "group": "Planta potabilizadora convencional",
+  "item": "Planta y cortes de cada componente",
+  "kind": "diseno",
+  "page_hint": "potabilizadora.html#captacion"
+ },
+ {
+  "id": "pub-dis-red-flujograma",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Flujograma de la red",
+  "kind": "diseno",
+  "page_hint": "red.html#red"
+ },
+ {
+  "id": "pub-dis-red-planta",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Planta general y perfiles",
+  "kind": "diseno",
+  "page_hint": "red.html#red"
+ },
+ {
+  "id": "pub-dis-red-detalles",
+  "area": "publico",
+  "group": "Red de abastecimiento",
+  "item": "Detalles en planta y corte de los componentes",
+  "kind": "diseno",
+  "page_hint": "red.html#red"
+ },
+ {
+  "id": "pub-dis-cloacal-flujograma",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Flujograma de la red",
+  "kind": "diseno",
+  "page_hint": "cloacal.html#planilla"
+ },
+ {
+  "id": "pub-dis-cloacal-planta",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Planta general y perfiles",
+  "kind": "diseno",
+  "page_hint": "cloacal.html#planilla"
+ },
+ {
+  "id": "pub-dis-cloacal-detalles",
+  "area": "publico",
+  "group": "Red de alcantarillado cloacal",
+  "item": "Detalles en planta y corte de los componentes",
+  "kind": "diseno",
+  "page_hint": "cloacal.html#planilla"
+ },
+ {
+  "id": "pub-dis-lagunas-flujograma",
+  "area": "publico",
+  "group": "Lagunas de estabilizacion en serie",
+  "item": "Flujograma del proceso",
+  "kind": "diseno",
+  "page_hint": null
+ },
+ {
+  "id": "pub-dis-lagunas-cortes",
+  "area": "publico",
+  "group": "Lagunas de estabilizacion en serie",
+  "item": "Planta y cortes de cada componente",
+  "kind": "diseno",
+  "page_hint": null
+ },
+ {
+  "id": "pred-provision",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Consumo de agua y datos preliminares",
+  "kind": "memoria",
+  "page_hint": "predial.html#edificio"
+ },
+ {
+  "id": "pred-tuberia",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Tuberia predial o acometida",
+  "kind": "memoria",
+  "page_hint": "predial.html#acometida"
+ },
+ {
+  "id": "pred-tanques",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Tanques de reserva y verificacion del tiempo de retencion",
+  "kind": "memoria",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-impulsion",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Sistema de impulsion o recalque",
+  "kind": "memoria",
+  "page_hint": "predial.html#bombeo"
+ },
+ {
+  "id": "pred-uh-fria",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Detalle de unidades humedas de agua fria",
+  "kind": "memoria",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-uh-caliente",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Detalle de unidades humedas de agua caliente y termotanque",
+  "kind": "memoria",
+  "page_hint": "predial.html#caliente"
+ },
+ {
+  "id": "pred-columnas",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Columnas de bajada o alimentacion, puente",
+  "kind": "memoria",
+  "page_hint": "predial.html#columnas"
+ },
+ {
+  "id": "pred-incendio",
+  "area": "predial",
+  "group": "Sistema contra incendio",
+  "item": "Sistema contra incendio",
+  "kind": "memoria",
+  "page_hint": "predial.html#incendio"
+ },
+ {
+  "id": "pred-incendio-volumen",
+  "area": "predial",
+  "group": "Sistema contra incendio",
+  "item": "Volumen contra incendio",
+  "kind": "memoria",
+  "page_hint": "predial.html#incendio"
+ },
+ {
+  "id": "pred-incendio-bie",
+  "area": "predial",
+  "group": "Sistema contra incendio",
+  "item": "Columna de alimentacion, BIE, BIS",
+  "kind": "memoria",
+  "page_hint": "predial.html#incendio"
+ },
+ {
+  "id": "pred-cloacal-uh",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Detalle de las unidades humedas",
+  "kind": "memoria",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-cloacal-columnas",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Columnas de bajada",
+  "kind": "memoria",
+  "page_hint": "predial.html#columnas"
+ },
+ {
+  "id": "pred-cloacal-interceptores",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Interceptores (desengrasadores, ventilacion)",
+  "kind": "memoria",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-cloacal-ramales",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Ramales y registros",
+  "kind": "memoria",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-pluvial-edificio",
+  "area": "predial",
+  "group": "Desague pluvial",
+  "item": "Desague de edificio",
+  "kind": "memoria",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-pluvial-patio",
+  "area": "predial",
+  "group": "Desague pluvial",
+  "item": "Desague de patio",
+  "kind": "memoria",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-pluvial-ramales",
+  "area": "predial",
+  "group": "Desague pluvial",
+  "item": "Ramales, registros y salida al cordon",
+  "kind": "memoria",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-residuos-depto",
+  "area": "predial",
+  "group": "Residuos solidos",
+  "item": "Manejo por departamento",
+  "kind": "memoria",
+  "page_hint": "predial.html#edificio"
+ },
+ {
+  "id": "pred-residuos-edificio",
+  "area": "predial",
+  "group": "Residuos solidos",
+  "item": "Manejo del edificio",
+  "kind": "memoria",
+  "page_hint": "predial.html#edificio"
+ },
+ {
+  "id": "pred-dis-ubicacion",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Plano de ubicacion",
+  "kind": "diseno",
+  "page_hint": "predial.html#edificio"
+ },
+ {
+  "id": "pred-dis-corte",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Corte general",
+  "kind": "diseno",
+  "page_hint": "predial.html#edificio"
+ },
+ {
+  "id": "pred-dis-tanques",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Tanques de reserva",
+  "kind": "diseno",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-dis-planta-tipo",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Planta tipo",
+  "kind": "diseno",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-dis-uh",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Planta de unidades humedas",
+  "kind": "diseno",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-dis-axo",
+  "area": "predial",
+  "group": "Provision de agua",
+  "item": "Axonometria",
+  "kind": "diseno",
+  "page_hint": "predial.html#columnas"
+ },
+ {
+  "id": "pred-dis-incendio",
+  "area": "predial",
+  "group": "Sistema contra incendio",
+  "item": "Volumen de reserva, columna, BIE y BIS",
+  "kind": "diseno",
+  "page_hint": "predial.html#incendio"
+ },
+ {
+  "id": "pred-dis-cloacal-planta",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Planta de unidades humedas y corte general",
+  "kind": "diseno",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-dis-cloacal-interceptores",
+  "area": "predial",
+  "group": "Desague cloacal",
+  "item": "Interceptores y ramales/registros",
+  "kind": "diseno",
+  "page_hint": "predial.html#ambientes"
+ },
+ {
+  "id": "pred-dis-pluvial",
+  "area": "predial",
+  "group": "Desague pluvial",
+  "item": "Desague de edificio, patio, ramales/registros/salida",
+  "kind": "diseno",
+  "page_hint": "predial.html#tanques"
+ },
+ {
+  "id": "pred-dis-residuos",
+  "area": "predial",
+  "group": "Residuos solidos",
+  "item": "Manejo por departamento y del edificio",
+  "kind": "diseno",
+  "page_hint": "predial.html#edificio"
+ }
+]

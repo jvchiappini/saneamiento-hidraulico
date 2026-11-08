@@ -1,0 +1,442 @@
+[
+ {
+  "id": "np68-formula-caudal-pesos",
+  "name": "Caudal por suma de pesos (NP 68)",
+  "latex": "Q = c\\sqrt{\\sum P}",
+  "variables": [
+   {
+    "sym": "Q",
+    "desc": "caudal del tramo",
+    "unit": "L/s"
+   },
+   {
+    "sym": "c",
+    "desc": "coeficiente de descarga",
+    "unit": "L/s"
+   },
+   {
+    "sym": "\\sum P",
+    "desc": "suma de pesos de las piezas alimentadas",
+    "unit": "-"
+   }
+  ],
+  "result": {
+   "sym": "Q",
+   "unit": "L/s"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 13,
+  "notes": "c = 0,30 L/s."
+ },
+ {
+  "id": "np68-formula-flamant",
+  "name": "Flamant (PVC rigido)",
+  "latex": "J=\\frac{4\\times0{,}000135\\,V^{1{,}75}}{D^{1{,}25}}",
+  "variables": [
+   {
+    "sym": "V",
+    "desc": "velocidad",
+    "unit": "m/s"
+   },
+   {
+    "sym": "D",
+    "desc": "diametro",
+    "unit": "m"
+   }
+  ],
+  "result": {
+   "sym": "J",
+   "unit": "m/m"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 16,
+  "notes": "Forma usada en la Clase 7: gamma_m/m = (4*0,000135/fi)*raiz4(V^7/fi)."
+ },
+ {
+  "id": "np68-formula-fair-whipple",
+  "name": "Fair-Whipple-Hsiao (acero galvanizado)",
+  "latex": "Q=27{,}113\\,D^{2{,}596}\\,J^{0{,}532}",
+  "variables": [
+   {
+    "sym": "D",
+    "desc": "diametro",
+    "unit": "m"
+   },
+   {
+    "sym": "J",
+    "desc": "perdida unitaria",
+    "unit": "m/m"
+   }
+  ],
+  "result": {
+   "sym": "Q",
+   "unit": "m3/s"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 15,
+  "notes": "En el Excel se invierte: J=(Q/(27,113 D^2,596))^(1/0,532)."
+ },
+ {
+  "id": "np68-formula-potencia",
+  "name": "Potencia del equipo elevatorio (NP 68)",
+  "latex": "P\\,[CV]=\\frac{\\gamma\\,Q\\,H_{man}}{75\\,\\eta}",
+  "variables": [
+   {
+    "sym": "\\gamma",
+    "desc": "peso especifico del agua",
+    "unit": "kg/m3"
+   },
+   {
+    "sym": "Q",
+    "desc": "caudal de descarga",
+    "unit": "m3/s"
+   },
+   {
+    "sym": "H_{man}",
+    "desc": "altura manometrica",
+    "unit": "m"
+   },
+   {
+    "sym": "\\eta",
+    "desc": "rendimiento global",
+    "unit": "-"
+   }
+  ],
+  "result": {
+   "sym": "P",
+   "unit": "CV"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 23,
+  "notes": "HP = 1,014 CV."
+ },
+ {
+  "id": "np68-formula-acometida",
+  "name": "Caudal de acometida predial",
+  "latex": "Q=\\frac{C_d}{T_M}",
+  "variables": [
+   {
+    "sym": "C_d",
+    "desc": "consumo diario",
+    "unit": "L"
+   },
+   {
+    "sym": "T_M",
+    "desc": "tiempo para cubrir el consumo maximo",
+    "unit": "s"
+   }
+  ],
+  "result": {
+   "sym": "Q",
+   "unit": "L/s"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 12,
+  "notes": "TM normalmente 7200 s (2 h)."
+ },
+ {
+  "id": "np68-formula-velocidad-max",
+  "name": "Velocidad maxima en tuberias (NP 68)",
+  "latex": "V=\\frac{14}{\\sqrt{D}}",
+  "variables": [
+   {
+    "sym": "D",
+    "desc": "diametro nominal",
+    "unit": "m"
+   }
+  ],
+  "result": {
+   "sym": "V",
+   "unit": "m/s"
+  },
+  "module": "predial",
+  "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+  "page": 14,
+  "notes": "Ademas V <= 2,50 m/s en edificios, hospitales, residencias y hoteles."
+ },
+ {
+  "id": "np44-formula-interceptor",
+  "name": "Volumen de interceptor de grasa",
+  "latex": "V = 20 + 2N",
+  "variables": [
+   {
+    "sym": "N",
+    "desc": "numero de personas servidas por la cocina",
+    "unit": "personas"
+   }
+  ],
+  "result": {
+   "sym": "V",
+   "unit": "L"
+  },
+  "module": "cloacal",
+  "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+  "page": 12,
+  "notes": "20 litros fijos mas 2 litros por persona."
+ },
+ {
+  "id": "parshall-formula",
+  "name": "Caudal del aforador Parshall",
+  "latex": "Q=K\\,H^{n}",
+  "variables": [
+   {
+    "sym": "H",
+    "desc": "altura de agua medida a 2/3 de la seccion convergente",
+    "unit": "m"
+   },
+   {
+    "sym": "K",
+    "desc": "coeficiente tabulado segun ancho de garganta",
+    "unit": "-"
+   },
+   {
+    "sym": "n",
+    "desc": "exponente tabulado segun ancho de garganta",
+    "unit": "-"
+   }
+  ],
+  "result": {
+   "sym": "Q",
+   "unit": "m3/s"
+  },
+  "module": "potabilizadora",
+  "file": "ma2_AFORADOR_PARSHALL.doc",
+  "page": 1,
+  "notes": "K y n dependen de W (pulgadas de garganta)."
+ },
+ {
+  "id": "formula-bresse",
+  "name": "Diametro economico de impulsion (Bresse)",
+  "latex": "D=1{,}3\\,Q_b^{0{,}5}\\,X^{0{,}25},\\qquad X=\\frac{N\\,horas}{24}",
+  "variables": [
+   {
+    "sym": "Q_b",
+    "desc": "caudal de bombeo",
+    "unit": "m3/s"
+   },
+   {
+    "sym": "N",
+    "desc": "horas de operacion de la bomba por dia",
+    "unit": "h"
+   }
+  ],
+  "result": {
+   "sym": "D",
+   "unit": "m"
+  },
+  "module": "impulsion",
+  "file": "CLASE 2 (4).pdf",
+  "page": 26,
+  "notes": "Usada en el Excel de impulsion del rio y al tanque; luego se adoptan diametros comerciales y se verifica la velocidad."
+ },
+ {
+  "id": "formula-hardy-cross",
+  "name": "Correccion de caudal en Hardy Cross",
+  "latex": "\\Delta Q=-\\frac{\\sum H_i}{1{,}851\\sum (H_i/Q_i)}",
+  "variables": [
+   {
+    "sym": "H_i",
+    "desc": "perdida de carga en el tramo i",
+    "unit": "m"
+   },
+   {
+    "sym": "Q_i",
+    "desc": "caudal en el tramo i",
+    "unit": "m3/s"
+   }
+  ],
+  "result": {
+   "sym": "\\Delta Q",
+   "unit": "m3/s"
+  },
+  "module": "red",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "page": "hoja Caudales",
+  "notes": "Se aplica por circuito hasta que la suma de perdidas sea cero; el factor 1,851 corresponde a Hazen-Williams."
+ },
+ {
+  "id": "formula-hazen-williams",
+  "name": "Hazen-Williams (Excel Caudales)",
+  "latex": "J=10{,}643\\,C^{-1{,}85}\\,D^{-4{,}87}\\,|Q|^{1{,}85}\\operatorname{sign}(Q)",
+  "variables": [
+   {
+    "sym": "C",
+    "desc": "coeficiente de rugosidad",
+    "unit": "-"
+   },
+   {
+    "sym": "D",
+    "desc": "diametro",
+    "unit": "m"
+   },
+   {
+    "sym": "Q",
+    "desc": "caudal",
+    "unit": "m3/s"
+   }
+  ],
+  "result": {
+   "sym": "J",
+   "unit": "m/m"
+  },
+  "module": "red",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "page": "hoja Caudales",
+  "notes": "C=140 para PVC en la planilla del TP."
+ },
+ {
+  "id": "formula-bazin",
+  "name": "Bazin para red cloacal",
+  "latex": "v=\\frac{87}{1+\\dfrac{\\gamma}{\\sqrt{R_H}}}\\sqrt{R_H\\,I}",
+  "variables": [
+   {
+    "sym": "\\gamma",
+    "desc": "coeficiente de Bazin",
+    "unit": "-"
+   },
+   {
+    "sym": "R_H",
+    "desc": "radio hidraulico",
+    "unit": "m"
+   },
+   {
+    "sym": "I",
+    "desc": "pendiente",
+    "unit": "m/m"
+   }
+  ],
+  "result": {
+   "sym": "v",
+   "unit": "m/s"
+  },
+  "module": "cloacal",
+  "file": "GUÍA_TRABAJO_PRACTICO_PÚBLICO.xlsx",
+  "page": "hoja RED CLOACAL",
+  "notes": "La planilla declara gamma=0,22 pero usa 0,14; ver errata."
+ },
+ {
+  "id": "formula-gradiente-floc",
+  "name": "Gradiente de velocidad de floculacion",
+  "latex": "G=\\sqrt{\\frac{\\gamma\\,h_p}{\\mu\\,T}}",
+  "variables": [
+   {
+    "sym": "\\gamma",
+    "desc": "peso especifico del agua",
+    "unit": "kg/m3"
+   },
+   {
+    "sym": "h_p",
+    "desc": "perdida de carga",
+    "unit": "m"
+   },
+   {
+    "sym": "\\mu",
+    "desc": "viscosidad absoluta",
+    "unit": "kg/(m s)"
+   },
+   {
+    "sym": "T",
+    "desc": "tiempo de retencion",
+    "unit": "s"
+   }
+  ],
+  "result": {
+   "sym": "G",
+   "unit": "s^-1"
+  },
+  "module": "potabilizadora",
+  "file": "ma2_cap3_FLOCULADOR.pdf",
+  "page": 5,
+  "notes": "Se usa para verificar el rango de floculacion; la catedra exige 30-60 s^-1."
+ },
+ {
+  "id": "formula-belanger",
+  "name": "Perdida de carga en el resalto (Belanger)",
+  "latex": "h_p=\\frac{(h_2-h_1)^3}{4\\,h_1\\,h_2}",
+  "variables": [
+   {
+    "sym": "h_1",
+    "desc": "altura antes del resalto",
+    "unit": "m"
+   },
+   {
+    "sym": "h_2",
+    "desc": "altura despues del resalto",
+    "unit": "m"
+   }
+  ],
+  "result": {
+   "sym": "h_p",
+   "unit": "m"
+  },
+  "module": "potabilizadora",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "page": 5,
+  "notes": "Usada para calcular la energia disipada y luego el gradiente G."
+ },
+ {
+  "id": "formula-smetana",
+  "name": "Longitud del resalto (Smetana)",
+  "latex": "L=6\\,(h_2-h_1)",
+  "variables": [
+   {
+    "sym": "h_1",
+    "desc": "altura antes del resalto",
+    "unit": "m"
+   },
+   {
+    "sym": "h_2",
+    "desc": "altura despues del resalto",
+    "unit": "m"
+   }
+  ],
+  "result": {
+   "sym": "L",
+   "unit": "m"
+  },
+  "module": "potabilizadora",
+  "file": "ma2_cap2_MEZCLADORES.pdf",
+  "page": 5,
+  "notes": "Formula 4 del manual de mezcladores."
+ },
+ {
+  "id": "formula-camara-septica",
+  "name": "Volumen util de camara septica simple",
+  "latex": "V=1000+N\\,(C\\,T+L_f)",
+  "variables": [
+   {
+    "sym": "N",
+    "desc": "numero de contribuyentes",
+    "unit": "personas"
+   },
+   {
+    "sym": "C",
+    "desc": "contribucion de desechos",
+    "unit": "L/persona/dia"
+   },
+   {
+    "sym": "T",
+    "desc": "periodo de retencion",
+    "unit": "dias"
+   },
+   {
+    "sym": "L_f",
+    "desc": "contribucion de lodos frescos",
+    "unit": "L/persona/dia"
+   }
+  ],
+  "result": {
+   "sym": "V",
+   "unit": "L"
+  },
+  "module": "cloacal",
+  "file": "Norma_Tratamiento_y_Disposicion_Final_de_Aguas_Residuales_2016.pdf",
+  "page": 9,
+  "notes": "Volumen minimo 1250 L."
+ }
+]

@@ -1,0 +1,30 @@
+{
+ "id": "acal-tabla-iii-consumo",
+ "title": "Tabla III: consumo de agua por punto de utilizacion a 60 C",
+ "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+ "page": 11,
+ "columns": [
+  {
+   "key": "artefacto",
+   "label": "Artefacto",
+   "unit": ""
+  },
+  {
+   "key": "consumo",
+   "label": "Consumo",
+   "unit": "L"
+  }
+ ],
+ "rows": [
+  {
+   "artefacto": "Ducha",
+   "consumo": 280.0
+  },
+  {
+   "artefacto": "Lavatorio",
+   "consumo": 8.0
+  }
+ ],
+ "lookup_rule": "Multiplicar por la cantidad de aparatos y sumar; luego VTC=c*Total.",
+ "notes": "Tabla III Agua Caliente 2016. En el ejemplo de la Clase 7 el total es 288 L."
+}

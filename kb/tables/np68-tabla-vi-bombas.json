@@ -1,0 +1,70 @@
+{
+ "id": "np68-tabla-vi-bombas",
+ "title": "Tabla VI: rendimiento para bombas centrifugas",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 23,
+ "columns": [
+  {
+   "key": "q",
+   "label": "Caudal",
+   "unit": "L/s"
+  },
+  {
+   "key": "eta",
+   "label": "Rendimiento",
+   "unit": "%"
+  }
+ ],
+ "rows": [
+  {
+   "q": 2.5,
+   "eta": 45
+  },
+  {
+   "q": 5,
+   "eta": 52
+  },
+  {
+   "q": 7.5,
+   "eta": 61
+  },
+  {
+   "q": 10,
+   "eta": 66
+  },
+  {
+   "q": 15,
+   "eta": 68
+  },
+  {
+   "q": 20,
+   "eta": 71
+  },
+  {
+   "q": 25,
+   "eta": 75
+  },
+  {
+   "q": 30,
+   "eta": 80
+  },
+  {
+   "q": 40,
+   "eta": 84
+  },
+  {
+   "q": 50,
+   "eta": 85
+  },
+  {
+   "q": 100,
+   "eta": 87
+  },
+  {
+   "q": 200,
+   "eta": 88
+  }
+ ],
+ "lookup_rule": "Entrar con el caudal de bombeo en L/s; interpolar o usar el valor tabulado mas cercano.",
+ "notes": "Tabla VI NP 68."
+}

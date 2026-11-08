@@ -1,0 +1,134 @@
+[
+ {
+  "term": "BIE",
+  "def": "Boca de Incendio Equipada: hidrante interior con manguera y piton, alimentado por la red contra incendios."
+ },
+ {
+  "term": "BIS",
+  "def": "Boca de Incendio Siamesa: conexion en planta baja para alimentar la red de hidrantes desde el exterior."
+ },
+ {
+  "term": "G",
+  "def": "Gradiente de velocidad: medida de la intensidad de agitacion, en s^-1; gobierna mezcla y floculacion."
+ },
+ {
+  "term": "J",
+  "def": "Perdida de carga unitaria, en m/m (metros de columna de agua por metro de tuberia)."
+ },
+ {
+  "term": "Hman",
+  "def": "Altura manometrica: energia por unidad de peso que debe entregar la bomba, en m.c.a."
+ },
+ {
+  "term": "K1",
+  "def": "Coeficiente de maximo consumo diario; en la catedra K1=1,2."
+ },
+ {
+  "term": "K2",
+  "def": "Coeficiente de maximo consumo horario; en la catedra K2=1,5."
+ },
+ {
+  "term": "K3",
+  "def": "Coeficiente de consumo por lavado de filtros y mantenimiento de planta; en la catedra K3=1,05."
+ },
+ {
+  "term": "Caudal medio diario",
+  "def": "Caudal correspondiente al consumo promedio de 24 h."
+ },
+ {
+  "term": "Caudal maximo diario",
+  "def": "Caudal medio diario multiplicado por K1."
+ },
+ {
+  "term": "Caudal maximo horario",
+  "def": "Caudal maximo diario multiplicado por K2; se usa en distribucion."
+ },
+ {
+  "term": "Unidad de descarga (UD)",
+  "def": "Unidad de Hunter para caudales de artefactos sanitarios; 1 UD ~ 28 L/min."
+ },
+ {
+  "term": "Peso relativo",
+  "def": "Valor adimensional que representa el consumo de un artefacto; se suma y se entra a la Figura I de la NP 68."
+ },
+ {
+  "term": "Golpe de ariete",
+  "def": "Sobrepresion transitoria por cambio brusco de velocidad o direccion del flujo."
+ },
+ {
+  "term": "Hardy Cross",
+  "def": "Metodo iterativo para equilibrar caudales y perdidas en redes malladas."
+ },
+ {
+  "term": "Parshall",
+  "def": "Canal aforador de garganta convergente-divergente; mide caudal por la altura H y puede actuar como mezclador."
+ },
+ {
+  "term": "Floculo",
+  "def": "Agregado de particulas desestabilizadas que crece por agitacion lenta y puede sedimentar."
+ },
+ {
+  "term": "Coagulacion",
+  "def": "Desestabilizacion de cargas de las particulas mediante un coagulante (ej. sulfato de aluminio)."
+ },
+ {
+  "term": "Floculacion",
+  "def": "Agitacion lenta que promueve el crecimiento y conservacion de floculos."
+ },
+ {
+  "term": "Sedimentacion",
+  "def": "Separacion por gravedad de particulas suspendidas o floculos."
+ },
+ {
+  "term": "Filtracion",
+  "def": "Retencion de particulas finas al hacer pasar el agua por un lecho granular."
+ },
+ {
+  "term": "Cloracion",
+  "def": "Desinfeccion mediante cloro o hipoclorito; deja cloro residual para proteger el agua."
+ },
+ {
+  "term": "Runoff",
+  "def": "Coeficiente de escurrimiento superficial que reduce el area drenada por infiltracion."
+ },
+ {
+  "term": "Camara septica",
+  "def": "Tanque de sedimentacion y digestion anaerobia de aguas residuales domesticas."
+ },
+ {
+  "term": "Laguna facultativa",
+  "def": "Laguna de estabilizacion con zona aerobia superficial y anaerobia en el fondo."
+ },
+ {
+  "term": "DBO5",
+  "def": "Demanda bioquimica de oxigeno a 5 dias; mide la carga organica biodegradable."
+ },
+ {
+  "term": "NMP",
+  "def": "Numero mas probable de microorganismos por 100 mL (coliformes)."
+ },
+ {
+  "term": "mca",
+  "def": "Metro de columna de agua: unidad de presion; 1 mca = 9,81 kPa aproximadamente."
+ },
+ {
+  "term": "PN",
+  "def": "Presion nominal de una tuberia, indicada por el fabricante (ej. PN10 = 10 bar)."
+ },
+ {
+  "term": "DPPR",
+  "def": "Diametro nominal de polipropileno; en la Figura I de la NP 68 aparece asociado al diametro en pulgadas."
+ },
+ {
+  "term": "Caudal de captacion",
+  "def": "Caudal que ingresa a la planta potabilizadora, igual al caudal medio diario por K1 y K3."
+ },
+ {
+  "term": "Aforador",
+  "def": "Dispositivo que mide el caudal a partir de la altura de agua (Parshall, vertedero en V)."
+ },
+ {
+  "term": "Vertedero en V",
+  "def": "Vertedero triangular de 90 grados usado para caudales pequenos y como mezclador rapido."
+ }
+]

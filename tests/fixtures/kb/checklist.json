@@ -1,0 +1,2 @@
+[{"id":"pub-red","area":"Público","group":"Memoria de cálculo","title":"Red de abastecimiento","module":"red","page":"red","weight":10},
+ {"id":"pre-tanques","area":"Predial","group":"Memoria de cálculo","title":"Tanques de reserva","module":"predial","page":"predial","weight":5}]

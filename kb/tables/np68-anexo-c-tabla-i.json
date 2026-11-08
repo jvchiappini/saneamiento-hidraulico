@@ -1,0 +1,322 @@
+{
+ "id": "np68-anexo-c-tabla-i",
+ "title": "Anexo C Tabla I: perdidas localizadas equivalentes en PVC",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 32,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "DN",
+   "unit": "mm"
+  },
+  {
+   "key": "ref",
+   "label": "Ref.",
+   "unit": "pulg"
+  },
+  {
+   "key": "codo90",
+   "label": "Codo 90",
+   "unit": "m"
+  },
+  {
+   "key": "codo45",
+   "label": "Codo 45",
+   "unit": "m"
+  },
+  {
+   "key": "curva90",
+   "label": "Curva 90",
+   "unit": "m"
+  },
+  {
+   "key": "curva45",
+   "label": "Curva 45",
+   "unit": "m"
+  },
+  {
+   "key": "te_pd",
+   "label": "Te 90 pasaje directo",
+   "unit": "m"
+  },
+  {
+   "key": "te_lado",
+   "label": "Te 90 salida de lado",
+   "unit": "m"
+  },
+  {
+   "key": "te_bil",
+   "label": "Te 90 salida bilateral",
+   "unit": "m"
+  },
+  {
+   "key": "ent_normal",
+   "label": "Entrada normal",
+   "unit": "m"
+  },
+  {
+   "key": "ent_borda",
+   "label": "Entrada de borda",
+   "unit": "m"
+  },
+  {
+   "key": "salida",
+   "label": "Salida de canalizacion",
+   "unit": "m"
+  },
+  {
+   "key": "v_pie",
+   "label": "Valvula de pie de colador",
+   "unit": "m"
+  },
+  {
+   "key": "v_ret_l",
+   "label": "Valvula de retencion liviano",
+   "unit": "m"
+  },
+  {
+   "key": "v_ret_p",
+   "label": "Valvula de retencion pesado",
+   "unit": "m"
+  },
+  {
+   "key": "reg_globo",
+   "label": "Registro de globo abierto",
+   "unit": "m"
+  },
+  {
+   "key": "llave_exc",
+   "label": "Llave de exclusa abierto",
+   "unit": "m"
+  },
+  {
+   "key": "reg_ang",
+   "label": "Registro de angulo abierto",
+   "unit": "m"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 15,
+   "ref": "1/2",
+   "codo90": 1.1,
+   "codo45": 0.4,
+   "curva90": 0.4,
+   "curva45": 0.2,
+   "te_pd": 0.7,
+   "te_lado": 2.3,
+   "te_bil": 2.3,
+   "ent_normal": 0.3,
+   "ent_borda": 0.9,
+   "salida": 0.8,
+   "v_pie": 8.1,
+   "v_ret_l": 2.5,
+   "v_ret_p": 3.6,
+   "reg_globo": 11.1,
+   "llave_exc": 0.1,
+   "reg_ang": 5.9
+  },
+  {
+   "dn": 20,
+   "ref": "3/4",
+   "codo90": 1.2,
+   "codo45": 0.5,
+   "curva90": 0.5,
+   "curva45": 0.3,
+   "te_pd": 0.8,
+   "te_lado": 2.4,
+   "te_bil": 2.4,
+   "ent_normal": 0.4,
+   "ent_borda": 1.0,
+   "salida": 0.9,
+   "v_pie": 9.5,
+   "v_ret_l": 2.7,
+   "v_ret_p": 4.1,
+   "reg_globo": 11.4,
+   "llave_exc": 0.2,
+   "reg_ang": 6.1
+  },
+  {
+   "dn": 25,
+   "ref": "1",
+   "codo90": 1.5,
+   "codo45": 0.7,
+   "curva90": 0.6,
+   "curva45": 0.4,
+   "te_pd": 0.9,
+   "te_lado": 3.1,
+   "te_bil": 3.1,
+   "ent_normal": 0.5,
+   "ent_borda": 1.2,
+   "salida": 1.3,
+   "v_pie": 13.3,
+   "v_ret_l": 3.8,
+   "v_ret_p": 5.8,
+   "reg_globo": 15.0,
+   "llave_exc": 0.3,
+   "reg_ang": 8.4
+  },
+  {
+   "dn": 32,
+   "ref": "1 1/4",
+   "codo90": 2.0,
+   "codo45": 1.0,
+   "curva90": 0.7,
+   "curva45": 0.5,
+   "te_pd": 1.5,
+   "te_lado": 4.6,
+   "te_bil": 4.6,
+   "ent_normal": 0.6,
+   "ent_borda": 1.8,
+   "salida": 1.4,
+   "v_pie": 15.5,
+   "v_ret_l": 4.9,
+   "v_ret_p": 7.4,
+   "reg_globo": 22.0,
+   "llave_exc": 0.4,
+   "reg_ang": 10.5
+  },
+  {
+   "dn": 40,
+   "ref": "1 1/2",
+   "codo90": 3.2,
+   "codo45": 1.0,
+   "curva90": 1.2,
+   "curva45": 0.6,
+   "te_pd": 2.2,
+   "te_lado": 7.3,
+   "te_bil": 7.3,
+   "ent_normal": 1.0,
+   "ent_borda": 2.3,
+   "salida": 3.2,
+   "v_pie": 18.3,
+   "v_ret_l": 6.8,
+   "v_ret_p": 9.1,
+   "reg_globo": 35.8,
+   "llave_exc": 0.7,
+   "reg_ang": 17.0
+  },
+  {
+   "dn": 50,
+   "ref": "2",
+   "codo90": 3.4,
+   "codo45": 1.3,
+   "curva90": 1.3,
+   "curva45": 0.7,
+   "te_pd": 2.3,
+   "te_lado": 7.6,
+   "te_bil": 7.6,
+   "ent_normal": 1.5,
+   "ent_borda": 2.8,
+   "salida": 3.3,
+   "v_pie": 23.7,
+   "v_ret_l": 7.1,
+   "v_ret_p": 10.8,
+   "reg_globo": 37.9,
+   "llave_exc": 0.8,
+   "reg_ang": 18.5
+  },
+  {
+   "dn": 60,
+   "ref": "2 1/2",
+   "codo90": 3.7,
+   "codo45": 1.7,
+   "curva90": 1.4,
+   "curva45": 0.8,
+   "te_pd": 2.4,
+   "te_lado": 7.8,
+   "te_bil": 7.8,
+   "ent_normal": 1.6,
+   "ent_borda": 3.3,
+   "salida": 3.5,
+   "v_pie": 25.0,
+   "v_ret_l": 8.2,
+   "v_ret_p": 12.5,
+   "reg_globo": 38.0,
+   "llave_exc": 0.9,
+   "reg_ang": 19.0
+  },
+  {
+   "dn": 75,
+   "ref": "3",
+   "codo90": 3.9,
+   "codo45": 1.8,
+   "curva90": 1.5,
+   "curva45": 0.9,
+   "te_pd": 2.5,
+   "te_lado": 8.0,
+   "te_bil": 8.0,
+   "ent_normal": 2.0,
+   "ent_borda": 3.7,
+   "salida": 3.7,
+   "v_pie": 26.8,
+   "v_ret_l": 9.3,
+   "v_ret_p": 14.2,
+   "reg_globo": 40.0,
+   "llave_exc": 0.9,
+   "reg_ang": 20.0
+  },
+  {
+   "dn": 100,
+   "ref": "4",
+   "codo90": 4.3,
+   "codo45": 1.9,
+   "curva90": 1.6,
+   "curva45": 1.0,
+   "te_pd": 2.6,
+   "te_lado": 8.3,
+   "te_bil": 8.3,
+   "ent_normal": 2.2,
+   "ent_borda": 4.0,
+   "salida": 3.9,
+   "v_pie": 28.6,
+   "v_ret_l": 10.4,
+   "v_ret_p": 16.0,
+   "reg_globo": 42.3,
+   "llave_exc": 1.0,
+   "reg_ang": 22.1
+  },
+  {
+   "dn": 125,
+   "ref": "5",
+   "codo90": 4.9,
+   "codo45": 2.4,
+   "curva90": 1.9,
+   "curva45": 1.1,
+   "te_pd": 3.3,
+   "te_lado": 10.0,
+   "te_bil": 10.0,
+   "ent_normal": 2.5,
+   "ent_borda": 5.0,
+   "salida": 4.9,
+   "v_pie": 27.4,
+   "v_ret_l": 17.5,
+   "v_ret_p": 19.2,
+   "reg_globo": 50.9,
+   "llave_exc": 1.1,
+   "reg_ang": 25.2
+  },
+  {
+   "dn": 150,
+   "ref": "6",
+   "codo90": 5.4,
+   "codo45": 2.6,
+   "curva90": 2.1,
+   "curva45": 1.2,
+   "te_pd": 3.8,
+   "te_lado": 11.1,
+   "te_bil": 11.1,
+   "ent_normal": 2.8,
+   "ent_borda": 5.6,
+   "salida": 5.5,
+   "v_pie": 43.4,
+   "v_ret_l": 13.9,
+   "v_ret_p": 21.4,
+   "reg_globo": 56.7,
+   "llave_exc": 1.2,
+   "reg_ang": 28.9
+  }
+ ],
+ "lookup_rule": "Sumar las longitudes equivalentes de los accesorios del tramo y multiplicar por J (m/m).",
+ "notes": "Valores en metros de canalizacion rectilinea equivalente. Verificado visualmente contra la pagina 32."
+}

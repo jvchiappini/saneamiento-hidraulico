@@ -1,0 +1,147 @@
+{
+ "id": "np44-tabla-i-unidades",
+ "title": "Tabla I: unidades de descarga (Hunter) y DN del ramal",
+ "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+ "page": 8,
+ "columns": [
+  {
+   "key": "artefacto",
+   "label": "Artefacto sanitario",
+   "unit": ""
+  },
+  {
+   "key": "ud",
+   "label": "Unidades de descarga",
+   "unit": "UD"
+  },
+  {
+   "key": "dn",
+   "label": "DN del ramal",
+   "unit": "mm"
+  }
+ ],
+ "rows": [
+  {
+   "artefacto": "Banera de residencia",
+   "ud": 3,
+   "dn": 40
+  },
+  {
+   "artefacto": "Banera de uso general",
+   "ud": 4,
+   "dn": 40
+  },
+  {
+   "artefacto": "Banera hidroterapica (flujo continuo)",
+   "ud": 6,
+   "dn": 75
+  },
+  {
+   "artefacto": "Bebedero",
+   "ud": 0.5,
+   "dn": 40
+  },
+  {
+   "artefacto": "Bidet",
+   "ud": 2,
+   "dn": 40
+  },
+  {
+   "artefacto": "Ducha de residencia (con rejilla u otro)",
+   "ud": 2,
+   "dn": 40
+  },
+  {
+   "artefacto": "Ducha de uso general (colectivo)",
+   "ud": 4,
+   "dn": 40
+  },
+  {
+   "artefacto": "Lavatorio de residencia",
+   "ud": 1,
+   "dn": 40
+  },
+  {
+   "artefacto": "Lavatorio de uso general",
+   "ud": 2,
+   "dn": 40
+  },
+  {
+   "artefacto": "Mingitorio con valvula de descarga",
+   "ud": 6,
+   "dn": 75
+  },
+  {
+   "artefacto": "Mingitorio con cisterna",
+   "ud": 5,
+   "dn": 50
+  },
+  {
+   "artefacto": "Mingitorio de descarga manual o automatica",
+   "ud": 2,
+   "dn": 40
+  },
+  {
+   "artefacto": "Mingitorio de canal por metro",
+   "ud": 2,
+   "dn": 50
+  },
+  {
+   "artefacto": "Pileta de residencia (cocina, quincho)",
+   "ud": 3,
+   "dn": 40
+  },
+  {
+   "artefacto": "Pileta de grandes cocinas (industrias, hoteles)",
+   "ud": 4,
+   "dn": 50
+  },
+  {
+   "artefacto": "Pileta de servicio (triturador de desechos)",
+   "ud": 5,
+   "dn": 75
+  },
+  {
+   "artefacto": "Pileta de laboratorio",
+   "ud": 2,
+   "dn": 50
+  },
+  {
+   "artefacto": "Pileta de lavar ropas",
+   "ud": 3,
+   "dn": 50
+  },
+  {
+   "artefacto": "Maquina lava vajillas",
+   "ud": 4,
+   "dn": 75
+  },
+  {
+   "artefacto": "Rejilla de piso individual",
+   "ud": 1,
+   "dn": 30
+  },
+  {
+   "artefacto": "Rejilla de piso de circuito (hasta 7 UD)",
+   "ud": null,
+   "dn": 50
+  },
+  {
+   "artefacto": "Lavarropas de hasta 30 kg",
+   "ud": 10,
+   "dn": 75
+  },
+  {
+   "artefacto": "Lavarropas de 30 a 60 kg",
+   "ud": 12,
+   "dn": 100
+  },
+  {
+   "artefacto": "Inodoro",
+   "ud": 6,
+   "dn": 100
+  }
+ ],
+ "lookup_rule": "Sumar UD de los artefactos y entrar a Tabla II o III segun sea ramal o columna.",
+ "notes": "Tabla I NP 44. 1 UD = 28 L/min aproximadamente."
+}

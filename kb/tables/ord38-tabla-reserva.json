@@ -1,0 +1,38 @@
+{
+ "id": "ord38-tabla-reserva",
+ "title": "Duracion de la reserva tecnica de incendio",
+ "file": "ORDENANZA_N&ordm;_038_PREVENCION_DE_INCENDIO.pdf",
+ "page": 13,
+ "columns": [
+  {
+   "key": "area",
+   "label": "Area construida",
+   "unit": "m2"
+  },
+  {
+   "key": "minutos",
+   "label": "Duracion",
+   "unit": "min"
+  }
+ ],
+ "rows": [
+  {
+   "area": "Hasta 20.000",
+   "minutos": 30
+  },
+  {
+   "area": "20.001 a 30.000",
+   "minutos": 45
+  },
+  {
+   "area": "30.001 a 50.000 y refinerias",
+   "minutos": 60
+  },
+  {
+   "area": "Mas de 50.000",
+   "minutos": 120
+  }
+ ],
+ "lookup_rule": "Entrar con el area construida; la reserva minima es 5000 L.",
+ "notes": "Ordenanza 038 Art. 50.2-50.3."
+}

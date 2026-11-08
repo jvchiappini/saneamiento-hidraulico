@@ -1,0 +1,107 @@
+{
+ "id": "np68-tabla-v-diametros",
+ "title": "Tabla V: diametro minimo de los sub-ramales",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 16,
+ "columns": [
+  {
+   "key": "pieza",
+   "label": "Pieza de utilizacion",
+   "unit": ""
+  },
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  },
+  {
+   "key": "pulg",
+   "label": "Diametro",
+   "unit": "pulg"
+  }
+ ],
+ "rows": [
+  {
+   "pieza": "Calefon de alta presion",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Calefon de baja presion",
+   "dn": 20,
+   "pulg": "3/4"
+  },
+  {
+   "pieza": "Inodoro con cisterna",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Inodoro con valvula de descarga",
+   "dn": 40,
+   "pulg": "1 1/2"
+  },
+  {
+   "pieza": "Banera",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Bebedero",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Bidet",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Ducha",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Filtro de presion",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Lavatorio",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Maquina lava vajillas",
+   "dn": 20,
+   "pulg": "3/4"
+  },
+  {
+   "pieza": "Maquina lavarropas",
+   "dn": 20,
+   "pulg": "3/4"
+  },
+  {
+   "pieza": "Mingitorio de descarga continua por metro o por aparato",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Pileta de cocina",
+   "dn": 15,
+   "pulg": "1/2"
+  },
+  {
+   "pieza": "Pileta de lavar ropa",
+   "dn": 20,
+   "pulg": "3/4"
+  },
+  {
+   "pieza": "Valvula de descarga",
+   "dn": 32,
+   "pulg": "1 1/4"
+  }
+ ],
+ "lookup_rule": "El diametro del sub-ramal no puede ser menor al tabulado para la pieza.",
+ "notes": "Tabla V NP 68."
+}

@@ -1,0 +1,62 @@
+{
+ "id": "pluv-tabla-ii-columnas",
+ "title": "Tabla II: desagues verticales o columnas de bajada pluviales",
+ "file": "Norma_Desague_Pluvial_2012.pdf",
+ "page": 5,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  },
+  {
+   "key": "baja",
+   "label": "Area max. baja exigencia",
+   "unit": "m2"
+  },
+  {
+   "key": "alta",
+   "label": "Area max. alta exigencia",
+   "unit": "m2"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 50,
+   "baja": 39,
+   "alta": 25
+  },
+  {
+   "dn": 63,
+   "baja": 62,
+   "alta": 41
+  },
+  {
+   "dn": 75,
+   "baja": 88,
+   "alta": 55
+  },
+  {
+   "dn": 100,
+   "baja": 156,
+   "alta": 100
+  },
+  {
+   "dn": 125,
+   "baja": 256,
+   "alta": 165
+  },
+  {
+   "dn": 150,
+   "baja": 342,
+   "alta": 219
+  },
+  {
+   "dn": 200,
+   "baja": 646,
+   "alta": 414
+  }
+ ],
+ "lookup_rule": "Entrar con el area de cobertura y elegir el diametro cuyo maximo sea suficiente; con arboles usar DN>=150.",
+ "notes": "Tabla II Desagues Pluviales 2012."
+}

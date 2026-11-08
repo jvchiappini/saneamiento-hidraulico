@@ -1,0 +1,38 @@
+{
+ "id": "np44-tabla-iv-ventilacion",
+ "title": "Tabla IV: distancia maxima de sifon a ramal de ventilacion",
+ "file": "Norma_NP_44_Instalaciones_Domiciliarias_de_Desague_Sanitario_2018.pdf",
+ "page": 17,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "DN del ramal de descarga",
+   "unit": "mm"
+  },
+  {
+   "key": "dmax",
+   "label": "Distancia maxima",
+   "unit": "m"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 40,
+   "dmax": 1.0
+  },
+  {
+   "dn": 50,
+   "dmax": 1.2
+  },
+  {
+   "dn": 75,
+   "dmax": 1.8
+  },
+  {
+   "dn": 100,
+   "dmax": 2.4
+  }
+ ],
+ "lookup_rule": "No superar la distancia entre el sifon y la union del ramal de ventilacion.",
+ "notes": "Tabla IV NP 44."
+}

@@ -1,0 +1,98 @@
+{
+ "id": "np68-tabla-iv-velocidades",
+ "title": "Tabla IV: velocidades y caudales maximos",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 15,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  },
+  {
+   "key": "pulg",
+   "label": "Diametro",
+   "unit": "pulg"
+  },
+  {
+   "key": "vmax",
+   "label": "Velocidad maxima",
+   "unit": "m/s"
+  },
+  {
+   "key": "qmax",
+   "label": "Caudal maximo",
+   "unit": "L/s"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 15,
+   "pulg": "1/2",
+   "vmax": 1.6,
+   "qmax": 0.2
+  },
+  {
+   "dn": 20,
+   "pulg": "3/4",
+   "vmax": 1.95,
+   "qmax": 0.6
+  },
+  {
+   "dn": 25,
+   "pulg": "1",
+   "vmax": 2.25,
+   "qmax": 1.2
+  },
+  {
+   "dn": 32,
+   "pulg": "1 1/4",
+   "vmax": 2.5,
+   "qmax": 2.5
+  },
+  {
+   "dn": 40,
+   "pulg": "1 1/2",
+   "vmax": 2.5,
+   "qmax": 4.0
+  },
+  {
+   "dn": 50,
+   "pulg": "2",
+   "vmax": 2.5,
+   "qmax": 5.7
+  },
+  {
+   "dn": 60,
+   "pulg": "2 1/2",
+   "vmax": 2.5,
+   "qmax": 8.9
+  },
+  {
+   "dn": 75,
+   "pulg": "3",
+   "vmax": 2.5,
+   "qmax": 12.0
+  },
+  {
+   "dn": 100,
+   "pulg": "4",
+   "vmax": 2.5,
+   "qmax": 18.0
+  },
+  {
+   "dn": 125,
+   "pulg": "5",
+   "vmax": 2.5,
+   "qmax": 31.0
+  },
+  {
+   "dn": 150,
+   "pulg": "6",
+   "vmax": 2.5,
+   "qmax": 40.0
+  }
+ ],
+ "lookup_rule": "Entrar con el diametro nominal; el caudal maximo no debe superarse.",
+ "notes": "Tabla IV NP 68."
+}

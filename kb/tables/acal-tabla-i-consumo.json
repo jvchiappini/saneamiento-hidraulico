@@ -1,0 +1,78 @@
+{
+ "id": "acal-tabla-i-consumo",
+ "title": "Tabla I: estimacion del consumo diario de agua caliente a 60 C",
+ "file": "Norma_Instalacion_de_Agua_Caliente_2016.pdf",
+ "page": 9,
+ "columns": [
+  {
+   "key": "tipo",
+   "label": "Tipo de inmueble",
+   "unit": ""
+  },
+  {
+   "key": "consumo",
+   "label": "Consumo minimo",
+   "unit": "L/dia"
+  }
+ ],
+ "rows": [
+  {
+   "tipo": "Hospitales (por cama)",
+   "consumo": 250
+  },
+  {
+   "tipo": "Departamentos (por persona)",
+   "consumo": 200
+  },
+  {
+   "tipo": "Viviendas (por persona)",
+   "consumo": 150
+  },
+  {
+   "tipo": "Escuelas internados (por persona)",
+   "consumo": 150
+  },
+  {
+   "tipo": "Viviendas rurales (por persona)",
+   "consumo": 120
+  },
+  {
+   "tipo": "Hoteles con cocina y lavanderia (por persona)",
+   "consumo": 250
+  },
+  {
+   "tipo": "Hoteles sin cocina ni lavanderia (por persona)",
+   "consumo": 120
+  },
+  {
+   "tipo": "Alojamientos provisorios (por persona)",
+   "consumo": 80
+  },
+  {
+   "tipo": "Fabricas (por operario)",
+   "consumo": 70
+  },
+  {
+   "tipo": "Oficinas (por persona)",
+   "consumo": 50
+  },
+  {
+   "tipo": "Edificios publicos o comerciales (por persona)",
+   "consumo": 50
+  },
+  {
+   "tipo": "Escuelas (por persona)",
+   "consumo": 50
+  },
+  {
+   "tipo": "Restaurantes (por comida)",
+   "consumo": 25
+  },
+  {
+   "tipo": "Cines, teatros, iglesias (por asiento)",
+   "consumo": 2
+  }
+ ],
+ "lookup_rule": "Valor minimo segun tipo de inmueble; no se admiten consumos inferiores.",
+ "notes": "Tabla I Agua Caliente 2016. Se transcriben los valores legibles; verificar la pagina si se requiere una fila no listada."
+}

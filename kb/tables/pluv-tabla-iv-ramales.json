@@ -1,0 +1,65 @@
+{
+ "id": "pluv-tabla-iv-ramales",
+ "title": "Tabla IV: desagues o ramales horizontales de aguas pluviales",
+ "file": "Norma_Desague_Pluvial_2012.pdf",
+ "page": 6,
+ "columns": [
+  {
+   "key": "dn",
+   "label": "Diametro",
+   "unit": "mm"
+  },
+  {
+   "key": "p05",
+   "label": "0,5%",
+   "unit": "m2"
+  },
+  {
+   "key": "p1",
+   "label": "1%",
+   "unit": "m2"
+  },
+  {
+   "key": "p2",
+   "label": "2%",
+   "unit": "m2"
+  },
+  {
+   "key": "p4",
+   "label": "4%",
+   "unit": "m2"
+  }
+ ],
+ "rows": [
+  {
+   "dn": 100,
+   "p05": null,
+   "p1": 144,
+   "p2": 199,
+   "p4": 288
+  },
+  {
+   "dn": 150,
+   "p05": 278,
+   "p1": 390,
+   "p2": 557,
+   "p4": 780
+  },
+  {
+   "dn": 200,
+   "p05": 548,
+   "p1": 808,
+   "p2": 1105,
+   "p4": 1816
+  },
+  {
+   "dn": 250,
+   "p05": 910,
+   "p1": 1412,
+   "p2": 1807,
+   "p4": 2824
+  }
+ ],
+ "lookup_rule": "Entrar con area acumulada y pendiente; el diametro minimo es 100 mm.",
+ "notes": "Tabla IV Desagues Pluviales 2012."
+}

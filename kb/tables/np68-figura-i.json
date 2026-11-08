@@ -1,0 +1,82 @@
+{
+ "id": "np68-figura-i",
+ "title": "Figura I: caudal en funcion de la suma de pesos y diametro",
+ "file": "Norma_NP_68_Instalaciones_Domiciliarias_de_Agua_Potable_2016.pdf",
+ "page": 31,
+ "columns": [
+  {
+   "key": "sp",
+   "label": "Suma de pesos ΣP",
+   "unit": ""
+  },
+  {
+   "key": "pulg",
+   "label": "Diametro",
+   "unit": "pulg"
+  },
+  {
+   "key": "dppr",
+   "label": "DPPR",
+   "unit": "mm"
+  }
+ ],
+ "rows": [
+  {
+   "sp": "<= 0,44",
+   "pulg": "1/2",
+   "dppr": 20
+  },
+  {
+   "sp": 3.4,
+   "pulg": "3/4",
+   "dppr": 25
+  },
+  {
+   "sp": 15,
+   "pulg": "1",
+   "dppr": 32
+  },
+  {
+   "sp": 44,
+   "pulg": "1 1/4",
+   "dppr": 40
+  },
+  {
+   "sp": 107,
+   "pulg": "1 1/2",
+   "dppr": 50
+  },
+  {
+   "sp": 460,
+   "pulg": "2",
+   "dppr": 63
+  },
+  {
+   "sp": 1400,
+   "pulg": "2 1/2",
+   "dppr": 75
+  },
+  {
+   "sp": 3900,
+   "pulg": "3",
+   "dppr": 90
+  },
+  {
+   "sp": 12000,
+   "pulg": "4",
+   "dppr": null
+  },
+  {
+   "sp": 29500,
+   "pulg": "5",
+   "dppr": null
+  },
+  {
+   "sp": 60000,
+   "pulg": "6",
+   "dppr": null
+  }
+ ],
+ "lookup_rule": "Entrar con ΣP y tomar el diametro del umbral inmediato superior.",
+ "notes": "Figura I del Anexo C NP 68."
+}

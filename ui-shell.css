@@ -502,3 +502,47 @@ input[type=number] {
         display: block !important;
     }
 }
+
+/* ---------- Botón flotante: preguntar al asistente ---------- */
+.ask-fab {
+    position: fixed;
+    right: 18px;
+    bottom: 74px;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .6rem 1rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(16, 35, 29, .25);
+}
+
+.ask-fab:hover {
+    background: var(--primary-dark);
+}
+
+.ask-fab:focus-visible {
+    outline: 3px solid #34d399;
+    outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+    .ask-fab span {
+        display: none;
+    }
+
+    .ask-fab {
+        padding: .65rem .85rem;
+    }
+}
+
+@media print {
+    .ask-fab {
+        display: none !important;
+    }
+}
