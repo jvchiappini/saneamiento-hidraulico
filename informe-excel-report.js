@@ -30,12 +30,12 @@
         const present = excel != null || recalc != null;
         const diff = (excel != null && recalc != null && typeof excel === "number" && typeof recalc === "number") ? Math.abs(recalc - excel) / (Math.abs(excel) > 1e-12 ? Math.abs(excel) : 1) * 100 : null;
         const st = diff == null ? (excel != null && recalc != null ? "ok" : stDiff(null, present)) : (diff <= (tol || 0.5) ? "ok" : "warn");
-        return { scope, label, excel, recalc, unit, diff, st, note };
+        return { scope, label, excel, recalc, unit, diff, st, note, missing: !(excel != null && recalc != null) };
     }
     function cmpTable(rows, caption) {
         return tbl(["Concepto", "Excel", "Recálculo web", "Dif. %", "Estado"], rows.map((r) => [
             esc(r.scope ? r.scope + " · " + r.label : r.label), val(r.excel, 4), val(r.recalc, 4), r.diff == null ? "—" : fmt(r.diff, 2),
-            badge(r.st, r.st === "ok" ? "coincide" : r.st === "fail" ? "falta" : "difiere") + (r.note ? `<br><small>${esc(r.note)}</small>` : ""),
+            badge(r.st, r.missing ? "sin dato" : r.st === "ok" ? "coincide" : r.st === "fail" ? "falta" : "difiere") + (r.note ? `<br><small>${esc(r.note)}</small>` : ""),
         ]), { cls: "wide", caption: caption || "Comparación Excel vs. recálculo" });
     }
 
@@ -523,23 +523,37 @@
 
     function renderVerificaciones(data, rec, cmps) {
         const rows = [];
-        const add = (sistema, nombre, criterio, valor, st, nota) => rows.push([esc(sistema), esc(nombre), esc(criterio), val(valor, 4), badge(st, st === "ok" ? "verifica" : st === "fail" ? "no verifica" : "revisar"), esc(nota || "")]);
+        const add = (sistema, nombre, criterio, valor, st, nota, discard) => {
+            const cls = st === "ok" ? "ok" : st === "fail" ? "fail" : "warn";
+            const txt = st === "ok" ? "verifica" : st === "fail" ? "no verifica" : (discard ? "no adoptada" : "revisar");
+            const b = `<span class="badge-state ${cls}${discard ? " no-count" : ""}"${discard ? ' data-discard="1"' : ""}>${cls === "ok" ? "✔" : cls === "fail" ? "✖" : "⚠"} ${txt}</span>`;
+            rows.push([esc(sistema), esc(nombre), esc(criterio), val(valor, 4), b, esc(nota || "")]);
+        };
         if (data.rio) {
             const R = rec && rec.rio;
+            const best = R && R.adopted != null ? R.adopted : null;
             (data.rio.alts.dS || []).forEach((d, i) => {
                 const ex = alts(data, "rio", i);
-                add("Río", `Velocidad de succión Alt ${i + 1}`, "0,7 ≤ v ≤ 4,0 m/s", ex.vS, ex.vS >= 0.7 && ex.vS <= 4 ? "ok" : "fail", "NP-68 / guía");
-                add("Río", `Velocidad de impulsión Alt ${i + 1}`, "0,7 ≤ v ≤ 4,0 m/s", ex.vI, ex.vI >= 0.7 && ex.vI <= 4 ? "ok" : "fail", "NP-68 / guía");
-                add("Río", `Succión > impulsión Alt ${i + 1}`, "D_s > D_i", `${ex.dS}/${ex.dI} mm`, ex.dS > ex.dI ? "ok" : "fail", "Nota F28 de la guía");
+                const disc = best != null && i !== best;
+                const nota = disc ? "Alternativa no adoptada; se muestra sólo para comparar" : "NP-68 / guía";
+                add("Río", `Velocidad de succión Alt ${i + 1}`, "0,7 ≤ v ≤ 4,0 m/s", ex.vS, disc ? "warn" : (ex.vS >= 0.7 && ex.vS <= 4 ? "ok" : "fail"), nota, disc);
+                add("Río", `Velocidad de impulsión Alt ${i + 1}`, "0,7 ≤ v ≤ 4,0 m/s", ex.vI, disc ? "warn" : (ex.vI >= 0.7 && ex.vI <= 4 ? "ok" : "fail"), nota, disc);
+                add("Río", `Succión > impulsión Alt ${i + 1}`, "D_s > D_i", `${ex.dS}/${ex.dI} mm`, disc ? "warn" : (ex.dS > ex.dI ? "ok" : "fail"), nota, disc);
             });
-            if (data.rio.verif) data.rio.verif.forEach((v) => add("Río", "Costo anual si verifica", "Velocidades y D_s > D_i", `Alt ${v.alt}`, /verifica/i.test(v.text) && !/no/i.test(v.text) ? "ok" : "fail", v.text));
+            if (data.rio.verif) data.rio.verif.forEach((v) => {
+                const disc = best != null && (v.alt - 1) !== best;
+                add("Río", "Costo anual si verifica", "Velocidades y D_s > D_i", `Alt ${v.alt}`, disc ? "warn" : (/verifica/i.test(v.text) && !/no/i.test(v.text) ? "ok" : "fail"), disc ? "Alternativa no adoptada" : v.text, disc);
+            });
         }
         if (data.tanque) {
+            const best = rec && rec.tanque && rec.tanque.adopted != null ? rec.tanque.adopted : null;
             (data.tanque.alts.dS || []).forEach((d, i) => {
                 const ex = alts(data, "tanque", i);
-                add("Tanque", `Velocidad de succión Alt ${i + 1}`, "0,6 ≤ v ≤ 3,5 m/s", ex.vS, ex.vS >= 0.6 && ex.vS <= 3.5 ? "ok" : "fail", "Guía / NP-68");
-                add("Tanque", `Velocidad de impulsión Alt ${i + 1}`, "0,6 ≤ v ≤ 3,5 m/s", ex.vI, ex.vI >= 0.6 && ex.vI <= 3.5 ? "ok" : "fail", "Guía / NP-68");
-                add("Tanque", `Succión > impulsión Alt ${i + 1}`, "D_s > D_i", `${ex.dS}/${ex.dI} mm`, ex.dS > ex.dI ? "ok" : "fail", "Nota de la guía");
+                const disc = best != null && i !== best;
+                const nota = disc ? "Alternativa no adoptada; se muestra sólo para comparar" : "Guía / NP-68";
+                add("Tanque", `Velocidad de succión Alt ${i + 1}`, "0,6 ≤ v ≤ 3,5 m/s", ex.vS, disc ? "warn" : (ex.vS >= 0.6 && ex.vS <= 3.5 ? "ok" : "fail"), nota, disc);
+                add("Tanque", `Velocidad de impulsión Alt ${i + 1}`, "0,6 ≤ v ≤ 3,5 m/s", ex.vI, disc ? "warn" : (ex.vI >= 0.6 && ex.vI <= 3.5 ? "ok" : "fail"), nota, disc);
+                add("Tanque", `Succión > impulsión Alt ${i + 1}`, "D_s > D_i", `${ex.dS}/${ex.dI} mm`, disc ? "warn" : (ex.dS > ex.dI ? "ok" : "fail"), nota, disc);
             });
         }
         if (data.red && data.red.presiones) {
@@ -550,25 +564,30 @@
             if (data.red.caudales && data.red.caudales.iter) add("Red", "Convergencia", "|ΔQ| < tolerancia", data.red.caudales.iter.value, num(data.red.caudales.iter.value) <= 50 ? "ok" : "warn", "Se adopta la primera iteración convergente");
         }
         if (data.potab) {
-            const g = data.potab.groups;
-            const check = (re, st, crit) => { const e = data.potab.entries.find((x) => re.test(x.label || "") && typeof x.value === "number"); if (e) add("Potabilizadora", e.label, crit, e.value, st === "auto" ? (/verifica/i.test(String(e.value)) && !/no/i.test(String(e.value)) ? "ok" : "fail") : st, "Guía / NP-68"); };
-            check(/velocidad ascencional/i, "auto", "4 a 10 cm/s");
-            check(/verificacion de velocidad/i, "auto", "≥ 2 m/s para mezclador");
-            check(/gradiente de mezcla rapida/i, "auto", "Verificación de mezcla");
+            const checkRange = (re, okFn, crit) => {
+                const e = data.potab.entries.find((x) => re.test(x.label || "") && typeof x.value === "number");
+                if (e) add("Potabilizadora", e.label, crit, e.value, okFn(Number(e.value)) ? "ok" : "fail", "Guía / NP-68");
+            };
+            checkRange(/velocidad ascencional/i, (v) => v >= 4 && v <= 10, "4 a 10 cm/s");
+            checkRange(/verificacion de velocidad/i, (v) => v >= 2, "≥ 2 m/s para mezclador rápido");
         }
         ["cloacal", "tratamiento", "laguna"].forEach((k) => {
             if (!data[k]) return;
             (data[k].verifications || []).slice(0, 60).forEach((v) => add(k === "cloacal" ? "Cloacal" : k === "tratamiento" ? "Tratamiento" : "Laguna", v.label || "Verificación", "Según guía", v.text, /no verifica|aumentar|disminuir|revisar/i.test(v.text) ? "fail" : "ok", v.cell));
         });
         // Comparaciones con diferencia
-        cmps.filter((c) => c.st !== "ok").forEach((c) => add("Comparación", c.scope + " · " + c.label, "Tolerancia 0,5 %", c.diff != null ? c.diff : "—", "warn", c.note || "Ver sección de comparación"));
-        return rows.length ? tbl(["Sistema", "Verificación", "Criterio", "Valor", "Estado", "Nota"], rows, { cls: "wide", caption: "Verificaciones consolidadas" }) : sectionEmpty("No se encontraron verificaciones.");
+        cmps.filter((c) => c.st !== "ok" && !c.missing).forEach((c) => add("Comparación", c.scope + " · " + c.label, "Tolerancia 0,5 %", c.diff != null ? c.diff : "—", "warn", c.note || "Ver sección de comparación"));
+        const intro = `<p class="report-note"><strong>Criterio de lectura:</strong> en cada impulsión se adoptan tres alternativas para comparar, pero el proyecto elige <strong>una sola</strong> por mínimo costo. Las alternativas descartadas se muestran como “no adoptada” y no cuentan como fallas del sistema adoptado.</p>`;
+        return intro + (rows.length ? tbl(["Sistema", "Verificación", "Criterio", "Valor", "Estado", "Nota"], rows, { cls: "wide", caption: "Verificaciones consolidadas" }) : sectionEmpty("No se encontraron verificaciones."));
     }
 
     function renderComparacion(data, rec, cmps) {
-        const ok = cmps.filter((c) => c.st === "ok").length, warn = cmps.filter((c) => c.st === "warn").length, fail = cmps.filter((c) => c.st === "fail").length;
+        const ok = cmps.filter((c) => c.st === "ok").length;
+        const missing = cmps.filter((c) => c.missing).length;
+        const warn = cmps.filter((c) => !c.missing && c.st === "warn").length;
+        const fail = cmps.filter((c) => !c.missing && c.st === "fail").length;
         return `<p>Se comparan los resultados del Excel con el recálculo independiente de la web. La tolerancia de coincidencia es del <strong>0,5 %</strong>. Las diferencias por errores heredados de la guía se explican en la sección de observaciones.</p>` +
-            `<div class="stat-grid"><div class="stat"><span>Coinciden</span><b>${ok}</b></div><div class="stat"><span>Difieren</span><b>${warn}</b></div><div class="stat"><span>Faltan / error</span><b>${fail}</b></div><div class="stat"><span>Total</span><b>${cmps.length}</b></div></div>` +
+            `<div class="stat-grid"><div class="stat"><span>Coinciden</span><b>${ok}</b></div><div class="stat"><span>Difieren</span><b>${warn}</b></div><div class="stat"><span>Sin dato en Excel</span><b>${missing}</b></div><div class="stat"><span>Faltan / error</span><b>${fail}</b></div><div class="stat"><span>Total</span><b>${cmps.length}</b></div></div>` +
             cmpTable(cmps, "Comparación Excel vs. recálculo web");
     }
     function renderObservaciones(data) {

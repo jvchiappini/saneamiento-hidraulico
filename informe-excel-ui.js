@@ -66,10 +66,10 @@
             if (host) host.innerHTML = report[k];
         });
         CMPS = report.cmps || [];
-        const diff = CMPS.filter((c) => c.st !== "ok").length;
+        const diff = CMPS.filter((c) => c.st !== "ok" && !c.missing).length;
         const cells = Object.values(data.allCells).reduce((s, a) => s + a.length, 0);
-        const vb = document.querySelectorAll("#verificaciones-body .badge-state");
-        const vok = document.querySelectorAll("#verificaciones-body .badge-state.ok").length;
+        const vb = document.querySelectorAll("#verificaciones-body .badge-state:not([data-discard])");
+        const vok = document.querySelectorAll("#verificaciones-body .badge-state.ok:not([data-discard])").length;
         const total = vb.length || CMPS.length;
         const ok = vb.length ? vok : CMPS.filter((c) => c.st === "ok").length;
         updateKpis({ sheets: data.sheetNames.length, cells, ok, total, diff });
