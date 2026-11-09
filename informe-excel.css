@@ -1,0 +1,601 @@
+/* =====================================================================
+   informe-excel.css — Carga del archivo, informe técnico y adaptación
+   responsive / impresión A4.
+   ===================================================================== */
+
+.loader {
+    display: grid;
+    gap: 1rem;
+}
+
+body.has-report #loader .dropzone,
+body.has-report #loader .optional-form {
+    display: none;
+}
+
+.dropzone {
+    border: 2px dashed var(--border);
+    border-radius: 18px;
+    background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--primary-soft) 55%, var(--surface)));
+    padding: 2rem 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .15s;
+    outline: none;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible {
+    border-color: var(--primary);
+}
+
+.dropzone.drag {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--primary-soft) 75%, var(--surface));
+    transform: translateY(-1px);
+}
+
+.dz-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--primary);
+    margin-bottom: .4rem;
+}
+
+.dz-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.dz-sub {
+    color: var(--muted);
+    font-size: .85rem;
+    margin: .1rem 0 .55rem;
+}
+
+.dz-note {
+    color: var(--muted);
+    font-size: .78rem;
+    margin-top: .75rem;
+}
+
+.btn-primary,
+.btn-ghost {
+    font: inherit;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: .6rem 1rem;
+    cursor: pointer;
+    transition: filter .15s, background .15s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border: 1px solid var(--primary);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.06);
+}
+
+.btn-ghost {
+    background: var(--surface);
+    color: var(--primary-dark);
+    border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+    background: var(--primary-soft);
+}
+
+.optional-form {
+    display: grid;
+    gap: .25rem;
+}
+
+.optional-form label {
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.optional-form input {
+    font: inherit;
+    padding: .62rem .75rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.optional-form .hint {
+    font-size: .76rem;
+    color: var(--muted);
+}
+
+.progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+}
+
+.pstep {
+    font-size: .78rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: .2rem .65rem;
+}
+
+.pstep.on {
+    color: var(--primary-dark);
+    border-color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.pstep.done {
+    color: var(--good);
+    border-color: color-mix(in srgb, var(--good) 40%, var(--border));
+    background: var(--good-bg);
+}
+
+.pstep.err {
+    color: var(--bad);
+    border-color: var(--bad);
+    background: var(--bad-bg);
+}
+
+.load-status {
+    min-height: 1.2rem;
+    font-size: .88rem;
+    color: var(--muted);
+}
+
+.load-status.ok {
+    color: var(--good);
+}
+
+.load-status.warn {
+    color: var(--warn);
+}
+
+.load-status.fail {
+    color: var(--bad);
+}
+
+.warn-text {
+    color: var(--warn);
+}
+
+.report-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    padding-top: .35rem;
+}
+
+/* ---------- Portada e informe ---------- */
+.report-body {
+    min-width: 0;
+}
+
+.cover {
+    display: grid;
+    gap: .9rem;
+}
+
+.cover-title {
+    font-size: clamp(1.3rem, 2.6vw, 1.8rem);
+    color: var(--primary-dark);
+    line-height: 1.2;
+}
+
+.cover-sub {
+    color: var(--muted);
+    max-width: 70ch;
+}
+
+.cover-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: .7rem;
+    margin-top: .3rem;
+}
+
+.cover-grid > div,
+.stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: .6rem .75rem;
+}
+
+.cover-grid span,
+.stat span {
+    display: block;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.cover-grid b,
+.stat b {
+    display: block;
+    font-size: .95rem;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: .6rem;
+    margin: .7rem 0;
+}
+
+.warn-box {
+    border: 1px solid color-mix(in srgb, var(--warn) 35%, var(--border));
+    background: var(--warn-bg);
+    color: var(--warn);
+    border-radius: 12px;
+    padding: .65rem .8rem;
+    font-size: .86rem;
+}
+
+.warn-box p + p {
+    margin-top: .35rem;
+}
+
+.report-note {
+    margin: .7rem 0;
+    color: var(--muted);
+    font-size: .86rem;
+}
+
+.empty-note {
+    color: var(--muted);
+    font-style: italic;
+    padding: .4rem 0;
+}
+
+.formula-block {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: .25rem 0;
+    font-size: .96rem;
+}
+
+/* Tablas anchas con scroll propio */
+.tbl-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: .65rem 0 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.report-table caption {
+    caption-side: top;
+    text-align: left;
+    font-size: .8rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    padding: .5rem .55rem .25rem;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+    min-width: 520px;
+}
+
+.report-table.wide {
+    min-width: 760px;
+}
+
+.report-table th,
+.report-table td {
+    padding: .45rem .55rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.report-table th {
+    background: color-mix(in srgb, var(--primary-soft) 65%, var(--surface));
+    color: var(--primary-dark);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.report-table tbody tr:nth-child(even) td {
+    background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+}
+
+.report-table code {
+    font-family: var(--mono);
+    font-size: .74rem;
+    overflow-wrap: anywhere;
+}
+
+.report-table .badge-state {
+    white-space: nowrap;
+}
+
+.report-fig {
+    margin: 1rem 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: .75rem;
+    overflow-x: auto;
+}
+
+.report-fig svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.report-fig figcaption {
+    margin-top: .5rem;
+    color: var(--muted);
+    font-size: .78rem;
+    text-align: center;
+}
+
+.obs {
+    display: flex;
+    gap: .6rem;
+    align-items: flex-start;
+    border-left: 4px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: .55rem .7rem;
+    margin: .45rem 0;
+    font-size: .86rem;
+}
+
+.obs > span {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.obs.warn {
+    border-left-color: var(--warn);
+    background: var(--warn-bg);
+}
+
+.obs.fail {
+    border-left-color: var(--bad);
+    background: var(--bad-bg);
+}
+
+.obs.info {
+    border-left-color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.obs p {
+    margin: 0;
+}
+
+.cell-details {
+    margin: .6rem 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: .5rem .7rem;
+    background: var(--surface);
+}
+
+.cell-details summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+h3 {
+    margin-top: 1.15rem;
+}
+
+h4 {
+    margin-top: .9rem;
+}
+
+/* ---------- Modo oscuro ---------- */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1715;
+        --surface: #16211e;
+        --ink: #e6efec;
+        --muted: #a2b7b0;
+        --primary: #2dd4bf;
+        --primary-dark: #5eead4;
+        --primary-soft: #123430;
+        --accent: #fbbf24;
+        --good: #4ade80;
+        --good-bg: #12301d;
+        --bad: #f87171;
+        --bad-bg: #3a1717;
+        --warn: #fbbf24;
+        --warn-bg: #352a12;
+        --border: #2b3d38;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 8px 24px rgba(0, 0, 0, .3);
+    }
+    .dropzone {
+        background: linear-gradient(180deg, var(--surface), color-mix(in srgb, var(--primary-soft) 70%, var(--surface)));
+    }
+    .btn-primary {
+        color: #06211d;
+    }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+    body.has-shell main {
+        padding-left: .75rem;
+        padding-right: .75rem;
+    }
+    .report-tools {
+        position: sticky;
+        bottom: .5rem;
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+        padding: .45rem;
+        border-radius: 12px;
+        z-index: 5;
+        backdrop-filter: blur(6px);
+    }
+}
+
+@media (max-width: 420px) {
+    .dropzone {
+        padding: 1.4rem .8rem;
+    }
+    .report-table {
+        font-size: .78rem;
+        min-width: 480px;
+    }
+    .report-table.wide {
+        min-width: 680px;
+    }
+    .stat-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ---------- Impresión A4 ---------- */
+@page {
+    size: A4;
+    margin: 14mm 13mm;
+}
+
+@media print {
+    :root {
+        --bg: #fff;
+        --surface: #fff;
+        --ink: #111;
+        --muted: #555;
+        --border: #bbb;
+        --primary: #0b5d56;
+        --primary-dark: #0b5d56;
+        --primary-soft: #eef7f5;
+        --accent: #0b5d56;
+        --shadow: none;
+    }
+    html, body {
+        background: #fff !important;
+        color: #111 !important;
+        font-size: 10pt;
+    }
+    .topnav, .hero, .toc, .toc-fab, .to-top, .ask-fab, .report-tools,
+    .loader, .progress, .optional-form, .dropzone, #nav-toggle, .sec-toggle {
+        display: none !important;
+    }
+    body.has-shell main,
+    main {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .shell,
+    .shell-main {
+        display: block !important;
+        max-width: 100% !important;
+    }
+    section.card.step {
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 0 10mm !important;
+        break-before: page;
+        page-break-before: always;
+    }
+    section.card.step:first-of-type {
+        break-before: auto;
+        page-break-before: auto;
+    }
+    section.card.step,
+    .report-fig,
+    .tbl-wrap,
+    .obs,
+    .cover-grid > div,
+    .stat {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .step-head {
+        margin-bottom: 3mm;
+    }
+    h2 {
+        font-size: 15pt;
+        color: #0b5d56 !important;
+    }
+    h3 {
+        font-size: 12pt;
+        color: #0b5d56 !important;
+    }
+    .report-table {
+        font-size: 8pt;
+        min-width: 0 !important;
+    }
+    .report-table.wide {
+        min-width: 0 !important;
+    }
+    .tbl-wrap {
+        overflow: visible !important;
+        border: 1px solid #bbb !important;
+    }
+    .report-table th {
+        position: static;
+        background: #eef7f5 !important;
+        color: #0b5d56 !important;
+    }
+    .report-table tbody tr:nth-child(even) td {
+        background: #fafafa !important;
+    }
+    .badge-state {
+        border: 1px solid #999 !important;
+        color: #111 !important;
+        background: #fff !important;
+    }
+    .report-fig svg {
+        max-width: 100%;
+        max-height: 190mm;
+    }
+    .cell-details {
+        border: 0;
+    }
+    .cell-details > summary {
+        list-style: none;
+        font-size: 9pt;
+    }
+    .cell-details[open] .tbl-wrap,
+    .cell-details .tbl-wrap {
+        max-height: none;
+    }
+    a {
+        color: #111 !important;
+        text-decoration: none;
+    }
+    .empty-note,
+    .report-note {
+        color: #333 !important;
+    }
+}

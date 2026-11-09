@@ -12,7 +12,7 @@
     const RESULT_MAX = 4000;   // caracteres por resultado de herramienta
     const MEMO_PAGE = 3500;
     // Herramientas "de una sola vez": resultados más grandes para evitar rondas de llamadas.
-    const BIG_MAX = { module_full: 16000, project_overview: 6000, kb_lookup: 9000, report: 16000 };    // caracteres por página de module_memo
+    const BIG_MAX = { module_full: 16000, project_overview: 6000, kb_lookup: 9000, report: 16000, excel_informe: 6000 };    // caracteres por página de module_memo
 
     /* =====================================================================
        Evaluador matemático
@@ -148,6 +148,7 @@
         potabilizadora: ["potabilizadora.html", "Potabilizadora · Manual"], "potabilizadora-auto": ["potabilizadora-auto.html", "Potabilizadora · Automático"],
         red: ["red.html", "Red de distribución"], tanque: ["tanque.html", "Impulsión al tanque"], cloacal: ["cloacal.html", "Red cloacal"],
         predial: ["predial.html", "Predial · agua del edificio"], referencias: ["referencias.html", "Tablas de la Norma 68"], formulas: ["formulas.html", "Fórmulas"],
+        "informe-excel": ["informe-excel.html", "Informe desde Excel"],
     };
     const PAGE_TO_MODULE = { red: "red", tanque: "tanque", cloacal: "cloacal", predial: "predial", index: "impulsion", auto: "impulsion", potab: "potabilizadora", "potab-auto": "potabilizadora", potabilizadora: "potabilizadora", "potabilizadora-auto": "potabilizadora" };
 
@@ -334,6 +335,10 @@
                 type: "object", additionalProperties: false, required: ["id", "status"],
                 properties: { id: S("Id del ítem."), status: S("Estado nuevo.", { enum: CK_STATUS }), note: S("Nota breve opcional.") },
             },
+        },
+        {
+            name: "excel_informe", description: "Lee el resumen del último archivo .xlsx analizado en la página Informe desde Excel (guardado en localStorage). Solo lectura: devuelve el archivo, la variante detectada, los resultados recalculados y las comparaciones. Usala si el usuario pregunta por el Excel que cargó.",
+            input_schema: { type: "object", additionalProperties: false, properties: { seccion: S("Qué parte devolver.", { enum: ["resumen", "comparaciones", "observaciones", "todo"] }) } },
         },
         {
             name: "kb_criteria", description: "Criterios y rangos de diseño (velocidades, pendientes, presiones, tiempos, etc.) de la base de conocimiento, filtrados por módulo y/o parámetro.",
@@ -697,6 +702,16 @@
                 user[a.id] = { status: a.status, note: a.note || (user[a.id] && user[a.id].note) || "", at: new Date().toISOString() };
                 storage.setItem(CK_KEY, JSON.stringify(user));
                 return { actualizado: true, id: a.id, item: it.item, status: a.status };
+            },
+
+            async excel_informe(a) {
+                const raw = readJSON("sh-excel-informe-v1");
+                if (!raw) throw new Error("No hay ningún Excel analizado todavía. Pedile al usuario que abra informe-excel.html y cargue el archivo .xlsx.");
+                const s = a.seccion || "resumen";
+                if (s === "todo") return raw;
+                if (s === "comparaciones") return { archivo: raw.file, comparaciones: raw.comparisons || [] };
+                if (s === "observaciones") return { archivo: raw.file, observaciones: raw.observations || [], advertencias: raw.warnings || [] };
+                return { archivo: raw.file, fecha: raw.date, variante: raw.variant, resultados: raw.recalc, comparaciones: (raw.comparisons || []).slice(0, 20), nota: "Para el detalle completo usá seccion = comparaciones, observaciones o todo." };
             },
 
             async open_page(a) {

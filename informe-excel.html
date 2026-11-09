@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe desde Excel — Saneamiento Hidráulico</title>
+    <meta name="description" content="Lee un archivo .xlsx de la guía del TP en el navegador, extrae los datos por rótulos, recalcula con la web y genera un informe técnico completo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mod.css">
+    <link rel="stylesheet" href="ui-shell.css">
+    <link rel="stylesheet" href="informe-excel.css">
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+            svg: { fontCache: 'global' },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+        };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+</head>
+<body data-page="informe-excel">
+    <nav class="topnav">
+        <a class="brand" href="index.html"><span class="brand-dot"></span>Saneamiento&nbsp;Hidráulico</a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+        <ul class="nav-links" id="nav-links">
+            <li class="nav-dd"><a href="index.html">Impulsión</a><ul class="dd-menu"><li><a href="index.html">Manual</a></li><li><a href="auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="potabilizadora.html">Potabilizadora</a><ul class="dd-menu"><li><a href="potabilizadora.html">Manual</a></li><li><a href="potabilizadora-auto.html">Automático</a></li></ul></li>
+            <li class="nav-dd"><a href="red.html">Red pública</a><ul class="dd-menu"><li><a href="red.html">Red de distribución</a></li><li><a href="tanque.html">Impulsión al tanque</a></li><li><a href="cloacal.html">Red cloacal</a></li></ul></li>
+            <li class="nav-dd"><a href="predial.html">Predial</a><ul class="dd-menu"><li><a href="predial.html">Agua del edificio</a></li></ul></li>
+            <li><a href="referencias.html">Norma 68</a></li>
+            <li><a href="formulas.html">Fórmulas</a></li>
+            <li><a href="chat.html">Asistente</a></li>
+            <li><a href="informe-excel.html" class="active">Informe Excel</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">Trabajo práctico · Saneamiento y Medio Ambiente</p>
+            <h1>Informe desde <span class="accent-word">Excel</span></h1>
+            <p class="hero-sub">
+                Arrastrá el archivo <strong>.xlsx</strong> de la guía —original o completado por un grupo—. La página lee el libro
+                en tu navegador, extrae los datos por rótulos, recalcula con los módulos de la web y arma un informe técnico
+                con memoria de cálculo, tablas, verificaciones y observaciones. Nada se sube a ningún servidor.
+            </p>
+            <div class="hero-kpis" id="hero-kpis"></div>
+        </div>
+        <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64 C240,120 480,0 720,40 C960,80 1200,96 1440,48 L1440,120 L0,120 Z"></path></svg>
+    </header>
+
+    <main>
+        <section class="card step" id="portada">
+            <div class="step-head">
+                <span class="step-num">1</span>
+                <div>
+                    <h2>Portada y carga del archivo</h2>
+                    <p class="lede">Elegí el libro, completá tus datos si querés que aparezcan en la portada y generá el informe.</p>
+                </div>
+            </div>
+            <div id="loader" class="loader">
+                <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Elegir o arrastrar un archivo .xlsx">
+                    <div class="dz-icon" aria-hidden="true">▤</div>
+                    <p class="dz-title">Arrastrá el archivo <strong>.xlsx</strong> acá</p>
+                    <p class="dz-sub">o</p>
+                    <button type="button" class="btn-primary" id="btn-pick">Elegir archivo</button>
+                    <input type="file" id="file-input" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+                    <p class="dz-note">La lectura es local. Se aceptan la guía original y las copias completadas por otros grupos.</p>
+                </div>
+                <div class="optional-form">
+                    <label for="authors">Integrantes (opcional)</label>
+                    <input id="authors" type="text" placeholder="Apellido 1, Apellido 2, Apellido 3" autocomplete="off">
+                    <p class="hint">Se muestran en la portada del informe. No se guardan en ningún servidor.</p>
+                </div>
+                <div class="progress" id="progress" aria-live="polite">
+                    <span class="pstep" data-step="read">1 · Leyendo</span>
+                    <span class="pstep" data-step="extract">2 · Extrayendo</span>
+                    <span class="pstep" data-step="recalc">3 · Recalculando</span>
+                    <span class="pstep" data-step="report">4 · Generando</span>
+                </div>
+                <div class="load-status" id="status"></div>
+                <div class="report-tools" id="report-tools" hidden>
+                    <button type="button" class="btn-primary" id="btn-print">Imprimir / Guardar PDF</button>
+                    <button type="button" class="btn-ghost" id="btn-html">Descargar informe HTML</button>
+                    <button type="button" class="btn-ghost" id="btn-json">Descargar datos JSON</button>
+                    <button type="button" class="btn-ghost" id="btn-reset">Analizar otro archivo</button>
+                </div>
+            </div>
+            <div id="portada-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="resumen">
+            <div class="step-head"><span class="step-num">2</span><div><h2>Resumen ejecutivo</h2><p class="lede">Solución adoptada por sistema y resultados principales.</p></div></div>
+            <div id="resumen-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="datos">
+            <div class="step-head"><span class="step-num">3</span><div><h2>Datos de partida</h2><p class="lede">Todas las entradas con unidad, celda de origen y comparación con la guía original.</p></div></div>
+            <div id="datos-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="poblacion">
+            <div class="step-head"><span class="step-num">4</span><div><h2>Población y caudales</h2><p class="lede">Fórmulas con sustitución numérica y contraste con el archivo.</p></div></div>
+            <div id="poblacion-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="rio">
+            <div class="step-head"><span class="step-num">5</span><div><h2>Impulsión río → planta</h2><p class="lede">Bresse, tres alternativas, pérdidas, Hm, potencias, holgura, pozo y mínimo costo.</p></div></div>
+            <div id="rio-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="potab">
+            <div class="step-head"><span class="step-num">6</span><div><h2>Potabilizadora</h2><p class="lede">Una subsección por unidad, con los datos y resultados extraídos y el recálculo de la planta.</p></div></div>
+            <div id="potab-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="tanque">
+            <div class="step-head"><span class="step-num">7</span><div><h2>Impulsión planta → tanque</h2><p class="lede">Misma estructura que la impulsión del río: alternativas, Hm, potencias y costo anual.</p></div></div>
+            <div id="tanque-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="tanque-elevado">
+            <div class="step-head"><span class="step-num">8</span><div><h2>Tanque elevado</h2><p class="lede">Volumen, dimensiones, altura de la base y cotas.</p></div></div>
+            <div id="tanque-elevado-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="red">
+            <div class="step-head"><span class="step-num">9</span><div><h2>Red pública</h2><p class="lede">Tramos, nodos, convergencia de Hardy Cross y esquema de la grilla.</p></div></div>
+            <div id="red-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="cloacal">
+            <div class="step-head"><span class="step-num">10</span><div><h2>Red cloacal, tratamiento y laguna</h2><p class="lede">Datos y resultados de las hojas finales de la guía.</p></div></div>
+            <div id="cloacal-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="verificaciones">
+            <div class="step-head"><span class="step-num">11</span><div><h2>Verificaciones</h2><p class="lede">Tabla consolidada con criterio normativo y estado ✔ / ✖ / ⚠.</p></div></div>
+            <div id="verificaciones-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="comparacion">
+            <div class="step-head"><span class="step-num">12</span><div><h2>Comparación Excel vs. recálculo web</h2><p class="lede">Valor del archivo, valor recalculado, diferencia porcentual y estado con tolerancia del 0,5 %.</p></div></div>
+            <div id="comparacion-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="observaciones">
+            <div class="step-head"><span class="step-num">13</span><div><h2>Observaciones y errores detectados</h2><p class="lede">Errores heredados de la guía, inconsistencias, celdas sin valor y hojas agrupadas.</p></div></div>
+            <div id="observaciones-body" class="report-body"></div>
+        </section>
+
+        <section class="card step" id="anexos">
+            <div class="step-head"><span class="step-num">14</span><div><h2>Anexos</h2><p class="lede">Trazabilidad, listado completo de celdas por hoja y tablas NP-68 usadas.</p></div></div>
+            <div id="anexos-body" class="report-body"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Saneamiento Hidráulico · Trabajo práctico de Saneamiento y Medio Ambiente</p>
+        <p class="footnote">Cálculos conforme a la NP 68 y a la guía de la cátedra. El archivo Excel se procesa íntegramente en el navegador.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="mod-core.js"></script>
+    <script src="data.js"></script>
+    <script src="red.js"></script>
+    <script src="tanque.js"></script>
+    <script src="informe-excel-map.js"></script>
+    <script src="informe-excel.js"></script>
+    <script src="informe-excel-recalc.js"></script>
+    <script src="informe-excel-report.js"></script>
+    <script src="informe-excel-ui.js"></script>
+    <script src="ui-shell.js"></script>
+</body>
+</html>
