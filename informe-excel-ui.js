@@ -172,9 +172,14 @@
         const dz = $("dropzone"), input = $("file-input"), pick = $("btn-pick");
         if (!dz || !input) return;
         updateKpis(null);
-        const open = (e) => { if (e) e.preventDefault(); input.click(); };
+        const open = (e) => {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            input.click();
+        };
         pick.addEventListener("click", open);
-        dz.addEventListener("click", (e) => { if (e.target.closest("button")) return; open(e); });
+        // El click del input también burbujea hasta la zona: hay que ignorarlo
+        // para no llamar a input.click() recursivamente.
+        dz.addEventListener("click", (e) => { if (e.target.closest("button, input, label")) return; open(e); });
         dz.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") open(e); });
         ["dragenter", "dragover"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add("drag"); }));
         ["dragleave", "drop"].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove("drag"); }));
